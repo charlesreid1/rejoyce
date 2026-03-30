@@ -23,3 +23,65 @@ Ithaca is the episode that *wants* to be a database. Its Q&A format is a proto-A
 - Ithaca's Q&A pairs are, formally, a dialogue between an unnamed questioner and an unnamed answerer. This makes the episode a test case for question-answering systems. Feed Ithaca's questions to a modern QA model (e.g., a BERT-based model via HuggingFace `transformers`) with the episode text as context. Can the model locate the correct answer span? Where it fails, analyze whether the failure is due to the question's complexity, the answer's length, or the model's inability to handle Joyce's syntax.
 - The lists in Ithaca (contents of drawers, items in Bloom's budget, books on his shelf) are themselves data structures — ordered sequences with implicit schemas. Can you infer the schema? (The drawer inventory is implicitly categorized: writing implements, then correspondence, then keepsakes.) Cluster the listed items using word embeddings and see whether the clusters match the implicit categories. This is schema induction from literary text.
 - Connection to Week 2 (Nestor): that episode's technique was also catechism, but *personal* — Deasy's pedagogical bluster. Compare the Nestor and Ithaca catechisms structurally: question types, answer lengths, information density per Q&A pair. Ithaca's impersonal catechism should be measurably denser and more informative. The two episodes bracket the novel's relationship with the interrogative form — from the human teacher who knows less than he thinks to the inhuman voice that knows everything and feels nothing.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Parse structured literary text** (Q&A catechism format) into question-answer pairs using regex and structural heuristics.
+2. **Classify questions by type** (what, why, how, yes/no, etc.) and analyze what the distribution reveals about the episode's epistemological priorities.
+3. **Extract knowledge triples** (subject, predicate, object) from semi-structured text using POS patterns and heuristic rules.
+4. **Analyze topic distribution** to identify what the catechism selects for (objects, science) and what it suppresses (emotions, inner life).
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Ithaca) |
+|---|---|---|
+| Q&A pairs parsed | catechism segmentation | ~250–350 (scholars count ~309) |
+| Dominant question type | classify_question distribution | "what" overwhelmingly dominant |
+| Mean answer length | tokens per answer | ~50–150 words |
+| Max answer length | longest answer | several hundred words |
+| Knowledge triples extracted | (subject, predicate, object) tuples | aim for 100+ |
+| Most common subject | entity appearing most as triple subject | likely "bloom" or "water" |
+| Physical object % of questions | topic classification | substantially higher than Calypso |
+
+## Rubric
+
+### Exercise 1: Parse the Catechism (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Q&A parsing** | All Q&A pairs extracted; count close to scholarly ~309; format correctly identified | Most pairs extracted | Parsing broken or incomplete |
+| **Question classification** | 5+ question types; distribution visualized; "what" dominance discussed | 3+ types classified | Fewer than 3 types |
+| **Answer statistics** | Length distribution (mean, median, max, min) reported and discussed | Basic stats | No statistics |
+
+### Exercise 2: Triple Extraction (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Extraction method** | POS-based and pattern-based triple extraction; inventory lists handled; 100+ triples | 50+ triples; basic patterns | Fewer than 50 or broken |
+| **Knowledge graph** | Triples visualized as networkx graph; central nodes identified | Some graph structure | No graph |
+| **Graph interpretation** | Discusses whether the graph centers on Bloom, the house, or the objects; connects to "skeleton" metaphor | Brief interpretation | No interpretation |
+
+### Exercise 3: The Question Ithaca Doesn't Ask (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Topic classification** | 6+ topic domains; proportional weight visualized as treemap or bar chart | 4+ domains | Fewer than 4 |
+| **Cross-episode comparison** | Topic distribution compared to Calypso or another Bloom episode | Some comparison | No comparison |
+| **Selection/suppression analysis** | Identifies what catechism over-represents (objects) and under-represents (emotions); connects to "skeleton has no flesh" | Brief discussion | No analysis |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| RDF conversion with SPARQL queries on Bloom's world | +3 |
+| BERT QA model applied to Ithaca questions | +3 |
+| Schema induction on list items via word embeddings | +2 |
+| Nestor vs. Ithaca catechism structural comparison | +2 |
+
+## Reference Implementation
+
+See [`solutions/week17_ithaca.py`](solutions/week17_ithaca.py)

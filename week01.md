@@ -23,3 +23,66 @@ Every NLP pipeline begins where every novel begins: with the raw stream of langu
 - Subword tokenization (BPE, WordPiece) has largely replaced word-level tokenization in modern NLP. How would a BPE tokenizer handle Mulligan's "Chrysostomos"? Try it with HuggingFace's `tokenizers` library and compare.
 - Joyce's use of unmarked interior monologue (free indirect discourse) blurs the boundary between narrator and character. Can you identify passages where the narrative voice shifts by looking at vocabulary or sentence structure alone? This question will return with force in later weeks.
 - Connection to Week 10 (Wandering Rocks): that episode's fragmented, multi-perspective structure will test whether the profiling tools learned here can distinguish between voices and locations.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Load and tokenize** a literary text using NLTK's `word_tokenize` and `sent_tokenize`, and explain the decisions tokenizers make at word and sentence boundaries.
+2. **Compute and interpret** basic corpus statistics (total tokens, total types, type-token ratio, average sentence length, hapax legomena ratio) and use them to compare texts quantitatively.
+3. **Use concordance views** to perform computationally assisted close reading — identifying thematic clusters through the distributional context of keywords.
+4. **Generate and interpret frequency distributions**, understanding the effect of stopword removal on what a frequency profile reveals about a text's content.
+5. **Evaluate Zipf's Law** on literary text and articulate why rank-frequency regularities do (or don't) hold for a specific author's prose.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Telemachus) |
+|---|---|---|
+| Total tokens | `len(word_tokenize(text))` | ~15,000–16,000 |
+| Total types (unique, lowercased alpha) | `len(set(...))` | ~3,500–4,500 |
+| Type-token ratio (TTR) | types / alpha tokens | ~0.28–0.35 |
+| Hapax legomena ratio | words appearing once / total types | ~0.45–0.55 |
+| Average sentence length | tokens / sentences | ~12–18 words |
+| Top content word (no stopwords) | most_common(1) | varies (likely a proper noun or thematic word) |
+| Zipf's Law R² (log-log fit) | linear regression on log(rank) vs log(freq) | > 0.90 |
+
+## Rubric
+
+### Exercise 1: Tokenize and Profile (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Correct computation** | All statistics computed accurately; code handles punctuation tokens, edge cases | Statistics computed with minor errors or omissions | Major errors in token/type counting or TTR |
+| **Comparison to reference** | Meaningful comparison to Gutenberg text with specific observations about what differs and why | Comparison present but observations are generic | No comparison or superficial side-by-side only |
+| **Interpretation** | Insightful discussion of what TTR and sentence length reveal (and don't reveal) about Joycean prose vs. the reference | Some interpretation present | Statistics reported without interpretation |
+
+### Exercise 2: Concordance as Close Reading (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Concordance generation** | Concordances for all 5 keywords generated and displayed correctly | Most keywords covered | Fewer than 3 keywords or technical errors |
+| **Pattern identification** | Identifies non-obvious distributional patterns (e.g., *sea* and *mother* co-occurring in proximity) | Identifies at least one pattern | No patterns identified |
+| **Argumentative paragraph** | Well-constructed argument connecting two words based on concordance evidence, with specific line citations | Argument present but vague or unsupported | No argument or purely impressionistic |
+
+### Exercise 3: Frequency and Stopwords (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Frequency plots** | Both plots (with/without stopwords) are clear, well-labeled, and readable | Plots present but poorly formatted | Missing plots or major errors |
+| **Stopword effect analysis** | Specific discussion of what emerges after stopword removal, with attention to proper nouns and thematic vocabulary | General observation that content words emerge | No analysis of the difference |
+| **Surprise factor** | Identifies at least one genuinely surprising frequency finding and reflects on what it means for "aboutness" | Notes something interesting | No engagement with the results |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Zipf's Law plot with log-log regression and R² value | +3 |
+| Discussion of lexical richness beyond TTR (Yule's K, MATTR) | +3 |
+| Subword tokenization experiment (BPE on "Chrysostomos") | +2 |
+| Free indirect discourse identification attempt | +2 |
+
+## Reference Implementation
+
+See [`solutions/week01_telemachus.py`](solutions/week01_telemachus.py)

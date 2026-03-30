@@ -25,3 +25,64 @@ Oxen of the Sun is an experiment in historical linguistics disguised as fiction 
 - Syntactic complexity measures (dependency tree depth, number of subordinate clauses per sentence) can be computed using spaCy or the Stanford Parser. These measures capture aspects of historical style that bag-of-words features miss. The rise and fall of the periodic sentence (long, syntactically suspended structures that delay their main verb) is one of the great arcs of English prose history — and Oxen performs it.
 - The episode's final section — the drunken, slangy, fragmented modern coda — has been compared to Eliot's *The Waste Land* and to the Dada movement. Its style is *anti-style*: the rejection of historical form. How does a style classifier handle anti-style? What features characterize the *absence* of period markers? This is a genuinely tricky classification problem: the "modern" class is defined by what it lacks.
 - Connection to Week 3 (Proteus): that episode raised the question of synchronic linguistic instability — words that shift meaning in the moment. Oxen extends this to diachronic instability — words and constructions that mean differently across centuries. Together they form the course's complete statement on the mutability of language.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Build period-specific stylistic profiles** from historical reference texts using features diagnostic of prose era (sentence length, Latinate vocabulary, adjective density, comma patterns).
+2. **Segment and profile** Oxen of the Sun's chronological style sections, comparing Joyce's imitations to real-period baselines.
+3. **Train and evaluate a period classifier** that "dates" text by its stylistic features, and analyze misclassification as evidence of what Joyce captured or missed.
+4. **Plot feature trajectories** across the episode as a time series, treating Oxen as a falsifiable hypothesis about the history of English.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Oxen of the Sun) |
+|---|---|---|
+| Sections segmented | equal divisions of the episode | ~9 sections |
+| Period classifier accuracy | train/test on Gutenberg texts | ~0.50–0.70 (3-class problem) |
+| Correct chronological ordering | classifier's predicted periods match intended sequence | partial — errors are informative |
+| Sentence length arc | early sections → late sections | expect increase then collapse (modern) |
+| Latinate vocabulary arc | avg word length across sections | expect peak in middle (Augustan) |
+| TTR trajectory | vocabulary richness across sections | varies by period |
+
+## Rubric
+
+### Exercise 1: Period Profiling (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Reference profiles** | 5+ historical periods profiled from Gutenberg; features tabulated | 3+ periods | Fewer than 3 |
+| **Oxen profiles** | All sections profiled with same features; side-by-side comparison to reference periods | Some sections profiled | Incomplete |
+| **Fidelity assessment** | Discusses where Joyce's imitation is metrically faithful and where it exaggerates or compresses | Brief comparison | No assessment |
+
+### Exercise 2: The Style Dating Game (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Classifier training** | NB or DT trained on period-labeled Gutenberg chunks; accuracy reported | Classifier trained | Classifier broken |
+| **Oxen dating** | All sections classified; predicted periods compared to intended sequence | Most sections classified | Incomplete |
+| **Misclassification analysis** | Confusion matrix produced; misclassifications interpreted (what features confused the classifier; what this reveals about Joyce's methods) | Some error analysis | No analysis |
+
+### Exercise 3: The Arc of English (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Feature trajectories** | 5+ features plotted across episode sections as time series | 3+ features plotted | Fewer than 3 |
+| **Comparison to historical record** | Joyce's feature arcs compared to documented linguistic trends (Biber & Finegan) | Some comparison | No comparison |
+| **Anti-style analysis** | Discusses the modern/slang final section as "anti-style" — what happens when features drop out | Brief discussion | No discussion |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Historical word embeddings (Hamilton et al.) comparison | +3 |
+| Syntactic complexity measures (dependency depth) across sections | +3 |
+| CLMET/ARCHER corpus comparison to Gutenberg | +2 |
+| Periodic sentence detection across the arc | +2 |
+
+## Reference Implementation
+
+See [`solutions/week14_oxenofthesun.py`](solutions/week14_oxenofthesun.py)

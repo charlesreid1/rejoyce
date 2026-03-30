@@ -23,3 +23,66 @@ A dialectical argument has hierarchical structure: premises support conclusions,
 - The Chomsky hierarchy classifies formal grammars by generative power: regular → context-free → context-sensitive → recursively enumerable. English is generally agreed to be mildly context-sensitive (see Shieber, 1985, on Swiss German cross-serial dependencies). Is there anything in Joyce's syntax — the nested quotations, the self-referential constructions — that pushes beyond context-free? This is a hard question, but a productive one.
 - Stephen's Shakespeare theory is itself a *parsing* of Shakespeare's texts — an attempt to recover the biographical deep structure beneath the literary surface. The episode thus thematizes the interpretive act that computational parsing formalizes. There is a rich critical literature on this: see Kenner (1980) on Joyce's art of mechanical reproduction and Attridge (1988) on Joyce and the limits of formalism.
 - Connection to Week 17 (Ithaca): that episode's catechism structure (question → answer → question) is a radically different formal organization of information. Where Scylla's dialectic nests arguments recursively, Ithaca's catechism proceeds linearly. Comparing the parse structures of both episodes will reveal two competing models of how knowledge can be organized in prose.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Write context-free grammars** covering major English constituent types and use NLTK's ChartParser to produce parse trees.
+2. **Evaluate grammar coverage** — understanding what percentage of a literary text's vocabulary and structure a hand-written CFG can handle.
+3. **Extract structural statistics** (tree depth, branching factor, subordinate clause frequency) from the Penn Treebank and use them as baselines for literary comparison.
+4. **Identify syntactic ambiguity** in complex literary sentences and produce competing parse trees.
+5. **Separate quoted material** from framing prose and compare their syntactic profiles.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Scylla & Charybdis) |
+|---|---|---|
+| Argument sentences found | sentences with logical connectives > 15 tokens | ~50–100 |
+| CFG terminal coverage | % of tokens in grammar's terminal set | ~30–50% (hand-written grammar is limited) |
+| Parse trees per sentence | ambiguous parses for selected sentences | 0–5+ per sentence |
+| Mean sentence length | tokens per sentence | ~18–25 (longer than most episodes) |
+| Subordinating conjunctions per sentence | that/which/who/because/if/etc. per sentence | ~1.2–2.0 |
+| Comma density | commas per sentence | ~2–4 |
+| Quotations extracted | quoted passages > 3 words | ~20–50 |
+
+## Rubric
+
+### Exercise 1: Parsing the Argument (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **CFG design** | Grammar covers S, NP, VP, PP, SBAR, ADJP, ADVP with reasonable lexicon; documented and justified | Basic grammar with S, NP, VP | Trivial or broken grammar |
+| **Parse trees** | 5 complex sentences selected; trees drawn or pretty-printed; successes and failures discussed | 3+ sentences parsed | Fewer than 3 or no trees shown |
+| **Ambiguity identification** | At least 1 genuinely ambiguous sentence found with competing parses; interpretations discussed | Ambiguity noted but not analyzed | No ambiguity discussion |
+
+### Exercise 2: Treebank Reference (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Treebank statistics** | Depth, branching, SBAR rate extracted from Treebank sample | Some statistics extracted | Treebank not used |
+| **Episode comparison** | Complexity proxies computed for Scylla and a simpler episode; differences quantified | Some comparison | No comparison |
+| **Interpretation** | Connects higher depth/subordination to the episode's dialectical, argumentative character | Brief interpretation | No interpretation |
+
+### Exercise 3: The Quotation Problem (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Quotation extraction** | Explicit quotes extracted via regex; count reported; samples shown | Some quotes extracted | Extraction broken |
+| **Syntactic comparison** | POS distributions compared between quoted and framing prose; differences discussed | Basic comparison | No comparison |
+| **Parser struggle analysis** | Identifies where Treebank-trained parser fails on Shakespeare syntax and explains training data assumptions | Some failure noted | No analysis |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Stanford/spaCy dependency parser comparison | +3 |
+| Dependency vs. constituency visualization of the same sentences | +3 |
+| Discussion of Chomsky hierarchy and Joyce's syntax | +2 |
+| Kenner/Attridge critical connection | +2 |
+
+## Reference Implementation
+
+See [`solutions/week09_scyllacharybdis.py`](solutions/week09_scyllacharybdis.py)

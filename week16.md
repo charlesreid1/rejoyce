@@ -65,3 +65,66 @@ Eumaeus itself, as the novel's measurable trough — the episode where every qua
 - Benford's Law (the distribution of leading digits in naturally occurring numerical data) has been applied to literary texts as a test of "naturalness." Extract all numbers from Ulysses and test whether their leading digits follow Benford's distribution. If they do, Joyce's numerical imagination mirrors reality; if they don't, it's a specific kind of departure. See Cerioli et al. (2019) on Benford's Law in fiction.
 - The master table is itself a dataset that can be analyzed with machine learning. Train a regression model to predict an episode's position in the novel (its episode number, 1–18) from its metric profile alone. How predictable is the novel's ordering from its quantitative features? If you shuffle the episodes, can the model reconstruct the sequence? This tests whether Ulysses has a measurable *direction* — a quantitative arc that the metrics capture.
 - Connection to Week 15 (Circe): the entity graph from Circe should appear as a dramatic outlier in graph density, node count, and connectivity. If it doesn't dominate the graph metrics column of your master table, revisit your Circe extraction. Connection to Week 17 (Ithaca): that episode will demand the opposite of enumeration — not cataloging what you've already computed but extracting new structured knowledge from the text itself. The dashboard from this week is the inventory; Ithaca is the interrogation.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Compile a master dataset** of computational metrics across all episodes analyzed so far, structured as rows (episodes) × columns (metrics).
+2. **Build multi-panel visualizations** (heatmap, sparklines, radar chart, correlation matrix) that reveal the novel's structural patterns at a glance.
+3. **Rank and compare** episodes by individual metrics to identify outliers (particularly Eumaeus as the "measurable trough").
+4. **Conduct an error audit** — identifying, cataloging, and explaining where prior analyses produced misleading results.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected for Eumaeus |
+|---|---|---|
+| Total tokens | word_tokenize count | among the longest episodes |
+| TTR | types / tokens | among the lowest (recycled vocabulary) |
+| Average sentence length | tokens / sentences | among the longest |
+| VADER mean sentiment | mean compound score | near neutral |
+| Flesch-Kincaid grade level | readability formula | high (complex but repetitive) |
+| Exclamation rate | exclamations per sentence | low |
+| Dashboard panels produced | heatmap + sparklines + correlation | 3+ panels |
+| Error catalog entries | documented prior-week errors | 5+ entries |
+
+## Rubric
+
+### Exercise 1: The Master Table (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Completeness** | 15+ metrics from prior weeks computed for all 16 episodes; structured as DataFrame | 10+ metrics for most episodes | Fewer than 10 or incomplete |
+| **Eumaeus profiling** | Eumaeus rank computed for every metric; top-5 most extreme positions identified | Some ranking done | No ranking |
+| **Interpretation** | Quantitative signatures of Joyce's "bad" prose identified and discussed | Brief discussion | No interpretation |
+
+### Exercise 2: The Dashboard (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Heatmap** | Z-scored episode × metric heatmap; structural rhythm visible (Bloom/Stephen, escalation, Eumaeus trough) | Heatmap produced | No heatmap |
+| **Sparklines** | One sparkline per metric across all episodes; patterns and outliers scannable | Some per-metric plots | No sparklines |
+| **Correlation matrix** | Metric correlation computed and visualized; correlated metric pairs discussed | Correlation shown | No correlation analysis |
+
+### Exercise 3: The Error Audit (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Error catalog** | 5+ documented errors with episode, metric, expected vs. actual, and diagnosis | 3+ errors documented | Fewer than 3 |
+| **Error distribution** | Errors mapped to episodes and tools; pattern identified (extreme episodes, specific tools) | Some distribution noted | No pattern analysis |
+| **Reflection** | Honest assessment of where computational analysis of literary text systematically fails | Brief reflection | No reflection |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| PCA/t-SNE/UMAP projection of episodes into 2D with interpretation | +3 |
+| Composite "prose quality" score ranking all episodes | +3 |
+| Benford's Law test on numbers in Ulysses | +2 |
+| Regression model predicting episode order from metric profiles | +2 |
+
+## Reference Implementation
+
+See [`solutions/week16_eumaeus.py`](solutions/week16_eumaeus.py)

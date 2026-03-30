@@ -23,3 +23,65 @@ Wandering Rocks presents 19 mini-documents and asks the reader to reconstruct th
 - Franco Moretti's *Graphs, Maps, Trees* (2005) and *Atlas of the European Novel* (1998) pioneered computational-geographic approaches to fiction. Wandering Rocks is the ultimate test case for literary cartography. If you have access to a historical map of 1904 Dublin, can you geolocate the sections and compute actual walking distances? Correlate geographic distance with textual similarity. Do nearby sections share more vocabulary?
 - Text reuse detection (shingling, MinHash, locality-sensitive hashing) is the industrial-strength version of the interpolation detection task. These methods are used for plagiarism detection and news article de-duplication. Try implementing a MinHash-based near-duplicate detector — do the interpolations show up as near-duplicates of their "source" sections?
 - Connection to Week 15 (Circe): that episode also features textual intrusions — stage directions, hallucinatory apparitions, the return of characters from earlier episodes. But where Wandering Rocks' interpolations are mechanical and geographic, Circe's are psychological and surreal. The anomaly detection framework from this week will need radical adaptation.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Represent text segments as TF-IDF vectors** and compute pairwise cosine similarity to build a document similarity matrix.
+2. **Visualize similarity** as a heatmap and interpret clusters in terms of shared characters, locations, or themes.
+3. **Detect textual anomalies** (interpolations) by scoring sentences against their section centroid and flagging outliers.
+4. **Track named entities** across document segments and build section × entity matrices that reveal the episode's architectural plan.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Wandering Rocks) |
+|---|---|---|
+| Sections parsed | structural segmentation of episode | ~15–25 (ideally 19) |
+| Similarity matrix dimensions | n × n pairwise cosine | 19 × 19 |
+| Top-5 pair similarity | highest cosine between non-identical sections | ~0.1–0.4 |
+| Anomalous sentences flagged | sentences with cosine < 0.1 to centroid | ~10–30 |
+| Interpolation detection precision | manually verified anomalies / flagged | ~20–50% |
+| Multi-section entities | entities appearing in 2+ sections | ~10–25 |
+| Most connected section pair | pair with most shared entities | varies |
+
+## Rubric
+
+### Exercise 1: Section Similarity Matrix (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **TF-IDF computation** | Correct TF-IDF vectors for all sections; cosine similarity matrix computed | Vectors computed; some errors | Vectors broken or missing |
+| **Heatmap visualization** | Clear heatmap with labeled axes; clusters visible and discussed | Heatmap produced | No visualization |
+| **Pair analysis** | Top-5 similar pairs identified with explanation (shared character, location, theme) and shared keyword evidence | Some pairs noted | No pair analysis |
+
+### Exercise 2: Interpolation Detection (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Anomaly scoring** | Per-sentence cosine to section centroid computed; threshold-based flagging | Some scoring done | Not attempted |
+| **Precision/recall assessment** | Flagged sentences manually checked against known interpolations; P/R estimated | Some manual verification | No verification |
+| **Failure analysis** | Explains why detection fails (short interpolations, internally heterogeneous sections) | Brief failure notes | No analysis |
+
+### Exercise 3: Entity Tracking (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Entity extraction** | NER run on each section; section × entity matrix built | Entities extracted; basic tracking | Extraction broken |
+| **Cross-section analysis** | Multi-section entities identified; bipartite graph or connected pairs shown | Some cross-section tracking | No cross-section analysis |
+| **Architectural interpretation** | Entity trajectories connected to Joyce's design (cavalcade threading through, throwaway floating) | Some interpretation | No interpretation |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| LDA topic modeling of the 19 sections | +3 |
+| PageRank centrality of sections via entity co-occurrence | +3 |
+| Geographic correlation (textual similarity vs. walking distance) | +2 |
+| MinHash near-duplicate detection for interpolations | +2 |
+
+## Reference Implementation
+
+See [`solutions/week10_wanderingrocks.py`](solutions/week10_wanderingrocks.py)

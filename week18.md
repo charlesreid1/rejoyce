@@ -31,3 +31,66 @@ The circularity is the point. Week 1 asked *where do words begin?* Week 18 asks 
 ---
 
 *The course is complete. Eighteen episodes, eighteen computational lenses, one novel that defeats them all — and is illuminated by the attempt.*
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Apply text segmentation algorithms** (TextTiling, vocabulary-shift detection) to unpunctuated text and compare algorithmic boundaries to authorial structure.
+2. **Build keyword-based topic models** that detect latent thematic shifts in a continuous stream of consciousness.
+3. **Visualize topic distributions** as stacked area charts revealing the cyclical, recursive structure of Molly's monologue.
+4. **Complete the circle** — reapplying Week 1's basic corpus statistics (TTR, frequency, sentence length) to the novel's final episode and interpreting the full arc.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Penelope) |
+|---|---|---|
+| TextTiling segments | algorithmic segmentation of unsegmented text | ~8–25 segments |
+| Alignment with Joyce's 8 sentences | overlap between algorithmic and authorial boundaries | partial (some alignment) |
+| Topic count (keyword model) | seed-based topic detection | 5–8 topics |
+| Dominant topic | highest mean proportion | likely Bloom/marriage or Body/physicality |
+| 'yes' count | occurrences of "yes" | ~80–100 |
+| 'yes' clustering | distribution pattern (even vs. clustered) | clustered, especially at end |
+| TTR comparison (Penelope vs. Telemachus) | vocabulary richness bookends | expect differences in richness and register |
+| Top content words | most frequent non-stopwords | body-centered, personal vocabulary |
+
+## Rubric
+
+### Exercise 1: Segment the Unsegmentable (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Segmentation** | TextTiling applied (with preprocessing); segment count and boundary positions reported | Segmentation attempted; some results | Broken or not attempted |
+| **Comparison to Joyce** | Algorithmic boundaries compared to Joyce's 8 sentences; alignment and divergence visualized on dual timeline | Some comparison | No comparison |
+| **Reflection** | Discusses whether the algorithm finds a different hidden structure or confirms Joyce's divisions; addresses what makes Penelope resistant to segmentation | Brief discussion | No reflection |
+
+### Exercise 2: Topic Modeling (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Topic detection** | 5–8 topics detected via keyword seeds or LDA; top words per topic shown and labeled | 3+ topics | Fewer than 3 |
+| **Stacked area visualization** | Topic proportions plotted across episode as flowing stream; thematic shifts visible | Some visualization | No visualization |
+| **Cyclical structure** | Discusses whether topics recur cyclically; identifies sharpest topic shifts; connects to critical arguments about Penelope's structure | Brief pattern noted | No structural analysis |
+
+### Exercise 3: The Return to Tokenization (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Parallel profile** | Same metrics from Week 1 computed for both Penelope and Telemachus; side-by-side comparison | Most metrics computed | Incomplete |
+| **'yes'/'no' distribution** | Occurrences tracked and plotted; clustering patterns noted; discussion of "yes" as structural particle | Some tracking | Not attempted |
+| **Arc reflection** | Interprets the full novel's arc through the metric comparison: from structured to structureless, punctuated to unpunctuated, multi-voiced to single-voiced | Brief reflection | No reflection |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Bayesian segmentation (Eisenstein & Barzilay) or neural segmentation | +3 |
+| Ecriture feminine / computational violence reflection | +2 |
+| Dynamic Topic Model across all 18 episodes | +3 |
+| Full-novel tool audit (which tools succeed/fail on which episodes) | +2 |
+
+## Reference Implementation
+
+See [`solutions/week18_penelope.py`](solutions/week18_penelope.py)

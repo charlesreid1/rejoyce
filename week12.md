@@ -25,3 +25,65 @@ Cyclops hands you a supervised classification problem on a silver platter. The e
 - Genre classification at scale is a well-studied problem. See Kessler et al. (1997) and Sharoff et al. (2010) for foundational work on automatic genre identification. The key insight from this literature: genre is not a fixed taxonomy but a fuzzy, overlapping, historically contingent system of expectations — precisely the sort of thing Joyce understood and exploited. Does a classifier trained on 19th-century genre distinctions apply to 20th-century parody of those genres?
 - The interpolations in Cyclops have been compared to Bakhtin's concept of *heteroglossia* — the coexistence of multiple social languages within a single text. Bakhtin argued that the novel as a form is defined by this multi-voicedness. Your classifier is, in a sense, a Bakhtin machine: it detects and labels the distinct social languages in the text. See Bakhtin's "Discourse in the Novel" (1935) and Morson & Emerson's *Mikhail Bakhtin: Creation of a Prosaics* (1990).
 - Connection to Week 7 (Aeolus): that episode's headlines and rhetorical registers were a gentler version of Cyclops' multi-register structure. But where Aeolus maintains a clear hierarchy (the narration is primary, the headlines are paratextual), Cyclops gives the interpolations equal textual weight — sometimes more. The classification framework allows a precise comparison: are the register shifts in Cyclops more extreme (higher inter-class distance) than in Aeolus? Your feature vectors can answer this.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Manually annotate** text segments by genre/register and understand annotation as a critical act.
+2. **Engineer features** for text classification: bag-of-words, sentence length, TTR, POS proportions, passive voice rate, discourse markers.
+3. **Train and evaluate** a Naive Bayes classifier using NLTK, including accuracy metrics, train/test splitting, and most-informative-feature inspection.
+4. **Profile a distinctive voice** (the barfly narrator) and scan for it across other texts.
+5. **Quantify parody as feature amplification** — measuring how Joyce exaggerates genre characteristics beyond their real-world baselines.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Cyclops) |
+|---|---|---|
+| Barfly segments | heuristic segmentation count | ~60–120 |
+| Interpolation segments | formal/parodic segments | ~10–30 |
+| NB accuracy (barfly vs. interp) | 70/30 train/test split | ~0.70–0.90 |
+| Most informative feature | NB top feature | likely avg_sent_len or discourse_markers |
+| Feature amplification ratio | interpolation feature / baseline feature | > 1.5x for key features |
+| Barfly probability outside Cyclops | discourse_marker similarity | near 0 for most episodes |
+
+## Rubric
+
+### Exercise 1: Annotate and Classify (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Annotation** | Text segmented into barfly + interpolation types; interpolations further sub-classified by genre (legal, epic, journalistic, etc.) | Binary segmentation (barfly/interpolation) | No segmentation or broken |
+| **Feature extraction** | 6+ features including sentence length, TTR, word length, POS proportions, passive voice, discourse markers | 4+ features | Fewer than 4 |
+| **Classification** | NB trained; accuracy reported; most-informative features shown and discussed; features connected to genre characteristics | Classifier runs; accuracy reported | Classifier broken |
+
+### Exercise 2: The Barfly's Fingerprint (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Profile construction** | All key features computed for the barfly voice; distinctive markers identified | Some profile features | Incomplete profile |
+| **Cross-episode scan** | 5+ episodes scanned for barfly-like passages; "barfly probability" computed | 3+ episodes scanned | Fewer than 3 |
+| **Uniqueness assessment** | Demonstrates that the barfly's register is uniquely informal for the novel; discusses what makes it distinctive | Some uniqueness noted | No assessment |
+
+### Exercise 3: Gigantism as Feature Amplification (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Baseline comparison** | Interpolation features compared to real-genre baselines or normal-prose baselines; ratios computed | Some comparison | No comparison |
+| **Amplification quantified** | Feature ratios show systematic exaggeration; "dial position" discussed | Ratios computed | No quantification |
+| **Interpretation** | Connects quantitative amplification to Joyce's satiric method; discusses parody as statistical caricature | Brief interpretation | No interpretation |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| DecisionTree or MaxEnt comparison to NB | +3 |
+| Fairness-in-NLP connection (dialect bias, Blodgett et al.) | +3 |
+| Genre classification at scale (Kessler et al. framework) | +2 |
+| Bakhtin/heteroglossia connection | +2 |
+
+## Reference Implementation
+
+See [`solutions/week12_cyclops.py`](solutions/week12_cyclops.py)

@@ -23,3 +23,66 @@ A funeral is the paradigmatic sentiment-analysis problem: a scene that should, b
 - Emotion detection goes beyond positive/negative polarity to identify specific emotions (anger, sadness, joy, fear, disgust, surprise). Plutchik's wheel of emotions provides one taxonomy; the NRC Emotion Lexicon (`nrc` via `nltk.sentiment`) provides a computational implementation. Apply the NRC lexicon to Hades and generate an emotion profile for the episode. Is *sadness* dominant, or does something else surface?
 - The concept of *appraisal* in linguistics (Martin & White, 2005) offers a much richer framework for analyzing evaluative language than simple sentiment polarity. Appraisal theory distinguishes *affect* (emotional response), *judgement* (ethical evaluation), and *appreciation* (aesthetic evaluation). Bloom's funeral thoughts move fluidly among all three. How would you computationally implement even a crude appraisal analysis?
 - Connection to Week 15 (Circe): that hallucinatory episode will resurface many of the emotional themes from Hades — the dead return, guilt is dramatized, grief is performed. The sentiment tools' limitations discovered here will frame the much harder problem of analyzing emotional content in surrealist, non-realist text.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Apply VADER sentiment analysis** to literary text, computing per-sentence and windowed sentiment trajectories.
+2. **Evaluate sentiment tool performance** by identifying specific passages where VADER's scores contradict a human reader's interpretation.
+3. **Compare sentiment profiles** across different textual registers (dialogue, narration, interior monologue) within a single episode.
+4. **Interrogate SentiWordNet** to understand context-free sentiment scoring and its limitations for polysemous, context-dependent words.
+5. **Articulate what "correct" sentiment analysis means** for tonally complex literary text — and whether the question is well-posed.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Hades) |
+|---|---|---|
+| Mean VADER compound score | average over all sentences | slightly negative (~-0.05 to -0.15) |
+| VADER sentiment variance | variance of compound scores | high (~0.15–0.30) — tonal complexity |
+| % positive sentences | compound > 0.05 | ~25–35% (surprisingly high for a funeral) |
+| % negative sentences | compound < -0.05 | ~30–40% |
+| Interior/Dialogue variance ratio | interior variance / dialogue variance | > 1.0 (interior more variable) |
+| SentiWordNet avg negativity (death words) | mean neg_score for 20 death words | ~0.2–0.5 |
+| Identified VADER misfires | passages where score clearly wrong | at least 3 |
+
+## Rubric
+
+### Exercise 1: Sentiment Trajectory (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Trajectory computation** | Per-sentence and windowed scores computed; trajectory plotted with narrative event annotations | Trajectory plotted without annotations | Scores computed but not visualized |
+| **Misfire identification** | 3+ passages where VADER is clearly wrong, with explanations of why (irony, dark humor, context-dependent words) | 1–2 misfires noted | No misfire analysis |
+| **Narrative arc correlation** | Discusses where sentiment trajectory tracks/diverges from narrative arc (carriage ride → cemetery → burial → Rudy memory) | Some narrative mapping | No correlation attempted |
+
+### Exercise 2: Bloom's Stoicism vs. Narrator (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Text segmentation** | Clear heuristic for separating interior from exterior; limitations acknowledged | Working segmentation | Broken or no segmentation |
+| **Quantitative comparison** | Mean and variance computed for both streams; variance ratio reported and interpreted | Both scored; basic comparison | Only one stream analyzed |
+| **Hypothesis evaluation** | Explicit hypothesis about interior monologue being harder for VADER; tested and evaluated with specific examples of confusing interior language (fragments, questions, jokes) | Hypothesis present; loosely tested | No hypothesis |
+
+### Exercise 3: Death Lexicon (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **SentiWordNet lookup** | 20 death words and 14+ proximity words looked up; scores reported | 15+ words looked up | Fewer than 15 |
+| **Context dependence** | Clear examples of words whose valence depends on funeral context; explanation of why context-free scoring fails | Some context noted | No context analysis |
+| **Reflection** | Thoughtful paragraph on what "correct" sentiment analysis of a funeral chapter would mean | Brief reflection | No reflection |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| VADER heuristic audit (capitalization, punctuation, "but") on Joyce | +3 |
+| NRC Emotion Lexicon profile of Hades | +3 |
+| Irony detection experiment on Bloom's interior thoughts | +2 |
+| Appraisal theory (affect/judgement/appreciation) discussion | +2 |
+
+## Reference Implementation
+
+See [`solutions/week06_hades.py`](solutions/week06_hades.py)

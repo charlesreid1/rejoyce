@@ -28,3 +28,66 @@ The break from NLTK-as-destination to NLTK-as-pipeline is deliberate. By Week 15
 - The entity transformations in Circe (Bloom becoming a woman, Virag appearing as Bloom's grandfather, Rudy materializing as an eleven-year-old) pose a hard problem for entity tracking: is Bloom-as-woman the same node as Bloom, or a different one? How you answer this question changes the graph's topology. Explore how coreference resolution systems handle identity across transformation — most don't, because most texts don't require it. Circe is an adversarial test case for the ontological assumptions of NER.
 - If you've taken the "Diving Deeper" exercises seriously throughout the course, you now have data from 15 episodes: frequency distributions, POS profiles, sentiment trajectories, phonetic densities, stylometric fingerprints, parsed trees, topic models, and entity graphs. Consider building a unified dashboard — an interactive, multi-panel visualization of the novel's computational anatomy. Tools: `Plotly Dash`, `Streamlit`, or a static site with `D3.js`. This is not a required exercise; it is an invitation.
 - Connection to everything: Circe is where the novel's structure becomes recursive. Every tool you've learned — tokenization (Week 1), POS tagging (Week 2), NER (Week 4), sentiment (Week 6), classification (Week 12), stylometry (Week 13) — can be applied to Circe, and Circe will break each one in a different way. The hallucination does not respect tokenization boundaries (words fuse), POS categories (nouns become verbs), entity types (objects become speakers), sentiment expectations (horror is comic, comedy is terrifying), genre classifications (stage directions narrate, dialogue hallucinates), or stylistic norms (every style from the novel recurs in distorted form). Circe is the final exam that the tools fail — and the failure is the point.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Parse dramatic text format** to extract speaker tags, stage directions, and scene boundaries using regex and structural heuristics.
+2. **Build a complete entity inventory** from a complex literary text and classify entities by ontological type (living, dead, object, abstraction).
+3. **Construct and analyze interaction graphs** using co-appearance data, computing degree centrality, density, and clustering.
+4. **Build a cumulative cross-episode entity network** and analyze Circe's structural role as the novel's recursive memory.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Circe) |
+|---|---|---|
+| Unique speakers | speaker tags extracted from dramatic format | ~50–120+ |
+| Stage directions | parenthetical direction passages | ~100–300+ |
+| Scenes identified | structural segments | ~30–80 |
+| Entity categories | classified as living/dead/object/abstraction/animal | ~5 categories |
+| Graph nodes (filtered) | speakers with degree >= 2 | ~30–60 |
+| Graph density | edges / max possible edges | ~0.05–0.20 |
+| Most central node | highest degree | Bloom |
+| Reactivation ratio | Circe entities from prior episodes / total | ~20–40% |
+
+## Rubric
+
+### Exercise 1: Dramatis Personae (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Speaker extraction** | All speaker tags extracted via regex; count reported; top 30 by frequency shown | Most speakers extracted | Extraction broken |
+| **Entity classification** | All speakers classified into 5+ categories; distribution shown as chart | Binary classification (person/other) | No classification |
+| **Count comparison** | Entity count compared to combined count from all prior episodes | Some comparison | No comparison |
+
+### Exercise 2: Interaction Graph (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Graph construction** | Co-appearance graph built from scenes; nodes, edges, weights correct | Graph built with some errors | Not constructed |
+| **Graph metrics** | Degree distribution, density, centrality computed; most central nodes and strongest edges identified | Some metrics computed | No metrics |
+| **Visualization** | Graph visualized with color-coded entity types; force-directed layout readable | Basic graph plot | No visualization |
+
+### Exercise 3: The Novel in One Graph (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Cross-episode extraction** | Entities extracted from 5+ prior episodes; cumulative network built | 3+ episodes included | Fewer than 3 |
+| **Reactivation analysis** | Circe reactivation ratio computed; new vs. reactivated connections distinguished | Some analysis | No analysis |
+| **Structural interpretation** | Discusses what the graph reveals about the hallucination as "the novel remembering itself" | Brief interpretation | No interpretation |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Community detection (Louvain) with psychological interpretation | +3 |
+| Temporal network animation (scene-by-scene growth) | +3 |
+| Entity transformation tracking (Bloom-as-woman = same node?) | +2 |
+| Interactive dashboard (Plotly/Streamlit) of novel's entity network | +2 |
+
+## Reference Implementation
+
+See [`solutions/week15_circe.py`](solutions/week15_circe.py)

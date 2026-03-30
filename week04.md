@@ -23,3 +23,65 @@ Named Entity Recognition is the technology of noticing what Bloom notices: prope
 - Bloom's economic consciousness connects to the emerging field of computational literary economics — extracting prices, transactions, and financial relationships from fiction. See Bode (2018) on quantitative approaches to realist fiction's engagement with material culture.
 - Modern NER systems can extract far more fine-grained entity types (food, disease, chemical, event). The OntoNotes and WNUT datasets push well beyond PERSON/GPE/ORG. What entity types would a Joyce-specific NER system need?
 - Connection to Week 10 (Wandering Rocks): that episode tracks dozens of Dubliners moving through the city simultaneously. The NER and co-occurrence techniques from this week become essential infrastructure for mapping that episode's crowded geography.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Run and evaluate** NLTK's named entity recognition pipeline on literary text, and categorize entities by type (PERSON, GPE, ORGANIZATION, etc.).
+2. **Compare NER density** across episodes as a proxy for different modes of consciousness (Bloom's concrete particularity vs. Stephen's abstraction).
+3. **Write chunking grammars** using `RegexpParser` to extract noun phrases and prepositional phrases, and interpret the resulting phrase inventories thematically.
+4. **Build co-occurrence matrices** from entity extraction and reason about narrative structure through entity relationships.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Calypso) |
+|---|---|---|
+| Named entities found | total NER extractions | ~80–150 |
+| Entities per 1,000 tokens | entity_count / token_count * 1000 | ~6–12 (Calypso) vs. ~3–6 (Proteus) |
+| Dominant entity type | most frequent NE label | PERSON or GPE |
+| Unique noun phrases | distinct NP chunks extracted | ~400–800 |
+| Top NP frequency | most common noun phrase count | varies (expect domestic vocabulary) |
+| Co-occurring entity pairs | pairs sharing a paragraph | ~20–60 unique pairs |
+| Most connected entity | entity appearing in most paragraphs | likely "Bloom" or "Molly" |
+
+## Rubric
+
+### Exercise 1: NER as Characterization (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **NER extraction** | Correct extraction from both episodes; entity type counts tabulated; densities computed per 1,000 tokens | Extraction works on one episode; comparison attempted | Extraction errors or only one episode processed |
+| **Quantitative comparison** | Specific density numbers compared; entity type distributions contrasted with clear percentages | General comparison noted | No quantitative comparison |
+| **Interpretive argument** | Connects entity density to Bloom's concrete vs. Stephen's abstract consciousness; supports with specific examples of what NER captures/misses | Some interpretation present | Metrics without interpretation |
+
+### Exercise 2: Noun Phrase Chunking (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Grammar design** | Working NP and PP grammars; grammar rules documented and justified | NP grammar works; PP not attempted | Grammar broken or trivial |
+| **NP frequency analysis** | Top NPs ranked and discussed; domestic texture identified (kidney, cat, bed, letter) | Top NPs listed; some thematic connection | NPs extracted but not analyzed |
+| **PP spatial patterns** | Prepositional phrases analyzed for spatial/relational structure; "Bloom's Dublin is a world of things *in* places" explored computationally | PPs extracted; basic analysis | PPs not attempted |
+
+### Exercise 3: Entity Co-occurrence (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Co-occurrence matrix** | Paragraph-level co-occurrence computed; top pairs identified; entity trajectory plotted | Matrix computed; some pairs noted | Matrix not computed or broken |
+| **Network interpretation** | Co-occurrence patterns connected to narrative structure (Molly-bed-letter, Dlugacz-kidney) | Some pattern observed | No narrative connection |
+| **Visualization** | Entity trajectory or network graph produced; clear and readable | Basic visualization | No visualization |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| spaCy NER comparison with error analysis | +3 |
+| Pipeline error propagation traced (POS → chunk → NER) | +3 |
+| networkx graph visualization of entity co-occurrence | +2 |
+| Joyce-specific NER entity type proposal | +2 |
+
+## Reference Implementation
+
+See [`solutions/week04_calypso.py`](solutions/week04_calypso.py)

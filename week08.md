@@ -23,3 +23,64 @@ Peristalsis is the involuntary muscular wave that moves food through the digesti
 - Shannon's (1951) experiments on human predictability of English text used exactly the n-gram framework. He asked subjects to predict the next letter in a sequence — a human perplexity measure. Replicate Shannon's experiment informally with classmates using passages from Lestrygonians. Is Joyce more or less predictable than ordinary English? (The answer, interestingly, depends on the scale: word-level Joyce is less predictable; thematic-level Joyce is often deeply patterned.)
 - Explore interpolated and Kneser-Ney smoothing (`nltk.lm.KneserNeyInterpolated`). These methods address the sparse data problem that is especially acute in literary language modeling, where the vocabulary is large and many word combinations occur only once. How much does smoothing improve generation quality?
 - Connection to Week 11 (Sirens): that episode is structured as a musical fugue, with themes introduced, developed, and recapitulated. The sequential, probabilistic framework of n-gram models will be extended there to capture the quasi-musical repetition structure of fugal prose.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Train n-gram language models** (bigram, trigram) using NLTK's `lm` module with appropriate preprocessing and padding.
+2. **Generate text** from trained models and critically evaluate the output's resemblance to the source style.
+3. **Compute and interpret perplexity** as a measure of stylistic similarity between texts.
+4. **Extract and analyze bigram associations** including cross-sentence transitions that reveal the logic of stream of consciousness.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Lestrygonians) |
+|---|---|---|
+| Vocabulary size (bigram model) | unique tokens in training data | ~3,000–5,000 |
+| Perplexity (self-evaluation) | model on its own training data | lowest of all test texts |
+| Perplexity (Calypso) | Bloom model on another Bloom episode | lower than Proteus/reference |
+| Perplexity (Proteus) | Bloom model on Stephen's interior | higher than Calypso |
+| Top bigram conditional probability | max P(w2\|w1) | varies; expect some ~0.5+ |
+| Cross-sentence bigrams | total boundary transitions | ~300–600 |
+
+## Rubric
+
+### Exercise 1: Train and Generate (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Model training** | Bigram and trigram models trained on Lestrygonians and Proteus; preprocessing documented | Models trained on one text | Model training fails or incomplete |
+| **Generation quality** | 10+ sentences generated per model; specific fragments identified as "Bloomian" or "Stephenian" | Sentences generated; some commentary | Generation works but no analysis |
+| **Character comparison** | Discusses distinguishing linguistic fingerprints between machine-generated Bloom and Stephen | Brief comparison | No comparison |
+
+### Exercise 2: Perplexity (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Computation** | Perplexity computed for all 4 test texts with Laplace smoothing; results tabulated | 3+ texts; smoothing used | Fewer than 3 or no smoothing |
+| **Ranking analysis** | Texts ranked by perplexity; ranking discussed in terms of stylistic similarity | Ranking noted | No ranking |
+| **Interpretation** | Connects perplexity differences to character voice, prose style, and genre; discusses what "surprise" means for a language model encountering literary text | Some interpretation | Perplexities reported without analysis |
+
+### Exercise 3: Associative Chains (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Bigram extraction** | Top-20 associations by conditional probability; thematic relevance assessed | Top-10 extracted | Basic bigrams without ranking |
+| **Cross-sentence analysis** | Boundary bigrams extracted and categorized by association type (sensory, thematic, phonetic) | Some boundary bigrams shown | Not attempted |
+| **Annotation** | 5–10 transitions manually annotated with associative logic explanation | 3+ annotated | No annotation |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Character-level RNN trained on Ulysses with output comparison | +4 |
+| Prose rhythm analysis (syllable patterns in food vs. memory passages) | +3 |
+| Kneser-Ney smoothing comparison to Laplace | +2 |
+| Shannon human-prediction experiment on classmates | +1 |
+
+## Reference Implementation
+
+See [`solutions/week08_lestrygonians.py`](solutions/week08_lestrygonians.py)

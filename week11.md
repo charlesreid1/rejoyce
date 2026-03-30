@@ -23,3 +23,65 @@ If language is made of sounds before it is made of meanings, then the CMU Pronou
 - The `pronouncing` Python library (built on CMU) provides a cleaner API for rhyme detection, syllable counting, and stress pattern extraction. Use it to compute the metrical pattern (stressed/unstressed syllables) of Sirens' prose. Are there passages that scan as regular verse? Joyce was a trained tenor — how much of his musical knowledge is encoded in the rhythmic structure?
 - Audio analysis tools (Praat, `librosa`) can analyze actual recordings of Sirens read aloud. If you can find or produce a recording, compare the acoustic features (pitch contour, rhythm, spectral properties) to your text-based phonetic analysis. Where does the written text's sound patterning translate to audible musicality, and where is it a purely visual/orthographic phenomenon?
 - Connection to Week 8 (Lestrygonians): that episode's sequential, associative logic was modeled with n-gram language models. Sirens' fugal repetition structure is *not* Markov — motifs recur across hundreds of words, violating the memorylessness assumption. This is a concrete example of long-range dependency in literary structure, and motivates the move from n-gram models to more powerful sequence models.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Convert text to phonemic representation** using the CMU Pronouncing Dictionary and extract onset consonants, vowel nuclei, and codas.
+2. **Detect alliteration, assonance, and consonance** computationally and measure their density relative to other episodes.
+3. **Match textual fragments** across a document using exact and fuzzy string matching (edit distance).
+4. **Track recurring motifs** through an episode and visualize their distribution as a timeline/score.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Sirens) |
+|---|---|---|
+| Overture fragment count | short lines at episode start | ~50–70 |
+| Overture match rate | % of fragments matched to body passages | ~40–70% |
+| Alliteration density | adjacent-pair onset matches / total pairs | higher than Calypso/Lestrygonians |
+| Assonance density | 3-word window shared vowel nuclei / windows | measurably elevated |
+| CMU dict coverage | % of words found in cmudict | ~75–85% (onomatopoeia missing) |
+| Motifs tracked | recurring verbal patterns from overture | 5–8 motifs |
+| Motif convergence | do motifs cluster later in episode (stretto)? | expect some clustering |
+
+## Rubric
+
+### Exercise 1: The Overture Decoded (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Fragment extraction** | Overture correctly parsed; ~63 fragments identified | Most fragments found | Parsing broken |
+| **Matching** | Exact + fuzzy matching with edit distance; match rate reported; unmatched fragments categorized (phonetic alteration, semantic shift, purely musical) | Some matching done | Only exact matching or broken |
+| **Analysis** | Discusses what kinds of alterations Joyce makes (sound-preserving, meaning-preserving, pure-sound) | Brief categorization | No analysis |
+
+### Exercise 2: Phonetic Density (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Phonemic conversion** | CMU dict used correctly; missing words noted (and noted as the most interesting—onomatopoeia) | CMU dict used; some conversion | Conversion broken |
+| **Density computation** | Alliteration, assonance, consonance all computed per paragraph window; cross-episode comparison | 2 of 3 measures computed | Only 1 or broken |
+| **Visualization** | Density plotted across episode; peaks correlated to fugal structure (stretto) | Plot produced | No visualization |
+
+### Exercise 3: Motif Tracking (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Motif identification** | 5–8 motifs from overture tracked; every occurrence and variation recorded | 3+ motifs tracked | Fewer than 3 |
+| **Edit distance trajectory** | Distance from canonical form plotted per motif; distortion trends discussed | Some distance data | No distance tracking |
+| **Motif score visualization** | Timeline showing when each motif sounds, like a musical score | Basic timeline | No visualization |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Fugal structure analysis (exposition/development/recapitulation mapping) | +3 |
+| Phonaesthetic cluster detection (gl- words, etc.) | +2 |
+| Metrical pattern extraction using stress marks | +3 |
+| Audio recording analysis comparison | +2 |
+
+## Reference Implementation
+
+See [`solutions/week11_sirens.py`](solutions/week11_sirens.py)

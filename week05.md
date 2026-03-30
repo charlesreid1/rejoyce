@@ -23,3 +23,65 @@ WordNet is a network of substitutions — it tells you that every word is connec
 - WordNet is an expert-curated resource encoding one model of how English organizes meaning. It is not the only model. FrameNet organizes words by semantic frames; VerbNet by syntactic-semantic verb classes. How would a FrameNet analysis of Lotus Eaters differ from a WordNet analysis? (NLTK provides access to FrameNet: `nltk.corpus.framenet`.)
 - The episode's sacramental logic (bread = body, wine = blood) anticipates contemporary debates about metaphor in NLP. Is metaphor a semantic relationship that WordNet can represent? Or is it fundamentally different from synonymy and hypernymy? See Shutova (2010) on computational approaches to metaphor.
 - Connection to Week 9 (Scylla and Charybdis): that episode's literary-critical debate about Shakespeare involves the relationship between names and essences, between the word and the thing. The lexical-semantic tools from this week provide the formal machinery to revisit those questions.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Navigate WordNet** programmatically — retrieving synsets, hypernym paths, and lowest common subsumers for arbitrary words.
+2. **Compute and interpret semantic similarity** using multiple measures (path_similarity, wup_similarity) and understand what each captures.
+3. **Map semantic fields** by tracing hypernym convergence among thematically related words, revealing the deep taxonomic structure beneath surface vocabulary.
+4. **Distinguish phonological from semantic similarity** and articulate why puns and malapropisms exploit the gap between them.
+5. **Build substitution chains** through WordNet's synonym network and reflect on how meaning drifts through lexical space.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Lotus Eaters) |
+|---|---|---|
+| Synsets per thematic word | `len(wn.synsets(word))` averaged over 15 words | ~5–15 synsets |
+| Hypernym depth (avg) | average path length to root | ~6–10 steps |
+| WuP similarity (world/word) | `wn.synsets('world')[0].wup_similarity(wn.synsets('word')[0])` | very low (~0.1–0.3) |
+| Substitution chain length before dead-end | steps until no new synonym found | ~4–10 |
+| Chain convergence | number of start-word pairs whose chains share a word | 0–3 pairs |
+| Average synset count per content word | total synsets / content words with synsets | ~4–8 |
+
+## Rubric
+
+### Exercise 1: Semantic Fields of Narcosis (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Synset retrieval** | 10–15 words investigated; synsets, definitions, hypernym paths all reported | 8+ words; some paths traced | Fewer than 8 words or paths not traced |
+| **Convergence analysis** | Lowest common subsumers identified for thematic pairs; convergence points interpreted (e.g., *body* and *bread* sharing an ancestor) | Some LCS computed | No convergence analysis |
+| **Visualization** | Hypernym tree visualization produced showing path structure | Textual representation of paths | No structural representation |
+
+### Exercise 2: Martha's Malapropism (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Similarity computation** | path_similarity and wup_similarity for world/word plus 5+ additional pairs; phonological distance via CMUdict | At least 3 pairs computed | Only world/word or computation errors |
+| **Sound vs. meaning analysis** | Clear demonstration that phonological closeness does not predict semantic closeness; specific examples | General observation made | No comparison of the two dimensions |
+| **Reflection** | Connects the finding to Joyce's use of puns, homophony, and the episode's theme of substitution | Brief reflection | No reflection |
+
+### Exercise 3: Substitution Chains (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Chain construction** | 5+ starting words; chains of 10 steps; dead-ends noted | 3+ chains constructed | Fewer than 3 or chains broken |
+| **Convergence check** | All chain pairs checked for shared words; results reported | Some convergence checked | No convergence analysis |
+| **Thematic reflection** | Connects semantic drift to the episode's logic of narcotic substitution and transubstantiation | Brief connection made | No thematic connection |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| word2vec/GloVe distributional similarity comparison | +3 |
+| Malapropism predictor using CMUdict + semantic distance | +3 |
+| FrameNet analysis comparison to WordNet | +2 |
+| Metaphor and the limits of taxonomic semantics | +2 |
+
+## Reference Implementation
+
+See [`solutions/week05_lotuseaters.py`](solutions/week05_lotuseaters.py)
