@@ -12,6 +12,7 @@ Exercises:
 """
 
 import os
+import sys
 from collections import Counter, defaultdict
 
 import nltk
@@ -25,6 +26,9 @@ for resource in ['punkt', 'punkt_tab', 'averaged_perceptron_tagger',
                  'averaged_perceptron_tagger_eng',
                  'maxent_ne_chunker', 'maxent_ne_chunker_tab', 'words']:
     nltk.download(resource, quiet=True)
+
+SHORT = True          # True = limit to 100 sentences per text (fast); False = process all
+SHORT_LIMIT = 100
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'txt')
 
@@ -43,9 +47,14 @@ def extract_named_entities(text):
         type_counts: Counter of entity types
     """
     sentences = sent_tokenize(text)
+    if SHORT:
+        sentences = sentences[:SHORT_LIMIT]
     entities = []
+    total = len(sentences)
 
-    for sent in sentences:
+    for i, sent in enumerate(sentences):
+        if (i + 1) % 50 == 0 or i + 1 == total:
+            print(f"\r  NER processing: {i + 1}/{total} sentences", end="", flush=True)
         tokens = word_tokenize(sent)
         tagged = pos_tag(tokens)
         tree = ne_chunk(tagged)
@@ -56,6 +65,7 @@ def extract_named_entities(text):
                 entity_type = subtree.label()
                 entities.append((entity_text, entity_type))
 
+    print()  # newline after progress
     type_counts = Counter(etype for _, etype in entities)
     return entities, type_counts
 
@@ -122,10 +132,15 @@ def noun_phrase_chunking(text, label="Calypso"):
     parser = RegexpParser(grammar)
 
     sentences = sent_tokenize(text)
+    if SHORT:
+        sentences = sentences[:SHORT_LIMIT]
     np_freq = Counter()
     pp_freq = Counter()
+    total = len(sentences)
 
-    for sent in sentences:
+    for i, sent in enumerate(sentences):
+        if (i + 1) % 50 == 0 or i + 1 == total:
+            print(f"\r  Chunking: {i + 1}/{total} sentences", end="", flush=True)
         tokens = word_tokenize(sent)
         tagged = pos_tag(tokens)
         tree = parser.parse(tagged)
@@ -138,6 +153,7 @@ def noun_phrase_chunking(text, label="Calypso"):
                 phrase = ' '.join(word.lower() for word, tag in subtree.leaves())
                 pp_freq[phrase] += 1
 
+    print()  # newline after progress
     print(f"\n--- Top 25 Noun Phrases: {label} ---")
     for phrase, count in np_freq.most_common(25):
         print(f"  {count:>4}  {phrase}")
@@ -167,11 +183,16 @@ def entity_cooccurrence(text, label="Calypso"):
     if len(paragraphs) < 5:
         # Fall back to splitting on single newlines for denser text
         paragraphs = [p.strip() for p in text.split('\n') if p.strip()]
+    if SHORT:
+        paragraphs = paragraphs[:SHORT_LIMIT]
 
     entity_paragraphs = defaultdict(list)
     cooccurrence = Counter()
 
+    total_paras = len(paragraphs)
     for i, para in enumerate(paragraphs):
+        if (i + 1) % 10 == 0 or i + 1 == total_paras:
+            print(f"\r  Co-occurrence: {i + 1}/{total_paras} paragraphs", end="", flush=True)
         entities_in_para = set()
         sentences = sent_tokenize(para)
         for sent in sentences:
@@ -193,6 +214,7 @@ def entity_cooccurrence(text, label="Calypso"):
                 pair = (entity_list[j], entity_list[k])
                 cooccurrence[pair] += 1
 
+    print()  # newline after progress
     print(f"\n--- Entity Co-occurrence: {label} ---")
     print(f"  Total paragraphs/segments: {len(paragraphs)}")
     print(f"  Unique entities found: {len(entity_paragraphs)}")

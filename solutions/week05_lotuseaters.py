@@ -155,7 +155,8 @@ def marthas_malapropism():
             p2 = pronouncing[w2][0]
             phon_dist = nltk.edit_distance(p1, p2)
 
-        print(f"  {w1}/{w2:<20} {path_sim:>10.3f} {wup_sim:>10.3f} {str(phon_dist):>10}")
+        pair_label = f"{w1}/{w2}"
+        print(f"  {pair_label:<25} {path_sim:>10.3f} {wup_sim:>10.3f} {str(phon_dist):>10}")
 
     print("\n  Key insight: phonological closeness (low phon_dist) does NOT predict")
     print("  semantic closeness (high similarity). The pun lives in this gap.")

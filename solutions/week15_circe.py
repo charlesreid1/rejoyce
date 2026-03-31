@@ -17,15 +17,14 @@ from collections import Counter, defaultdict
 
 import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk import pos_tag, ne_chunk
-from nltk.tree import Tree
+from nltk import pos_tag
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 for resource in ['punkt', 'punkt_tab', 'averaged_perceptron_tagger',
                  'averaged_perceptron_tagger_eng',
-                 'maxent_ne_chunker', 'maxent_ne_chunker_tab', 'words']:
+                 'words']:
     nltk.download(resource, quiet=True)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'txt')
@@ -55,9 +54,7 @@ def extract_speakers(text):
     lines = text.split('\n')
     speakers = Counter()
     stage_directions = []
-    scenes = []
-    current_scene_speakers = set()
-    current_scene_lines = []
+    speaker_sequence = []
 
     # Pattern for speaker tags: ALL CAPS followed by text
     speaker_pattern = re.compile(r'^([A-Z][A-Z\s]{2,})\s*[:\.]?\s*(.*)$')
@@ -67,12 +64,6 @@ def extract_speakers(text):
     for line in lines:
         stripped = line.strip()
         if not stripped:
-            # Scene break
-            if current_scene_speakers:
-                scenes.append((frozenset(current_scene_speakers),
-                              current_scene_lines[:]))
-                current_scene_speakers = set()
-                current_scene_lines = []
             continue
 
         # Check for stage direction
@@ -88,14 +79,18 @@ def extract_speakers(text):
             # Filter out very short or unlikely speakers
             if len(speaker) > 1 and speaker not in {'THE', 'AND', 'BUT', 'ALL', 'HIS', 'HER'}:
                 speakers[speaker] += 1
-                current_scene_speakers.add(speaker)
-                current_scene_lines.append(stripped)
-        else:
-            current_scene_lines.append(stripped)
+                speaker_sequence.append(speaker)
 
-    # Last scene
-    if current_scene_speakers:
-        scenes.append((frozenset(current_scene_speakers), current_scene_lines))
+    # Build scenes using a sliding window over the speaker sequence.
+    # Each window of consecutive speaker turns forms a "scene" capturing
+    # who is talking near whom.
+    window_size = 5
+    scenes = []
+    for i in range(len(speaker_sequence)):
+        window = speaker_sequence[i:i + window_size]
+        scene_speakers = frozenset(window)
+        if len(scene_speakers) > 1:
+            scenes.append((scene_speakers, []))
 
     return speakers, stage_directions, scenes
 
@@ -235,31 +230,78 @@ def cumulative_entity_network():
     """Build entity networks for each episode and show how Circe reconnects them."""
     episode_files = [
         ('01', '01telemachus.txt'),
+        ('02', '02nestor.txt'),
+        ('03', '03proteus.txt'),
         ('04', '04calypso.txt'),
+        ('05', '05lotuseaters.txt'),
         ('06', '06hades.txt'),
+        ('07', '07aeolus.txt'),
+        ('08', '08lestrygonians.txt'),
+        ('09', '09scyllacharybdis.txt'),
         ('10', '10wanderingrocks.txt'),
+        ('11', '11sirens.txt'),
         ('12', '12cyclops.txt'),
+        ('13', '13nausicaa.txt'),
+        ('14', '14oxenofthesun.txt'),
         ('15', '15circe.txt'),
+        ('16', '16eumaeus.txt'),
+        ('17', '17ithaca.txt'),
+        ('18', '18penelope.txt'),
     ]
+
+    # Regex-based proper noun extraction: find sequences of capitalized words
+    # that aren't at sentence starts. Filter common false positives.
+    stop_names = {
+        # Articles, conjunctions, prepositions, pronouns
+        'The', 'A', 'An', 'And', 'But', 'For', 'His', 'Her', 'Its',
+        'He', 'She', 'It', 'They', 'We', 'You', 'My', 'Who', 'What',
+        'That', 'This', 'There', 'Then', 'Than', 'These', 'Those',
+        'With', 'From', 'Into', 'Upon', 'Your', 'Their', 'Our',
+        'Not', 'Nor', 'Now', 'How', 'Where', 'When', 'Why', 'Which',
+        'Have', 'Has', 'Had', 'Was', 'Were', 'Are', 'Been', 'Being',
+        'Will', 'Would', 'Could', 'Should', 'Shall', 'May', 'Might',
+        'Do', 'Does', 'Did', 'Can', 'Must', 'Need', 'Dare',
+        'So', 'No', 'Yes', 'Oh', 'Ah', 'If', 'Or', 'As', 'At',
+        'By', 'In', 'On', 'To', 'Of', 'Up', 'Out', 'Off',
+        'All', 'Each', 'Every', 'Some', 'Any', 'Such', 'Only',
+        'About', 'After', 'Before', 'Over', 'Under', 'Between',
+        # Titles
+        'Mr', 'Mrs', 'Miss', 'Sir', 'Lord', 'Saint', 'Father', 'Mother',
+        # Circe stage direction verbs
+        'Points', 'Laughs', 'Cries', 'Calls', 'Turns', 'Takes',
+        'Looks', 'Stands', 'Walks', 'Sits', 'Gets', 'Puts', 'Runs',
+        'Comes', 'Goes', 'Says', 'Speaks', 'Sings', 'Whispers',
+    }
+    proper_noun_pat = re.compile(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b')
+
+    def extract_entities(text):
+        """Extract likely proper nouns via regex on capitalized word sequences."""
+        entities = set()
+        for sent in sent_tokenize(text):
+            # Skip the first word of each sentence (always capitalized)
+            trimmed = sent.split(None, 1)
+            if len(trimmed) < 2:
+                continue
+            remainder = trimmed[1]
+            for match in proper_noun_pat.finditer(remainder):
+                name = match.group(1)
+                words = name.split()
+                # Filter: at least one word must not be a stop word
+                if any(w not in stop_names for w in words):
+                    entities.add(name)
+        return entities
 
     episode_entities = {}
     all_entities = Counter()
 
     for ep_num, filename in episode_files:
+        print(f"  Processing episode {ep_num} ({filename})...", end='', flush=True)
         text = load_episode(filename)
-        sentences = sent_tokenize(text)
-        entities = set()
-        for sent in sentences[:200]:  # Sample for performance
-            tokens = word_tokenize(sent)
-            tagged = pos_tag(tokens)
-            tree = ne_chunk(tagged)
-            for subtree in tree:
-                if isinstance(subtree, Tree):
-                    entity = ' '.join(w for w, t in subtree.leaves())
-                    entities.add(entity)
+        entities = extract_entities(text)
         episode_entities[ep_num] = entities
         for e in entities:
             all_entities[e] += 1
+        print(f" done ({len(entities)} entities)")
 
     # Entities shared across episodes
     multi_ep = {e: c for e, c in all_entities.items() if c > 1}

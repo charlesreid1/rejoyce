@@ -225,6 +225,7 @@ def barfly_fingerprint():
         ('Aeolus', '07aeolus.txt'),
         ('Wandering Rocks', '10wanderingrocks.txt'),
         ('Nausicaa', '13nausicaa.txt'),
+        ('Circe', '15circe.txt'),
     ]
 
     print(f"\n--- Barfly Similarity Scan (discourse_markers + first_person_rate) ---")

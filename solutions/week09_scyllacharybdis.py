@@ -47,7 +47,7 @@ ARGUMENT_GRAMMAR = CFG.fromstring("""
     S -> NP VP | S CC S | SBAR S | S SBAR
     SBAR -> IN S | WDT S | WP S
     NP -> DT NN | DT JJ NN | NNP | PRP | DT NN NN | NP PP | NP CC NP
-    NP -> DT NNS | DT JJ NNS | NNP NNP | PRP$ NN | NNP NNP NNP
+    NP -> DT NNS | DT JJ NNS | NNP NNP | PRPS NN | NNP NNP NNP
     VP -> VBD NP | VBD | VBZ NP | VBD VP | MD VP | VB NP | VB
     VP -> VBD ADJP | VBZ ADJP | VBD PP | VBZ PP | VP CC VP
     VP -> VBD NP PP | VB NP PP | VBN NP | VBN PP
@@ -62,7 +62,7 @@ ARGUMENT_GRAMMAR = CFG.fromstring("""
     WP -> 'who' | 'whom' | 'what'
     MD -> 'will' | 'would' | 'could' | 'should' | 'may' | 'might' | 'must' | 'can'
     PRP -> 'he' | 'she' | 'it' | 'they' | 'we' | 'I' | 'him' | 'them'
-    PRP$ -> 'his' | 'her' | 'their' | 'its' | 'my' | 'our'
+    PRPS -> 'his' | 'her' | 'their' | 'its' | 'my' | 'our'
 
     NN -> 'man' | 'genius' | 'art' | 'life' | 'father' | 'son' | 'play'
     NN -> 'world' | 'work' | 'name' | 'soul' | 'body' | 'mind' | 'word'

@@ -130,6 +130,36 @@ def period_features(text):
     return features
 
 
+def discretize_features(features, num_bins=5):
+    """Convert continuous feature values into discrete bins for NaiveBayes."""
+    discretized = {}
+    for key, val in features.items():
+        if key == 'avg_sent_len':
+            boundaries = [10, 20, 30, 50]
+        elif key == 'avg_word_len':
+            boundaries = [3.5, 4.0, 4.5, 5.0]
+        elif key == 'long_word_prop':
+            boundaries = [0.03, 0.06, 0.10, 0.15]
+        elif key == 'ttr':
+            boundaries = [0.3, 0.45, 0.55, 0.7]
+        elif key == 'func_word_prop':
+            boundaries = [0.15, 0.20, 0.25, 0.30]
+        elif key == 'adj_density':
+            boundaries = [0.03, 0.05, 0.07, 0.10]
+        elif key == 'noun_verb_ratio':
+            boundaries = [1.0, 1.5, 2.0, 3.0]
+        elif key == 'comma_per_sent':
+            boundaries = [1.0, 2.0, 3.0, 5.0]
+        elif key == 'semicolon_per_sent':
+            boundaries = [0.05, 0.15, 0.30, 0.50]
+        else:
+            boundaries = [0.25, 0.50, 0.75, 1.0]
+
+        bin_idx = sum(1 for b in boundaries if val > b)
+        discretized[key] = f"{key}_bin{bin_idx}"
+    return discretized
+
+
 # ---------------------------------------------------------------------------
 # Exercise 1: Period Profiling
 # ---------------------------------------------------------------------------
@@ -209,7 +239,7 @@ def style_dating_game():
             chunk = ' '.join(sents[i:i+chunk_size])
             feats = period_features(chunk)
             if feats:
-                train_labeled.append((feats, period))
+                train_labeled.append((discretize_features(feats), period))
 
     random.seed(42)
     random.shuffle(train_labeled)
@@ -232,8 +262,9 @@ def style_dating_game():
     for label, text in sections:
         feats = period_features(text)
         if feats:
-            predicted = classifier.classify(feats)
-            probs = classifier.prob_classify(feats)
+            disc_feats = discretize_features(feats)
+            predicted = classifier.classify(disc_feats)
+            probs = classifier.prob_classify(disc_feats)
             conf = probs.prob(predicted)
             print(f"  {label:<25} {predicted:>12} {conf:>12.3f}")
 

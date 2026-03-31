@@ -242,6 +242,8 @@ def return_to_tokenization():
         tokens = word_tokenize(text)
         alpha_tokens = [t.lower() for t in tokens if t.isalpha()]
         fdist = FreqDist(alpha_tokens)
+        content_tokens = [t for t in alpha_tokens if t not in STOP_WORDS]
+        content_fdist = FreqDist(content_tokens)
         types = set(alpha_tokens)
 
         # "Sentence" segmentation — for Penelope, use approximate methods
@@ -263,8 +265,7 @@ def return_to_tokenization():
             'hapax_ratio': sum(1 for w, c in fdist.items() if c == 1) / len(types) if types else 0,
             'approx_sentences': len(sentences),
             'avg_sent_len': len(tokens) / len(sentences) if sentences else 0,
-            'top_20_content': [w for w, c in fdist.most_common(50)
-                              if w not in STOP_WORDS][:20],
+            'top_20_content': [w for w, _ in content_fdist.most_common(20)],
         }
 
     pen_p = profile(penelope, "Penelope")

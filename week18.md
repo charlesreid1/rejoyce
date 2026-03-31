@@ -22,11 +22,34 @@ The circularity is the point. Week 1 asked *where do words begin?* Week 18 asks 
 
 **Diving Deeper:**
 
-- Bayesian segmentation methods (Eisenstein & Barzilay, 2008) and neural topic segmentation (Koshorek et al., 2018) outperform TextTiling on most benchmarks. Apply one or both to Penelope and compare. Does a more powerful segmentation algorithm find structure that TextTiling misses? Or is Penelope genuinely more resistant to segmentation than expository text?
-- Molly's monologue has been analyzed through the lens of écriture féminine (Cixous, 1976) — writing that resists patriarchal structure, that flows rather than categorizes. Your topic model imposes structure on this flow. Is that an act of analytical violence — forcing Molly's voice into boxes — or does it reveal a structure that was always there, invisible to linear reading? This is not a technical question, but it is the most important question the course can ask about the relationship between computation and literature.
-- The word *yes* appears approximately 90 times in Penelope. Track its distribution. Is it evenly spread or clustered? Does it mark topic shifts, emotional peaks, or something else? Compare the distribution of *yes* to the distribution of *no* and *and*. These three words are the structural particles of the episode — the connective tissue. Their distribution patterns are the closest thing Penelope has to punctuation.
-- Dynamic Topic Models (Blei & Lafferty, 2006) extend LDA by modeling topic evolution over time. Apply a DTM to the full novel (one "time slice" per episode) and watch how topics emerge, evolve, and dissolve across the 18 weeks. Penelope should show topics that have been latent for many episodes suddenly resurfacing — Molly has been thinking offstage all day. Does the model capture this resurgence?
-- Connection to Week 1 (Telemachus) and to every other week: Penelope is the final exam, the episode that touches everything. Its lack of punctuation tests tokenization. Its stream-of-consciousness flow tests POS tagging and parsing. Its single, sustained voice tests stylometric tools. Its emotional complexity tests sentiment analysis. Its thematic recursion tests topic modeling. Its relationship to every prior episode tests entity extraction and network analysis. If you have built the tools well, Penelope is where you discover what they can and cannot see. The course ends not with mastery but with honest reckoning — which is, not coincidentally, how the novel ends too.
+- Bayesian segmentation methods (Eisenstein & Barzilay, 2008) and neural topic segmentation (Koshorek et al., 2018)
+  outperform TextTiling on most benchmarks. Apply one or both to Penelope and compare. Does a more powerful
+  segmentation algorithm find structure that TextTiling misses? Or is Penelope genuinely more resistant to
+  segmentation than expository text?
+
+- Molly's monologue has been analyzed through the lens of écriture féminine (Cixous, 1976) — writing that resists
+  patriarchal structure, that flows rather than categorizes. Your topic model imposes structure on this flow. Is
+  that an act of analytical violence — forcing Molly's voice into boxes — or does it reveal a structure that was
+  always there, invisible to linear reading? This is not a technical question, but it is the most important
+  question the course can ask about the relationship between computation and literature.
+
+- The word *yes* appears approximately 90 times in Penelope. Track its distribution. Is it evenly spread or
+  clustered? Does it mark topic shifts, emotional peaks, or something else? Compare the distribution of *yes* to
+  the distribution of *no* and *and*. These three words are the structural particles of the episode — the
+  connective tissue. Their distribution patterns are the closest thing Penelope has to punctuation.
+
+- Dynamic Topic Models (Blei & Lafferty, 2006) extend LDA by modeling topic evolution over time. Apply a DTM to the
+  full novel (one "time slice" per episode) and watch how topics emerge, evolve, and dissolve across the 18 weeks.
+  Penelope should show topics that have been latent for many episodes suddenly resurfacing — Molly has been
+  thinking offstage all day. Does the model capture this resurgence?
+
+- Connection to Week 1 (Telemachus) and every other week: Penelope is the final exam, the episode that touches
+  everything. Its lack of punctuation tests tokenization. Its stream-of-consciousness flow tests POS tagging and
+  parsing. Its single, sustained voice tests stylometric tools. Its emotional complexity tests sentiment analysis.
+  Its thematic recursion tests topic modeling. Its relationship to every prior episode tests entity extraction and
+  network analysis. If you have built the tools well, Penelope is where you discover what they can and cannot see.
+  The course ends not with mastery but with honest reckoning — which is, not coincidentally, how the novel ends
+  too.
 
 ---
 
