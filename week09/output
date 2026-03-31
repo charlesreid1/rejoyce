@@ -1,0 +1,80 @@
+==============================================================
+EXERCISE 1: Parsing the Argument
+==============================================================
+--- Found 50 argument sentences ---
+  (showing top 5 by length)
+
+  Original: The playwright who wrote
+the folio of this world and wrote it badly (He gave us light first and
+the sun two days later),...
+  Tokens: 99, Grammar-covered: 40
+  Parse trees found: 0
+  Grammar coverage: 40.4%
+  Covered tokens: the who wrote the of this world and wrote it he and the the of
+
+  Original: He Who Himself begot middler the Holy Ghost and Himself sent Himself,
+Agenbuyer, between Himself and others, Who, put up...
+  Tokens: 95, Grammar-covered: 35
+  Parse trees found: 0
+  Grammar coverage: 36.8%
+  Covered tokens: he who the ghost and and who upon by his and was to on who
+
+  Original: When Rutlandbaconsouthamptonshakespeare or another poet
+of the same name in the comedy of errors wrote Hamlet he was not...
+  Tokens: 82, Grammar-covered: 50
+  Parse trees found: 0
+  Grammar coverage: 61.0%
+  Covered tokens: when or of the name in the of errors wrote he was not the father
+
+  Original: I don’t want Richard, my name
+...
+
+(Laughter)
+
+QUAKERLYSTER: (A tempo) But he that filches from me my good name...
+
+STEP...
+  Tokens: 76, Grammar-covered: 30
+  Parse trees found: 0
+  Grammar coverage: 39.5%
+  Covered tokens: my name a but he that from my name he has his own name a
+
+  Original: Shylock chimes with the jewbaiting that followed the hanging and
+quartering of the queen’s leech Lopez, his jew’s heart ...
+  Tokens: 53, Grammar-covered: 22
+  Parse trees found: 0
+  Grammar coverage: 41.5%
+  Covered tokens: with the that the and of the his being the was yet and with the
+
+
+==============================================================
+EXERCISE 2: Treebank Reference & Episode Complexity
+==============================================================
+--- Penn Treebank Structural Statistics ---
+  Sentences analyzed: 233
+  Average tree depth: 10.85
+  Max tree depth: 22
+  Average branching factor: 2.26
+  SBAR (subordinate clauses) per sentence: 0.56
+
+--- Syntactic Complexity Proxies: Scylla and Charybdis ---
+  Sentences: 1213
+  Mean sentence length: 12.1 tokens
+  Median sentence length: 8 tokens
+  Max sentence length: 103 tokens
+  Subordinating conjunctions per sentence: 0.23
+  Commas per sentence: 0.79
+
+--- Syntactic Complexity Proxies: Calypso (for comparison) ---
+  Sentences: 822
+  Mean sentence length: 9.0 tokens
+  Median sentence length: 7 tokens
+  Max sentence length: 53 tokens
+  Subordinating conjunctions per sentence: 0.09
+  Commas per sentence: 0.40
+
+==============================================================
+EXERCISE 3: The Quotation Problem
+==============================================================
+
+--- Quotations Found: 0 ---

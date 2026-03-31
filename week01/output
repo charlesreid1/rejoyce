@@ -1,0 +1,128 @@
+==============================================================
+EXERCISE 1: Tokenize and Profile
+==============================================================
+Metric                              Telemachus  Emma (excerpt)
+--------------------------------------------------------------
+total_tokens                              9094            8428
+total_alpha_tokens                        7338            7109
+total_types                               2004            1478
+type_token_ratio                        0.2731          0.2079
+total_sentences                            757             289
+avg_sentence_length                    12.0132         29.1626
+hapax_legomena                            1313             829
+hapax_ratio                             0.6552          0.5609
+
+==============================================================
+EXERCISE 2: Concordance as Close Reading
+==============================================================
+
+--- Concordance for 'mother' ---
+a what Algy calls it : a great sweet mother ? The snotgreen sea . The scrotumtig
+ ! Thalatta ! She is our great sweet mother . Come and look . Stephen stood up a
+ourmouth of Kingstown . — Our mighty mother ! Buck Mulligan said . He turned abr
+ . — The aunt thinks you killed your mother , he said . That ’ s why she won ’ t
+ , damn it , Kinch , when your dying mother asked you , Buck Mulligan said . I ’
+s much as you . But to think of your mother begging you with her last breath to 
+ saw the sea hailed as a great sweet mother by the wellfed voice beside him . Th
+tiquette is etiquette . He kills his mother but he can ’ t wear grey trousers . 
+st day I went to your house after my mother ’ s death ? Buck Mulligan frowned qu
+landing to get more hot water . Your mother and some visitor came out of the dra
+ered , O , it ’ s only Dedalus whose mother is beastly dead . A flush which made
+ And what is death , he asked , your mother ’ s or yours or my own ? You saw onl
+ yours or my own ? You saw only your mother die . I see them pop off every day i
+uldn ’ t kneel down to pray for your mother on her deathbed when she asked you .
+ t mean to offend the memory of your mother . He had spoken himself into boldnes
+am not thinking of the offence to my mother . — Of what then ? Buck Mulligan ask
+t . Ghoul ! Chewer of corpses ! No , mother ! Let me be and let me live . — Kinc
+hen I makes tea I makes tea , as old mother Grogan said . And when I makes water
+ws : — Can you recall , brother , is mother Grogan ’ s tea and water pot spoken 
+ exist in or out of the Mabinogion . Mother Grogan was , one imagines , a kinswo
+oung fellow that ever you heard . My mother ’ s a jew , my father ’ s a bird . W
+
+--- Concordance for 'sea' ---
+— God ! he said quietly . Isn ’ t the sea what Algy calls it : a great sweet mo
+ a great sweet mother ? The snotgreen sea . The scrotumtightening sea . Epi oin
+snotgreen sea . The scrotumtightening sea . Epi oinopa ponton . Ah , Dedalus , 
+ptly his grey searching eyes from the sea to Stephen ’ s face . — The aunt thin
+ss the threadbare cuffedge he saw the sea hailed as a great sweet mother by the
+in . Stephen turned his gaze from the sea and to the plump face with its smokeb
+abroad in sunlight now radiant on the sea . His curling shaven lips laughed and
+od at his post , gazing over the calm sea towards the headland . Sea and headla
+r the calm sea towards the headland . Sea and headland now grew dim . Pulses we
+ards Stephen and said : — Look at the sea . What does it care about offences ? 
+rrying feet . White breast of the dim sea . The twining stresses , two by two .
+day ! Warm sunshine merrying over the sea . The nickel shavingbowl shone , forg
+an said , when the French were on the sea . But ours is the omphalos . — What i
+That beetles o ’ er his base into the sea , isn ’ t it ? Buck Mulligan turned s
+em to halt again . Eyes , pale as the sea the wind had freshened , paler , firm
+nd sustained , called to him from the sea . Turning the curve he waved his hand
+
+--- Concordance for 'key' ---
+open the inner doors . — Have you the key ? a voice asked . — Dedalus has it , 
+, Stephen said , coming forward . The key scraped round harshly twice and , whe
+ door and locked it . He put the huge key in his inner pocket . At the foot of 
+ Mulligan asked : — Did you bring the key ? — I have it , Stephen said , preced
+ming here in the dark . He wants that key . It is mine . I paid the rent . Now 
+w I eat his salt bread . Give him the key too . All . He will ask for it . That
+, Mulligan , he said . — Give us that key , Kinch , Buck Mulligan said , to kee
+chemise flat . Stephen handed him the key . Buck Mulligan laid it across his he
+
+--- Concordance for 'tower' ---
+about and blessed gravely thrice the tower , the surrounding land and the awaki
+long is Haines going to stay in this tower ? Buck Mulligan showed a shaven chee
+en ’ s and walked with him round the tower , his razor and mirror clacking in t
+r of his cheeks . A voice within the tower called loudly : — Are you up there ,
+ligan ’ s voice sang from within the tower . It came nearer up the staircase , 
+n the gloomy domed livingroom of the tower Buck Mulligan ’ s gowned form moved 
+s asked : — Do you pay rent for this tower ? — Twelve quid , Buck Mulligan said
+hey halted while Haines surveyed the tower and said at last : — Rather bleak in
+d to Stephen as they followed , this tower and these cliffs here remind me some
+
+--- Concordance for 'God' ---
+ven cheek over his right shoulder . — God , isn ’ t he dreadful ? he said frank
+ He thinks you ’ re not a gentleman . God , these bloody English ! Bursting wit
+ir oakpale hair stirring slightly . — God ! he said quietly . Isn ’ t the sea w
+tentedly . Secondleg they should be . God knows what poxy bowsy left them off .
+at , Kinch , is it ? he said kindly . God knows you have more spirit than any o
+lus or some bloody swindle or other . God , Kinch , if you and I could only wor
+ . Why ? What happened in the name of God ? — You were making tea , Stephen sai
+up with the milk . — The blessings of God on you ! Buck Mulligan cried , jumpin
+. Begob , ma ’ am , says Mrs Cahill , God send you don ’ t make them in the one
+orning , sir , she said . Glory be to God . — To whom ? Mulligan said , glancin
+ loins , of man ’ s flesh made not in God ’ s likeness , the serpent ’ s prey .
+ged tone he added : — To tell you the God ’ s truth I think you ’ re right . Da
+ he called for a clean handkerchief . God , we ’ ll simply have to dress the ch
+m nothing and miracles and a personal God . — There ’ s only one sense of the w
+n ’ t stomach that idea of a personal God . You don ’ t stand for that , I supp
+ going in for the army . — Ah , go to God ! Buck Mulligan said . — Going over n
+
+==============================================================
+EXERCISE 3: Frequency and Stopwords
+==============================================================
+
+Top 20 content words (stopwords removed):
+  said                   128
+  stephen                 92
+  mulligan                84
+  buck                    73
+  haines                  45
+  old                     21
+  mother                  21
+  kinch                   20
+  asked                   20
+  voice                   18
+  god                     16
+  sea                     16
+  face                    15
+  water                   15
+  sir                     15
+  come                    14
+  eyes                    13
+  one                     13
+  two                     13
+  like                    12
+
+==============================================================
+DIVING DEEPER: Zipf's Law
+==============================================================
+Zipf plot saved to week01/week01_zipf.png

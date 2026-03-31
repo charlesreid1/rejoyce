@@ -1,0 +1,155 @@
+==============================================================
+EXERCISE 1: Dramatis Personae
+==============================================================
+--- Dramatis Personae ---
+  Total unique speakers: 255
+  Total stage directions: 64
+  Total scenes: 1105
+
+--- Entity Categories ---
+  person (living)             237
+  object                        8
+  dead/hallucinated             6
+  abstraction                   3
+  animal                        1
+
+--- Top 30 Speakers by Line Count ---
+  BLOOM                            276 lines  [person (living)]
+  STEPHEN                           85 lines  [person (living)]
+  ZOE                               73 lines  [person (living)]
+  BELLO                             37 lines  [person (living)]
+  LYNCH                             29 lines  [person (living)]
+  BELLA                             25 lines  [person (living)]
+  FLORRY                            22 lines  [person (living)]
+  FIRST WATCH                       21 lines  [person (living)]
+  PRIVATE CARR                      20 lines  [person (living)]
+  MRS BREEN                         19 lines  [person (living)]
+  VIRAG                             18 lines  [dead/hallucinated]
+  SECOND WATCH                      15 lines  [person (living)]
+  THE NYMPH                         15 lines  [object]
+  KITTY                             13 lines  [person (living)]
+  PRIVATE COMPTON                   12 lines  [person (living)]
+  CORNY KELLEHER                    12 lines  [person (living)]
+  CISSY CAFFREY                     11 lines  [person (living)]
+  THE MOTHER                         9 lines  [dead/hallucinated]
+  THE BAWD                           8 lines  [person (living)]
+  MARION                             8 lines  [person (living)]
+  THE FAN                            8 lines  [object]
+  THE YEWS                           8 lines  [object]
+  BOYLAN                             8 lines  [person (living)]
+  A VOICE                            7 lines  [person (living)]
+  PADDY DIGNAM                       6 lines  [dead/hallucinated]
+  MAGINNI                            6 lines  [person (living)]
+  RUDOLPH                            5 lines  [dead/hallucinated]
+  THE NAVVY                          5 lines  [person (living)]
+  MARY DRISCOLL                      5 lines  [person (living)]
+  MRS YELVERTON BARRY                5 lines  [person (living)]
+
+==============================================================
+EXERCISE 2: Interaction Graph
+==============================================================
+
+--- Interaction Graph ---
+  Nodes (speakers):  255
+  Edges:             1147
+  Graph density:     0.0354
+
+--- Most Central Nodes (by degree) ---
+  BLOOM                          degree:  1882
+  STEPHEN                        degree:   775
+  ZOE                            degree:   621
+  LYNCH                          degree:   340
+  FLORRY                         degree:   317
+  PRIVATE CARR                   degree:   282
+  FIRST WATCH                    degree:   234
+  BELLA                          degree:   227
+  SECOND WATCH                   degree:   203
+  BELLO                          degree:   190
+  KITTY                          degree:   184
+  PRIVATE COMPTON                degree:   173
+  CISSY CAFFREY                  degree:   156
+  VIRAG                          degree:   122
+  THE NYMPH                      degree:   120
+
+--- Strongest Edges (most co-appearances) ---
+  BLOOM                     <-> ZOE                       weight: 134
+  BLOOM                     <-> STEPHEN                   weight: 103
+  STEPHEN                   <-> ZOE                       weight: 84
+  BELLO                     <-> BLOOM                     weight: 83
+  LYNCH                     <-> STEPHEN                   weight: 76
+  BLOOM                     <-> FIRST WATCH               weight: 68
+  LYNCH                     <-> ZOE                       weight: 66
+  FLORRY                    <-> STEPHEN                   weight: 63
+  BELLA                     <-> BLOOM                     weight: 59
+  FLORRY                    <-> ZOE                       weight: 54
+  BLOOM                     <-> SECOND WATCH              weight: 49
+  BLOOM                     <-> MRS BREEN                 weight: 48
+  PRIVATE CARR              <-> STEPHEN                   weight: 47
+  FIRST WATCH               <-> SECOND WATCH              weight: 45
+  BLOOM                     <-> THE NYMPH                 weight: 43
+
+==============================================================
+EXERCISE 3: Cumulative Entity Network
+==============================================================
+  Processing episode 01 (01telemachus.txt)... done (129 entities)
+  Processing episode 02 (02nestor.txt)... done (90 entities)
+  Processing episode 03 (03proteus.txt)... done (160 entities)
+  Processing episode 04 (04calypso.txt)... done (127 entities)
+  Processing episode 05 (05lotuseaters.txt)... done (152 entities)
+  Processing episode 06 (06hades.txt)... done (244 entities)
+  Processing episode 07 (07aeolus.txt)... done (335 entities)
+  Processing episode 08 (08lestrygonians.txt)... done (346 entities)
+  Processing episode 09 (09scyllacharybdis.txt)... done (425 entities)
+  Processing episode 10 (10wanderingrocks.txt)... done (496 entities)
+  Processing episode 11 (11sirens.txt)... done (273 entities)
+  Processing episode 12 (12cyclops.txt)... done (994 entities)
+  Processing episode 13 (13nausicaa.txt)... done (249 entities)
+  Processing episode 14 (14oxenofthesun.txt)... done (481 entities)
+  Processing episode 15 (15circe.txt)... done (1623 entities)
+  Processing episode 16 (16eumaeus.txt)... done (480 entities)
+  Processing episode 17 (17ithaca.txt)... done (889 entities)
+  Processing episode 18 (18penelope.txt)... done (399 entities)
+
+--- Cumulative Entity Network ---
+  Episode 01: 129 entities
+  Episode 02: 90 entities
+  Episode 03: 160 entities
+  Episode 04: 127 entities
+  Episode 05: 152 entities
+  Episode 06: 244 entities
+  Episode 07: 335 entities
+  Episode 08: 346 entities
+  Episode 09: 425 entities
+  Episode 10: 496 entities
+  Episode 11: 273 entities
+  Episode 12: 994 entities
+  Episode 13: 249 entities
+  Episode 14: 481 entities
+  Episode 15: 1623 entities
+  Episode 16: 480 entities
+  Episode 17: 889 entities
+  Episode 18: 399 entities
+
+  Entities appearing in multiple episodes: 1113
+
+--- Most Cross-Referenced Entities ---
+  Dublin                         in episodes: 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18
+  Irish                          in episodes: 01, 02, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18
+  God                            in episodes: 01, 02, 03, 04, 05, 06, 07, 08, 10, 11, 12, 13, 14, 15, 16, 18
+  Dedalus                        in episodes: 01, 02, 04, 06, 07, 08, 09, 10, 11, 13, 14, 15, 16, 17, 18
+  French                         in episodes: 01, 03, 05, 07, 08, 09, 10, 12, 13, 14, 15, 16, 17, 18
+  Ireland                        in episodes: 01, 03, 04, 05, 06, 07, 09, 10, 12, 13, 14, 15, 16, 17
+  Bloom                          in episodes: 04, 05, 06, 07, 08, 10, 11, 12, 13, 14, 15, 16, 17, 18
+  John                           in episodes: 02, 06, 07, 08, 09, 10, 11, 12, 13, 15, 17, 18
+  Greek                          in episodes: 01, 03, 04, 07, 08, 09, 11, 12, 16, 17, 18
+  English                        in episodes: 01, 02, 03, 08, 09, 12, 14, 15, 16, 17, 18
+  Spanish                        in episodes: 03, 04, 05, 07, 08, 11, 12, 15, 16, 17, 18
+  Mr Bloom                       in episodes: 04, 05, 06, 07, 08, 10, 11, 13, 14, 15, 16
+  Mulligan                       in episodes: 01, 03, 06, 07, 09, 10, 11, 14, 15, 16
+  Hamlet                         in episodes: 01, 02, 03, 06, 07, 09, 10, 13, 14, 16
+  England                        in episodes: 01, 02, 06, 09, 10, 12, 15, 16, 17, 18
+
+--- Circe Reactivation ---
+  Entities reactivated from prior episodes: 301
+  New entities in Circe:                    1322
+  Reactivation ratio:                       18.5%

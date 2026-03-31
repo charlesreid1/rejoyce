@@ -1,0 +1,73 @@
+==============================================================
+EXERCISE 1: Annotate and Classify
+==============================================================
+--- Segmentation ---
+  Barfly segments:        1963
+  Interpolation segments: 5
+
+--- Classification Results ---
+  Training samples: 1377
+  Test samples:     591
+  Accuracy:         0.992
+
+--- Most Informative Features ---
+Most Informative Features
+                     ttr = 0.7            interp : barfly =     58.0 : 1.0
+                     ttr = 1.0            barfly : interp =      5.0 : 1.0
+            avg_word_len = 4.1            interp : barfly =      3.7 : 1.0
+                     ttr = 0.8181818181818182 interp : barfly =      3.7 : 1.0
+                adj_prop = 0.0            barfly : interp =      3.6 : 1.0
+               noun_prop = 0.45454545454545453 interp : barfly =      3.3 : 1.0
+       first_person_rate = 0.0            barfly : interp =      3.3 : 1.0
+               verb_prop = 0.0            barfly : interp =      3.2 : 1.0
+            avg_word_len = 4.909090909090909 interp : barfly =      2.7 : 1.0
+       discourse_markers = 0.0            barfly : interp =      2.6 : 1.0
+               noun_prop = 0.5            barfly : interp =      1.9 : 1.0
+                adj_prop = 0.09090909090909091 interp : barfly =      1.8 : 1.0
+               verb_prop = 0.18181818181818182 interp : barfly =      1.7 : 1.0
+        exclamation_rate = 0.0            barfly : interp =      1.6 : 1.0
+            avg_word_len = 5.2727272727272725 interp : barfly =      1.5 : 1.0
+
+==============================================================
+EXERCISE 2: The Barfly's Fingerprint
+==============================================================
+--- Barfly's Stylistic Profile ---
+  adj_prop                  0.0602
+  avg_sent_len              18.5036
+  avg_word_len              4.3679
+  discourse_markers         0.0232
+  exclamation_rate          0.0594
+  first_person_rate         0.0169
+  noun_prop                 0.2989
+  passive_rate              0.0703
+  ttr                       0.2600
+  verb_prop                 0.1333
+
+--- Barfly Similarity Scan (discourse_markers + first_person_rate) ---
+  Telemachus           similarity: 0.9838  (1st person: 0.0279, discourse: 0.0019)
+  Hades                similarity: 0.9876  (1st person: 0.0195, discourse: 0.0010)
+  Aeolus               similarity: 0.9878  (1st person: 0.0190, discourse: 0.0011)
+  Wandering Rocks      similarity: 0.9878  (1st person: 0.0144, discourse: 0.0014)
+  Nausicaa             similarity: 0.9868  (1st person: 0.0134, discourse: 0.0002)
+  Circe                similarity: 0.9846  (1st person: 0.0254, discourse: 0.0009)
+
+==============================================================
+EXERCISE 3: Gigantism as Feature Amplification
+==============================================================
+--- Gigantism: Feature Amplification ---
+Feature                    Interpolations        Baseline      Ratio
+-------------------------------------------------------------------
+  adj_prop                         0.0469          0.0586       0.80x
+  avg_sent_len                    32.0000          8.9757       3.57x
+  avg_word_len                     4.9630          4.2960       1.16x
+  discourse_markers                0.0000          0.0005       0.00x
+  exclamation_rate                 0.0000          0.0243       0.00x
+  first_person_rate                0.0000          0.0133       0.00x
+  noun_prop                        0.3750          0.2722       1.38x
+  passive_rate                     0.0000          0.0049       0.00x
+  ttr                              0.6667          0.3339       2.00x
+  verb_prop                        0.0469          0.1343       0.35x
+
+  Key insight: gigantism should manifest as feature values
+  systematically MORE EXTREME than baseline prose —
+  longer sentences, more adjectives, higher latinate vocabulary.

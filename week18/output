@@ -1,0 +1,67 @@
+==============================================================
+EXERCISE 1: Segment the Unsegmentable
+==============================================================
+--- Segmentation Results ---
+  Total words: 24183
+  Joyce's 8 sentences: boundaries at word positions [3022, 6044, 9066, 12088, 15110, 18132, 21154]
+  TextTiling segments: 121
+  TextTiling boundaries: [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000]
+  Segmentation plot saved to week18/week18_segmentation.png
+
+==============================================================
+EXERCISE 2: Topic Modeling Molly's Mind
+==============================================================
+--- Topic Model (keyword-based, 6 topics, 90 windows) ---
+  Gibraltar/girlhood        mean: 0.061  peak at window 48
+  Bloom/marriage            mean: 0.064  peak at window 13
+  Boylan/desire             mean: 0.199  peak at window 20
+  Body/physicality          mean: 0.090  peak at window 31
+  Other women/judgment      mean: 0.382  peak at window 80
+  Memory/reflection         mean: 0.772  peak at window 43
+  Topic distribution plot saved to week18/week18_topics.png
+
+==============================================================
+EXERCISE 3: The Return to Tokenization
+==============================================================
+
+--- Parallel Profile: Telemachus vs. Penelope ---
+Metric                         Telemachus        Penelope
+---------------------------------------------------------
+  total_tokens                       9094           24193
+  total_alpha                        7338           24043
+  total_types                        2004            3572
+  ttr                              0.2731          0.1486
+  hapax                              1313            2145
+  hapax_ratio                      0.6552          0.6005
+  approx_sentences                    757             484
+  avg_sent_len                    12.0132         49.9855
+
+--- Top 20 Content Words ---
+  Telemachus                Penelope                 
+  --------------------------------------------------
+  said                      like                     
+  stephen                   yes                      
+  mulligan                  old                      
+  buck                      could                    
+  haines                    one                      
+  old                       get                      
+  mother                    always                   
+  kinch                     know                     
+  asked                     thing                    
+  voice                     well                     
+  god                       see                      
+  sea                       time                     
+  face                      going                    
+  water                     suppose                  
+  sir                       ill                      
+  come                      way                      
+  eyes                      never                    
+  one                       hes                      
+  two                       go                       
+  like                      said                     
+
+--- Structural Particles ---
+  'yes' occurrences: 91
+  'no' occurrences:  63
+  'and' occurrences: 652
+  yes/no distribution plot saved to week18/week18_yes_no.png

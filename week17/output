@@ -1,0 +1,147 @@
+==============================================================
+EXERCISE 1: Parse the Catechism
+==============================================================
+--- Catechism Parsed ---
+  Total Q&A pairs: 390
+
+--- Question Type Distribution ---
+  other                       151 ( 38.7%)
+  what (entity)               124 ( 31.8%)
+  yes/no                       50 ( 12.8%)
+  why (causal)                 20 (  5.1%)
+  how (procedural)             16 (  4.1%)
+  what (list/inventory)        13 (  3.3%)
+  which (selection)             7 (  1.8%)
+  where (locative)              4 (  1.0%)
+  when (temporal)               3 (  0.8%)
+  who (person)                  2 (  0.5%)
+
+--- Answer Length Statistics ---
+  Mean answer length:   61.0 words
+  Median answer length: 34 words
+  Max answer length:    832 words
+  Min answer length:    0 words
+
+--- Sample Q&A Pairs ---
+
+  Q: What parallel courses did Bloom and Stephen follow returning?
+  A: Starting united both at normal walking pace from Beresford place they followed in the order named Lower and Middle Gardi...
+
+  Q: Of what did the duumvirate deliberate during their itinerary?
+  A: Music, literature, Ireland, Dublin, Paris, friendship, woman, prostitution, diet, the influence of gaslight or the light...
+
+  Q: Did Bloom discover common factors of similarity between their respective
+  A: ...
+
+  Q: like and unlike reactions to experience?
+  A: Both were sensitive to artistic impressions, musical in preference to plastic or pictorial. Both preferred a continental...
+
+  Q: Were their views on some points divergent?
+  A: Stephen dissented openly from Bloom’s views on the importance of dietary and civic selfhelp while Bloom dissented tacitl...
+
+  Q: Was there one point on which their views were equal and negative?
+  A: The influence of gaslight or electric light on the growth of adjoining paraheliotropic trees....
+
+  Q: Had Bloom discussed similar subjects during nocturnal perambulations in
+  A: ...
+
+  Q: the past?
+  A: In 1884 with Owen Goldberg and Cecil Turnbull at night on public thoroughfares between Longwood avenue and Leonard’s cor...
+
+==============================================================
+EXERCISE 2: Triple Extraction
+==============================================================
+--- Knowledge Triples ---
+  Total triples extracted: 1676
+
+--- Sample Triples ---
+  (other, contains, dimension)
+  (equanimity, contains, beverages)
+  (rooms, tiled, kitchen)
+  (retribution, contains, two)
+  (flowerville, contains, loose)
+  (propositions, contains, solitary)
+  (faded, contains, hozier)
+  (turn, derived, existence)
+  (committee, had, use)
+  (income, giltedged, securities)
+  (reminiscences, contains, kilmainham)
+  (deceased, contains, london)
+  (equanimity, contains, acquired)
+  (part, contains, implacable)
+  (immune, contains, having)
+  (hospitality, contains, his)
+  (desirable, contains, formerly)
+  (pace, crossed, circus)
+  (moon, revealed, phases)
+  (then, contains, their)
+  (impotent, disfranchised, pauper)
+  (poets, sung, rhyme)
+  (tons, elevated, altitude)
+  (power, obtained, plant)
+  (remain, contains, with)
+  (rain, liked, woman)
+  (then, contains, each)
+  (bearing, left, gardiner)
+  (leg, extended, line)
+  (pence, rose, paper)
+
+--- Most Common Subjects ---
+  ’                            42
+  contain                      39
+  bloom                        37
+  faded                        32
+  equanimity                   18
+  part                         18
+  solution                     18
+  guest                        17
+  capacity                     16
+  reminiscences                14
+
+--- Most Common Predicates ---
+  contains                   1006
+  s                            41
+  had                          36
+  was                          17
+  been                         12
+  born                          8
+  produced                      8
+  placed                        7
+  contained                     6
+  were                          6
+
+--- Most Common Objects ---
+  the                          74
+  with                         19
+  and                          18
+  bloom                        15
+  stephen                      14
+  had                          11
+  from                          9
+  which                         8
+  his                           7
+  one                           7
+
+==============================================================
+EXERCISE 3: The Question Ithaca Doesn't Ask
+==============================================================
+
+--- Question Topic Distribution ---
+  other                  215 ( 55.1%) ███████████████████████████
+  human_relations         88 ( 22.6%) ███████████
+  physical_objects        40 ( 10.3%) █████
+  geography               21 (  5.4%) ██
+  science_math            15 (  3.8%) █
+  abstract_concepts        7 (  1.8%) 
+  economics                4 (  1.0%) 
+
+--- Comparison: Ithaca vs. Calypso Topic Distribution ---
+  Topic                  Ithaca %    Calypso %
+  --------------------------------------------
+  abstract_concepts          1.8%         0.4%
+  economics                  1.0%         0.4%
+  geography                  5.4%         2.2%
+  human_relations           22.6%         1.9%
+  other                     55.1%        90.5%
+  physical_objects          10.3%         3.8%
+  science_math               3.8%         0.9%

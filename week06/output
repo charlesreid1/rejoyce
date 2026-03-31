@@ -1,0 +1,101 @@
+==============================================================
+EXERCISE 1: Sentiment Trajectory
+==============================================================
+--- Sentiment Summary: Hades ---
+  Total sentences:     1592
+  Mean compound:       -0.0089
+  Variance:            0.0820
+  Positive sentences:  309 (19.4%)
+  Negative sentences:  319 (20.0%)
+  Neutral sentences:   964 (60.6%)
+
+--- Likely VADER Misfires (positive scores in funeral context) ---
+  [+0.911] But with the help of God and His blessed mother I’ll
+make it my business to write a letter one of th...
+  [+0.856] Said he was going to paradise or is in paradise....
+  [+0.836] Rewarded by smiles he fell back and spoke with Corny Kelleher, accepting
+the dockets given him, turn...
+  [+0.821] Hoping you’re well and
+not in hell....
+  [+0.813] But I wish Mrs Fleming had darned these socks better....
+
+--- Most Negative Sentences ---
+  [-0.872] He cried above the clatter of the wheels:
+
+—I won’t have her bastard of a nephew ruin my son....
+  [-0.866] Silly-Milly burying the little dead bird in the kitchen matchbox, a
+daisychain and bits of broken ch...
+  [-0.863] Once you are dead you are
+dead....
+  [-0.859] There is another world after death named hell....
+  [-0.852] Devil in that picture of sinner’s death showing
+him a woman....
+
+==============================================================
+EXERCISE 2: Bloom's Stoicism vs. Narrator
+==============================================================
+--- Dialogue vs. Narration Sentiment ---
+
+  Dialogue:
+    Sentences: 276
+    Mean compound: 0.0048
+    Variance: 0.0763
+
+  Narration/Interior:
+    Sentences: 1316
+    Mean compound: -0.0126
+    Variance: 0.0830
+
+  Variance ratio (interior/dialogue): 1.09
+
+==============================================================
+EXERCISE 3: Death Lexicon
+==============================================================
+--- SentiWordNet: Death Words ---
+Word               Pos    Neg    Obj Synset
+-------------------------------------------------------
+  coffin         0.000  0.000  1.000 coffin.n.01
+  cemetery       0.000  0.000  1.000 cemetery.n.01
+  grave          0.000  0.000  1.000 grave.n.01
+  corpse         0.000  0.000  1.000 cadaver.n.01
+  funeral        0.000  0.000  1.000 funeral.n.01
+  mourning       0.000  0.375  0.625 mourning.n.01
+  burial         0.000  0.000  1.000 burial.n.01
+  decay          0.000  0.375  0.625 decay.n.01
+  death          0.000  0.000  1.000 death.n.01
+  dead           0.000  0.000  1.000 dead.n.01
+  dying          0.000  0.625  0.375 death.n.04
+  hearse         0.000  0.000  1.000 hearse.n.01
+  tomb           0.000  0.125  0.875 grave.n.02
+  skeleton       0.000  0.000  1.000 skeleton.n.01
+  ashes          0.000  0.000  1.000 ash.n.01
+  widow          0.000  0.125  0.875 widow.n.01
+  grief          0.000  0.625  0.375 grief.n.01
+  loss           0.000  0.250  0.750 loss.n.01
+  weep           0.000  0.750  0.250 cry.v.02
+  sorrow         0.000  0.625  0.375 sorrow.n.01
+
+--- SentiWordNet: Proximity Words (context-dependent valence) ---
+Word               Pos    Neg    Obj Synset
+-------------------------------------------------------
+  warm           0.250  0.000  0.750 warm.v.01
+  quiet          0.000  0.000  1.000 lull.n.02
+  home           0.000  0.000  1.000 home.n.01
+  garden         0.000  0.000  1.000 garden.n.01
+  rest           0.000  0.000  1.000 remainder.n.01
+  sleep          0.000  0.000  1.000 sleep.n.01
+  peace          0.125  0.000  0.875 peace.n.01
+  gentle         0.875  0.000  0.125 pacify.v.01
+  soft           0.000  0.250  0.750 soft.a.01
+  clean          0.000  0.000  1.000 clean_and_jerk.n.01
+  white          0.000  0.000  1.000 white.n.01
+  green          0.000  0.000  1.000 green.n.01
+  light          0.000  0.000  1.000 light.n.01
+  bloom          0.000  0.000  1.000 blooming.n.01
+
+  Avg negativity of death words: 0.194
+  Avg positivity of proximity words: 0.089
+
+  Key insight: proximity words like 'rest', 'sleep', 'peace' score
+  positively in SentiWordNet, but in a funeral context they carry
+  the weight of death — context-free sentiment fails here.
