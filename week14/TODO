@@ -1,0 +1,46 @@
+1. SEGMENTATION METHOD: segment_oxen() divides the episode into equal sentence
+   counts, which is a crude approximation. The last three sections (Gibbon/Augustan,
+   Victorian/Dickens, Modern/Slang) all have average sentence lengths of 5-7 words,
+   suggesting they overlap heavily with the drunken slang coda. Literary annotations
+   (Stuart Gilbert, Don Gifford) should be used to find actual section boundaries.
+   The exercise itself recommends this.
+
+2. PERIOD LABEL ORDERING: The period labels list "Sterne/Romantic" (section 6)
+   before "Gibbon/Augustan" (section 7), but historically Gibbon (1737-1794) and
+   the Augustan period precede the Romantic era. Sterne (1713-1768) was actually a
+   contemporary of the Augustan period, not a Romantic. The label ordering should be
+   reviewed against Joyce's actual sequence of style parodies.
+
+3. TTR ARTIFACT: Type-token ratio is computed on sections of unequal word counts
+   (equal sentence counts but wildly different sentence lengths). TTR is highly
+   sensitive to sample size -- shorter texts mechanically produce higher TTR. The
+   steadily increasing TTR across sections (0.34 to 0.65) is likely an artifact of
+   decreasing section word counts rather than genuine vocabulary richness. Consider
+   using a fixed word-count window or MATTR (moving average TTR) instead.
+
+4. CLASSIFIER TRAINING DATA: The three-class scheme (early/middle/late) is very
+   coarse. "Early" lumps together KJV and Shakespeare, "late" lumps Melville and
+   Whitman. A finer-grained period scheme (5+ classes matching the exercise's
+   five reference periods) would produce more informative classifications, though
+   it would require more training data to avoid sparsity.
+
+5. MISSING IMAGE: The script saves week14_arc.png but the file does not currently
+   exist in the repository. The script needs to be run to generate it. The Writeup
+   references this image.
+
+6. REFERENCE TEXTS ARE LIMITED: The Gutenberg corpus provides only a handful of
+   texts per period, and none from the actual Anglo-Saxon or Middle English periods.
+   The KJV (1611) is used as a proxy for "early" English but is actually early
+   modern. The exercise's "Diving Deeper" section recommends CLMET, ARCHER, or
+   COHA for richer historical coverage.
+
+7. FUNCTION WORD LIST: The function word set in period_features() is hardcoded with
+   18 words. This is a reasonable starting set but omits common function words like
+   "he", "she", "they", "this", "but", "or", "not", "from", "which", "had", "have",
+   "been", "were", "are", "his", "her". Consider using a standard stopword list or
+   a POS-based approach (tag-based function word detection).
+
+8. NO CONFUSION MATRIX: Exercise 2 specifically asks for a confusion matrix of the
+   classifier's predictions, but the code does not produce one. Adding a confusion
+   matrix (even a simple printed one) for the test set and for the Oxen section
+   predictions would strengthen the analysis.

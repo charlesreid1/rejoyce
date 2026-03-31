@@ -1,0 +1,45 @@
+1. The split heuristic (sharpest drop in rolling average sentence length) places the
+   split at sentence 845, but the output shows the Gerty half has 13,257 tokens vs.
+   Bloom's 3,731 -- a roughly 78/22 split. This is far from the expected 40-60% range
+   noted in the rubric. The heuristic may be triggering on a local dip rather than the
+   true Gerty-to-Bloom transition. Consider using a known textual marker (e.g., searching
+   for "Mr Bloom" appearing after a long Gerty stretch, or the line beginning "Tight
+   boots? No. She's lame!" which is a well-known transition point) rather than relying
+   purely on sentence-length statistics.
+
+2. Semicolon rate is 0.0000 for all four texts. This is likely because the source text
+   files do not contain semicolons (Joyce's punctuation in Ulysses is unconventional),
+   or the encoding uses a different character. The metric is wasted; consider replacing
+   it with question mark frequency or ellipsis frequency, both of which would be more
+   informative for distinguishing Gerty's exclamatory style from Bloom's interrogative
+   one.
+
+3. Em-dash rate is 0.0000 for Bloom's Nausicaa half but 0.07 for Calypso and
+   Lestrygonians. This could be a genuine stylistic difference in the source text or a
+   Unicode issue (en-dash vs. em-dash vs. double-hyphen). Worth verifying that the dash
+   character used in the source files is consistent.
+
+4. Yule's K is listed in the exercise prompt as part of the vocabulary richness metrics
+   but is not computed in the script. The stylometric_profile() function computes TTR and
+   hapax ratio but omits Yule's K entirely.
+
+5. The exercise asks for visualization ("Visualize the two profiles side by side"), and
+   matplotlib is imported and configured with the Agg backend, but no plots are actually
+   generated or saved. The visualization component is missing.
+
+6. The cliche ratio (1.46x) falls slightly below the rubric's expected threshold of
+   >1.5x. This may be because the reference corpus (first 5 Gutenberg texts) is not
+   well-matched to the sentimental/romance register of Gerty's prose. Using a reference
+   corpus of Victorian sentimental fiction would likely produce a higher ratio.
+
+7. The Burrows' Delta implementation computes z-scores using the corpus mean and standard
+   deviation, then measures delta for each corpus text against the test text. This is
+   correct per the standard formulation, but the corpus used for computing the mean/std
+   includes the Bloom-Nausicaa half, which means the test text's own "other half" is
+   part of the normalization basis. This is a minor methodological concern but worth
+   noting.
+
+8. The exercise mentions comparing Gerty to "actual Victorian sentimental fiction" as an
+   optional reference corpus for Burrows' Delta. This is not attempted. Adding even one
+   or two Gutenberg sentimental texts (e.g., Maria Cummins' "The Lamplighter", which
+   Joyce explicitly references) would strengthen the analysis.

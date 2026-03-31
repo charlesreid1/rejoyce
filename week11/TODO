@@ -1,0 +1,59 @@
+1. Overture parser extracts only 12 fragments instead of the expected ~63. The
+   heuristic in split_overture_body() (lines shorter than 15 tokens within the
+   first 100 lines, stopping at the first long line) is too aggressive -- it
+   stops at the first line exceeding 15 tokens rather than continuing to
+   accumulate short lines. The fallback (take first 63 non-empty lines) never
+   triggers because the initial branch finds at least 10 fragments. The parser
+   likely needs a more nuanced strategy: perhaps allowing occasional longer
+   lines within the overture, or using the known structural break (the line
+   "Bronze by gold, miss Douce's head by miss Kennedy's head..." which begins
+   the narrative proper) as the split point.
+
+2. Motif matching for "bronze by gold" reports 57 occurrences, which is
+   suspiciously high. The partial-match logic (lines 330-341) matches on any
+   single word of the motif longer than 3 characters. Since "gold" and
+   "bronze" each appear independently throughout the episode, each solo
+   occurrence inflates the count. Consider requiring a higher word-overlap
+   threshold for multi-word motifs, or only counting partial matches when
+   multiple motif words co-occur in the same sentence.
+
+3. Same inflation problem for "When first" (40 occurrences) and "tap" (52
+   occurrences). "When" alone matches many sentences (edit distance ~6 from
+   "When first"), and "tap" is a 3-letter substring that appears inside words
+   like "tapped," "tapping," and even "eppripfftaph." The 3-character minimum
+   length filter (line 334: `len(word) > 3`) would exclude "tap" itself, but
+   "when" (4 chars) passes. The partial-match strategy should be tightened:
+   either raise the minimum word length, require more than one motif word to
+   match, or use a sliding-window substring approach instead of word-level
+   containment.
+
+4. The consonance computation (lines 224-236) checks whether the LAST consonant
+   phoneme of adjacent words matches, but it collects ALL non-vowel phonemes
+   and then compares only the final element. True coda extraction should start
+   from the end of the phoneme list and collect consonants backward until
+   hitting a vowel. The current approach would miss multi-consonant codas and
+   could misidentify consonants that are onsets of later syllables as codas in
+   polysyllabic words.
+
+5. CMU dictionary coverage is never explicitly reported. The exercise asks
+   students to note which words are missing from cmudict (often Joyce's
+   onomatopoeia -- the most phonetically interesting material). Adding a
+   coverage percentage and a sample of the most frequent missing words would
+   strengthen Exercise 2.
+
+6. The phonetic density plot does not annotate or mark passages that critics
+   have identified as the fugal stretto. Without such annotation, readers
+   cannot easily verify whether density peaks correlate with structural
+   features. Consider overlaying vertical lines or shaded regions for known
+   stretto passages.
+
+7. Edit-distance trajectories per motif are not plotted. The exercise asks for
+   a plot of edit distance from the canonical form over the course of the
+   episode (to see whether motifs become more or less distorted). The code
+   collects the data but only produces the motif-score scatter plot, not a
+   distance-over-time plot.
+
+8. The cross-episode comparison only computes average densities. The exercise
+   also asks for visualization comparing Sirens to Lestrygonians and Calypso.
+   A grouped bar chart or overlay plot would make the comparison more
+   accessible than a text table alone.

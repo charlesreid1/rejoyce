@@ -1,0 +1,47 @@
+1. TextTiling produces 121 segments at exact 200-word intervals (200, 400, 600, ...),
+   meaning it segmented at every artificial paragraph break rather than detecting
+   genuine topic shifts. The prepare_for_texttiling() function's 200-word chunking
+   creates boundaries that TextTiling cannot discriminate between. Consider:
+   - Increasing the chunk size (e.g., 500-1000 words per artificial paragraph)
+   - Tuning TextTilingTokenizer parameters (w= window size, k= smoothing block size)
+   - Using the vocabulary_shift_segmentation() fallback directly and comparing results
+
+2. Joyce's 8 sentence boundaries are approximated by dividing word count into equal
+   eighths. The actual sentence breaks in Penelope are not evenly spaced. If the
+   source text preserves any structural markers (e.g., paragraph breaks between
+   the 8 sentences, or the rare periods), those should be used instead of the
+   equal-division approximation.
+
+3. The keyword-based topic model includes "like" as a seed for "Other women/judgment."
+   Since "like" is the single most frequent content word in Penelope (used mostly as a
+   hedge or comparison, not in the sense of "liking"), it inflates this topic's score
+   to 0.382 mean. Consider removing "like" from the seed list or replacing it with a
+   less ambiguous word.
+
+4. Topic proportions reported in the output sum to well over 1.0 across topics
+   (0.061 + 0.064 + 0.199 + 0.090 + 0.382 + 0.772 = 1.568). The normalization
+   divides each window's topic counts by the total seed hits in that window, which
+   should yield proportions summing to 1.0 per window. But the mean values across
+   windows can still exceed this if some windows have zero total hits (the max(..., 1)
+   guard) and others have varying distributions. Verify the normalization logic and
+   consider reporting per-window sums to confirm they equal 1.0.
+
+5. The "approx_sentences" metric for Penelope (484) is an artifact of the 50-word
+   chunking fallback when sent_tokenize finds fewer than 10 sentences. The avg_sent_len
+   of ~50 is therefore the chunk size, not a meaningful linguistic measure. Consider
+   reporting the actual sent_tokenize result (probably 1-3 "sentences") alongside the
+   chunked approximation, and/or using the TextTiling segments from Exercise 1 as the
+   sentence proxy, as the exercise instructions suggest.
+
+6. The script uses text.split() (whitespace splitting) in some places and
+   word_tokenize() in others. This inconsistency means word counts differ slightly
+   between exercises (e.g., 24183 in Exercise 1 vs. 24193 total_tokens in Exercise 3).
+   Consider standardizing on one tokenization method throughout.
+
+7. The exercise calls for experimenting with different numbers of LDA topics
+   (k=4, 6, 8, 10) and comparing results. The script only runs with 6 seed-based
+   topics. Consider adding a loop or at least discussing the sensitivity to topic count.
+
+8. The "and" distribution is computed but not plotted. The exercise asks for comparison
+   of "yes," "no," and "and" distributions. Consider adding "and" to the scatter plot
+   or creating a separate visualization.

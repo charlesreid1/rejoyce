@@ -1,0 +1,52 @@
+1. POS tagging samples only the first 5,000 tokens per episode (line 81). For Circe
+   (50,979 tokens), this is under 10% of the text. Noun-verb ratio and adjective
+   density may be unrepresentative, especially for episodes where style shifts
+   mid-episode (Nausicaa's Gerty-to-Bloom pivot, Cyclops' barfly-to-interpolation
+   alternation). Consider tagging the full text or at least a larger/stratified sample.
+
+2. VADER sentiment samples only the first 500 sentences (line 91). For long episodes,
+   this truncates the analysis. Circe has thousands of short stage-direction lines;
+   sampling only the first 500 biases toward early material. Same concern for Eumaeus
+   and Cyclops.
+
+3. Flesch-Kincaid syllable counting samples only the first 3,000 alphabetic tokens
+   (line 99). For episodes longer than ~7,000 alpha tokens, the readability score
+   reflects only the opening portion. This is particularly problematic for Oxen of the
+   Sun, whose style deliberately evolves through the episode.
+
+4. The exercise specifies 25+ metrics; the script computes only 15. Missing metrics
+   include: stemmer disagreement rate, non-English token proportion, named entities per
+   1,000 tokens, entity type distribution, WordNet synset count, TF-IDF keywords,
+   bigram perplexity, parse tree depth, graph density, alliteration density,
+   classification features, Burrows' Delta, and cliche density. Many of these would
+   require importing results from prior weeks' scripts.
+
+5. The exercise asks for a radar chart (spider plot) comparing Telemachus, Sirens,
+   Cyclops, and Eumaeus. The script does not produce a radar chart. Only three of the
+   four required dashboard panels are generated.
+
+6. The hapax_ratio is computed as hapax / total_types (line 78), i.e., the fraction of
+   unique words that appear exactly once. This is a valid metric but differs from the
+   more common definition of hapax ratio as hapax / total_tokens. The exercise says
+   "hapax legomena ratio" without specifying the denominator. Worth clarifying or
+   computing both.
+
+7. The median sentence length calculation (line 117) uses integer division
+   (len(sent_lengths)//2) without averaging the two middle values for even-length
+   lists. For 16 episodes this is unlikely to matter much, but it is technically
+   incorrect for even-count lists.
+
+8. The TTR is computed on alpha_tokens (lowercase alphabetic only), but total_tokens
+   includes punctuation and non-alphabetic tokens. The denominator of TTR
+   (line 113: len(alpha_tokens)) is therefore smaller than total_tokens, which is
+   fine — but the master table displays total_tokens alongside TTR without noting this
+   discrepancy. A reader might expect TTR = total_types / total_tokens.
+
+9. The error audit is hardcoded rather than computed. It catalogs known issues from
+   prior weeks as string literals rather than re-running analyses to detect errors
+   programmatically. The exercise asks for an "error distribution" visualization —
+   whether errors concentrate in certain episodes or tools — which is not produced.
+
+10. The correlation matrix hypothesis from the exercise (sentiment variance correlates
+    with entity density) cannot be tested because named entity density is not among the
+    computed metrics.

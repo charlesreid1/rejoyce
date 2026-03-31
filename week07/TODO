@@ -1,0 +1,15 @@
+1. Headline parser merges dialogue fragments with headlines. Sections 8, 9, 13, 15, 17, and 27 show headlines like "own way. Sllt. NOTED CHURCHMAN AN OCCASIONAL CONTRIBUTOR" and "nonsense. AND IT WAS THE FEAST OF THE PASSOVER" -- the preceding line of dialogue text has been concatenated with the actual headline. The parser needs to handle the case where the line immediately before a headline ends mid-sentence or where a non-headline line passes the uppercase threshold because it is adjacent to a headline line.
+
+2. Sections 22, 24, and 29 are missing from the output entirely. Either these sections produced no tokens after stop word and length filtering (unlikely for full prose sections), or the headline parser failed to detect their delimiter headlines. Investigate which headlines are being missed and why.
+
+3. Section count is 30, at the very low end of the expected 30-65 range. The 0.7 uppercase ratio threshold may be too strict for headlines that include lowercase prepositions and articles (e.g., "IN THE HEART OF THE HIBERNIAN METROPOLIS" should pass, but headlines with more mixed case may not). Consider lowering the threshold or using a different detection strategy (e.g., regex for lines that are entirely uppercase plus punctuation).
+
+4. The anaphora detector's top result is the em-dash "---" with 213 sentences. This is a dialogue marker, not a rhetorical figure. The detector should filter out punctuation-only openers, or at minimum skip tokens that are not alphabetic. The current filter only checks against STOP_WORDS but the em-dash is not a stop word.
+
+5. No keyword-headline overlap metric is computed. The exercise sheet specifically asks for the percentage of sections where top-3 TF-IDF keywords overlap with headline words (expected 10-25%). Adding this quantitative metric would strengthen the analysis.
+
+6. Cross-episode headline generation (Exercise 3) is not implemented. The exercise asks students to apply the same TF-IDF headline generation method to Hades or Calypso and discuss the results.
+
+7. The "sllt" token appears as a top TF-IDF keyword in Section 7 ("SLLT FOREMAN KEYS"). This appears to be a tokenization artifact from "Sllt" (an onomatopoeia in the text) that should perhaps be handled or noted as a quirk of Joyce's invented words interacting with TF-IDF -- high IDF because it appears in very few sections.
+
+8. The tricolon detector produces false positives from speech attribution tags (e.g., "the professor said" appearing as one of three "parallel" phrases). Consider filtering out clauses that match common speech attribution patterns (subject + said/asked/cried/etc.) before checking for tricolon structure.

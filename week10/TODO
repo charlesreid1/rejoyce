@@ -1,0 +1,19 @@
+1. CRITICAL: split_wandering_rocks() produces 373 paragraph-level segments instead of 19 sections. The heuristic of splitting on double newlines and merging segments under 50 characters does not correspond to the episode's narrative structure. The function needs a different segmentation strategy -- possibly using known section-opening lines, a longer minimum-length threshold, or a marker-based approach (e.g., the Gabler edition uses dashes or typographic breaks between sections). This is the root cause of nearly every problem in the output.
+
+2. Similarity matrix is 373x373 instead of 19x19. The heatmap is unreadable at this scale. With correct 19-section segmentation, the heatmap would show meaningful block structure and cross-section similarity patterns.
+
+3. Top similar pairs have cosine = 1.0, indicating duplicate or near-duplicate paragraphs rather than meaningfully similar narrative sections. With 19 real sections, the top pairs should have cosine values in the 0.1-0.4 range per the exercise rubric.
+
+4. Interpolation detection flags only 7 sentences, mostly very short dialogue fragments with zero content words after filtering. The detector compares sentence TF vectors against section TF-IDF centroids, but with paragraph-level sections, the centroids are too narrow to detect meaningful anomalies. Additionally, the sentence-level TF vector does not use IDF weighting, creating an apples-to-oranges comparison with the section's TF-IDF vector.
+
+5. The exercise asks for precision and recall of interpolation detection, but the code does not compute or report these metrics. A list of known interpolations should be provided (or manually compiled) so P/R can be calculated.
+
+6. Entity tracking reports "Father" and "Conmee" as separate top entities (31 and 28 sections respectively) alongside "Father Conmee" (17 sections). NLTK's NER inconsistently chunks these. Consider normalizing entities by merging "Father" + "Conmee" occurrences into "Father Conmee", or using a more robust NER system.
+
+7. The section x entity matrix only displays the first 19 paragraphs (not the 19 narrative sections) against 10 entities, which gives a misleading view. With correct segmentation this would be the proper 19x20 matrix the exercise calls for.
+
+8. The exercise asks for a bipartite graph using networkx, but the code does not import or use networkx. It computes shared-entity pairs with a Counter but does not produce a graph visualization.
+
+9. The exercise asks students to "overlay the geographic trajectory of 2-3 entities across sections and sketch a rough map of their paths through Dublin." This is not implemented.
+
+10. The "Diving Deeper" exercises (LDA topic modeling, PageRank centrality, geographic correlation, MinHash near-duplicate detection) are not implemented. These are bonus items but worth noting.

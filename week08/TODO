@@ -1,0 +1,35 @@
+1. Top-20 bigram associations are dominated by tokenization artifacts (contractions
+   split into two tokens: didn/t, wouldn/t, etc.) and proper name pairs (davy/byrne,
+   paddy/leonard). Consider filtering out contraction fragments (tokens that are just
+   "t" or "s" following an apostrophe split) and perhaps showing separate tables for
+   name-bigrams vs. content-word bigrams so that thematic associations (food, body,
+   Molly, memory) can surface in the top-20 list.
+
+2. The minimum frequency threshold in associative_chains is set to 3 for unigram_freq[w1],
+   but many of the top results still have counts of only 3. This means a bigram that
+   appears 3 times out of 3 total occurrences of w1 gets P=1.0, which is not very
+   informative. Consider raising the threshold (e.g., to 5 or 10) or using a pointwise
+   mutual information (PMI) measure instead of raw conditional probability to surface
+   more genuinely interesting collocations.
+
+3. The cross-sentence transitions use random.sample with no fixed seed, so the "Sample
+   Cross-Sentence Transitions" section produces different output on every run. Consider
+   setting random.seed() at the top of main or before the sample call for reproducibility.
+
+4. The trigram model generates very short output (often just one or two words, or even
+   just a period). This is because MLE trigram models on small corpora quickly reach
+   end-of-sentence padding tokens. Consider using a Laplace-smoothed model for generation
+   as well, or increasing the number of generation attempts and filtering out degenerate
+   (sub-3-word) sentences.
+
+5. Exercise 2 uses Austen's Emma as the reference prose rather than a journalistic text
+   as the exercise sheet specifies. The exercise asks for "a passage of journalistic prose
+   from the Gutenberg corpus." Consider using a more journalistic/nonfiction text if one
+   is available in the Gutenberg corpus, or note the substitution explicitly.
+
+6. The perplexity computation in compute_perplexity passes the full output of
+   padded_everygram_pipeline (which includes unigrams, bigrams, etc. up to order n)
+   to model.perplexity(), but model.perplexity() expects a sequence of ngrams of
+   exactly order n. Passing mixed-order ngrams may produce incorrect perplexity values.
+   Verify that the perplexity values are correct by checking against a manual calculation
+   on a small test case.
