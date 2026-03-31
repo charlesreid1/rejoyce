@@ -10,8 +10,8 @@ mirroring the arc of *Ulysses* itself as it grows progressively more
 experimental.
 
 The `txt/` directory contains the full text of *Ulysses* (via Project
-Gutenberg), split by episode. Weekly exercise sheets are in `week01.md` through
-`week18.md`, with corresponding Python solutions in `solutions/`.
+Gutenberg), split by episode. Each week has its own directory (`week01/`
+through `week18/`), containing the exercise sheet and Python solution.
 
 ## Weekly exercises
 

@@ -1,0 +1,93 @@
+# Week 15: Circe
+### *"(The mother rises stark through the floor, in leper grey...)" — Hallucination, dramaturgy, and the network beneath the text.*
+
+Circe is the longest episode, the strangest episode, and the episode where everything in the novel comes back transformed. Written entirely as a play — stage directions, character names, dialogue — it dramatizes Bloom's and Stephen's passage through Nighttown, Dublin's red-light district. But the dramatic format is a trapdoor into the unconscious: the dead return (Bloom's mother, his father, his son Rudy), objects speak (a bar of soap, a nandine fan, the bells of St. George's church), characters metamorphose (Bloom becomes a woman, becomes Lord Mayor, is put on trial), and figures from earlier episodes reappear in grotesque new configurations. The technique is *hallucination*; the art is *magic*; the organ is the *locomotor apparatus* (the body in motion, stumbling, transforming). Every entity that has passed through the novel — every person, object, allusion, and throwaway phrase — is available for resurrection and recombination.
+
+This is the episode where we leave NLTK's analytical toolkit behind and ask: **what can we build with everything we've extracted?**
+
+**NLTK Focus (as pipeline input):** Named Entity Recognition, entity extraction, speaker identification, coreference — all feeding into **network visualization and graph analysis** (`networkx`, `pyvis`, `matplotlib`, `graphviz`)
+
+**Pairing Rationale:**
+For fourteen weeks, students have been extracting structured information from unstructured text: tokens, POS tags, named entities, sentiment scores, phonetic patterns, syntactic trees, stylometric profiles. Circe is where all of that extraction work pays off — not as analysis but as *visualization*. The episode is a network. Characters interact with characters. Objects interact with speakers. The dead interact with the living. Figures from Episode 1 share a scene with figures from Episode 12. The hallucination *is* a graph: nodes are entities (persons, objects, places, the dead, the imagined), and edges are interactions (speech, transformation, co-presence in a scene). Building and visualizing this graph is the exercise that makes the entire novel's structure visible for the first time — and makes the hallucination's logic legible in a way that linear reading alone cannot achieve.
+
+The break from NLTK-as-destination to NLTK-as-pipeline is deliberate. By Week 15, students know how to extract entities and relationships from text. The question becomes: what do you *do* with them? Circe answers: you draw the picture.
+
+**Core Exercises:**
+
+1. **Extract the dramatis personae — all of them.** Circe's dramatic format means that every speaking entity is explicitly labeled. Parse the episode to extract every character name that appears as a speaker tag. This is partly a regex exercise (the format is consistent: CHARACTER NAME in caps or small caps, followed by dialogue) and partly an NER exercise (some "characters" are objects — THE CAP, THE GASJET, THE WATERFALL — and some are abstractions — THE END OF THE WORLD, THE VOICE OF ALL THE DAMNED). Build a complete entity inventory and classify each entity: person (living), person (dead/hallucinated), object, animal, abstraction, collective. How many entities speak in Circe? (The number will be startling — over 100.) Visualize the inventory as a categorized bar chart. Compare the entity count to the combined entity count of all previous episodes.
+
+2. **Build the interaction graph.** Define an interaction as: two entities appearing in the same scene (you'll need to segment the episode into scenes — use stage directions and setting changes as delimiters). For every pair of entities that co-appear in a scene, create an edge. Weight the edges by the number of scenes shared. Build the graph using `networkx`. Compute basic graph metrics: degree distribution, clustering coefficient, betweenness centrality, connected components. Who are the most central nodes? (Bloom, certainly — but who else?) Visualize the full graph using `pyvis` (for interactive HTML visualization) or `matplotlib` with a force-directed layout. Color-code nodes by entity type (living/dead/object/abstraction). The result should look like a map of the unconscious — densely connected at the center (Bloom's fears and desires), sparse at the edges (fleeting hallucinations), with startling connections between nodes that "shouldn't" be linked.
+
+3. **The novel in one graph.** This is the capstone exercise — not just for Week 15 but for the course. Go back to every previous episode (using your NER extractions from prior weeks) and build an entity interaction graph for each. Now overlay them. Create a cumulative graph of the entire novel's entity network, with edges colored or labeled by episode of origin. Circe's contribution to this graph should be immediately, visually obvious: it reactivates nodes that have been dormant since early episodes, creates connections between entities that never shared a scene before, and massively increases the graph's density and connectivity. Compute how many of Circe's entity-pairs represent *new* connections (entities interacting for the first time) versus *reactivated* connections (entities who interacted in an earlier episode and now meet again in hallucination). The ratio tells you something precise about what the hallucination *does* structurally: it is the novel remembering itself.
+
+**Diving Deeper:**
+
+- Community detection algorithms (Louvain, Girvan-Newman) can partition the Circe graph into clusters of densely connected entities. Do the communities correspond to thematic domains of Bloom's psychology (guilt, desire, authority, family)? Or to the source episodes from which the hallucinated figures originate? Run community detection and interpret the clusters. This is psychoanalytic criticism performed by a graph algorithm.
+- Temporal network analysis adds a time dimension to the graph. Using scene order as a proxy for time, build an animated visualization of the Circe network growing scene by scene (tools: `matplotlib.animation`, `pyvis` with timestamped edges, or `Gephi` with its timeline feature). Watch the hallucination unfold. Are there moments of sudden network expansion (mass hallucination scenes) and contraction (intimate two-character scenes)? Do the dead arrive in clusters or individually?
+- Bipartite graphs offer an alternative representation: one set of nodes for characters, another for scenes. This is the standard representation in narrative network analysis (see Agarwal et al., 2012, on social network extraction from literature, and Elson et al., 2010, on dialogue-based networks in 19th-century fiction). How does Circe's bipartite structure compare to the networks extracted from realist fiction? Is the hallucination detectable as a structural anomaly — a departure from the network signatures of realistic interaction?
+- The entity transformations in Circe (Bloom becoming a woman, Virag appearing as Bloom's grandfather, Rudy materializing as an eleven-year-old) pose a hard problem for entity tracking: is Bloom-as-woman the same node as Bloom, or a different one? How you answer this question changes the graph's topology. Explore how coreference resolution systems handle identity across transformation — most don't, because most texts don't require it. Circe is an adversarial test case for the ontological assumptions of NER.
+- If you've taken the "Diving Deeper" exercises seriously throughout the course, you now have data from 15 episodes: frequency distributions, POS profiles, sentiment trajectories, phonetic densities, stylometric fingerprints, parsed trees, topic models, and entity graphs. Consider building a unified dashboard — an interactive, multi-panel visualization of the novel's computational anatomy. Tools: `Plotly Dash`, `Streamlit`, or a static site with `D3.js`. This is not a required exercise; it is an invitation.
+- Connection to everything: Circe is where the novel's structure becomes recursive. Every tool you've learned — tokenization (Week 1), POS tagging (Week 2), NER (Week 4), sentiment (Week 6), classification (Week 12), stylometry (Week 13) — can be applied to Circe, and Circe will break each one in a different way. The hallucination does not respect tokenization boundaries (words fuse), POS categories (nouns become verbs), entity types (objects become speakers), sentiment expectations (horror is comic, comedy is terrifying), genre classifications (stage directions narrate, dialogue hallucinates), or stylistic norms (every style from the novel recurs in distorted form). Circe is the final exam that the tools fail — and the failure is the point.
+
+---
+
+## Learning Objectives
+
+By the end of this week, students will be able to:
+
+1. **Parse dramatic text format** to extract speaker tags, stage directions, and scene boundaries using regex and structural heuristics.
+2. **Build a complete entity inventory** from a complex literary text and classify entities by ontological type (living, dead, object, abstraction).
+3. **Construct and analyze interaction graphs** using co-appearance data, computing degree centrality, density, and clustering.
+4. **Build a cumulative cross-episode entity network** and analyze Circe's structural role as the novel's recursive memory.
+
+## Metrics & Assessment Targets
+
+| Metric | What to Compute | Expected Range (Circe) |
+|---|---|---|
+| Unique speakers | speaker tags extracted from dramatic format | ~50–120+ |
+| Stage directions | parenthetical direction passages | ~100–300+ |
+| Scenes identified | structural segments | ~30–80 |
+| Entity categories | classified as living/dead/object/abstraction/animal | ~5 categories |
+| Graph nodes (filtered) | speakers with degree >= 2 | ~30–60 |
+| Graph density | edges / max possible edges | ~0.05–0.20 |
+| Most central node | highest degree | Bloom |
+| Reactivation ratio | Circe entities from prior episodes / total | ~20–40% |
+
+## Rubric
+
+### Exercise 1: Dramatis Personae (30 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Speaker extraction** | All speaker tags extracted via regex; count reported; top 30 by frequency shown | Most speakers extracted | Extraction broken |
+| **Entity classification** | All speakers classified into 5+ categories; distribution shown as chart | Binary classification (person/other) | No classification |
+| **Count comparison** | Entity count compared to combined count from all prior episodes | Some comparison | No comparison |
+
+### Exercise 2: Interaction Graph (35 points)
+
+| Criterion | Excellent (12) | Satisfactory (8) | Needs Work (4) |
+|---|---|---|---|
+| **Graph construction** | Co-appearance graph built from scenes; nodes, edges, weights correct | Graph built with some errors | Not constructed |
+| **Graph metrics** | Degree distribution, density, centrality computed; most central nodes and strongest edges identified | Some metrics computed | No metrics |
+| **Visualization** | Graph visualized with color-coded entity types; force-directed layout readable | Basic graph plot | No visualization |
+
+### Exercise 3: The Novel in One Graph (25 points)
+
+| Criterion | Excellent (10) | Satisfactory (7) | Needs Work (4) |
+|---|---|---|---|
+| **Cross-episode extraction** | Entities extracted from 5+ prior episodes; cumulative network built | 3+ episodes included | Fewer than 3 |
+| **Reactivation analysis** | Circe reactivation ratio computed; new vs. reactivated connections distinguished | Some analysis | No analysis |
+| **Structural interpretation** | Discusses what the graph reveals about the hallucination as "the novel remembering itself" | Brief interpretation | No interpretation |
+
+### Diving Deeper (10 points, bonus)
+
+| Criterion | Points |
+|---|---|
+| Community detection (Louvain) with psychological interpretation | +3 |
+| Temporal network animation (scene-by-scene growth) | +3 |
+| Entity transformation tracking (Bloom-as-woman = same node?) | +2 |
+| Interactive dashboard (Plotly/Streamlit) of novel's entity network | +2 |
+
+## Reference Implementation
+
+See [`week15_circe.py`](week15_circe.py)
