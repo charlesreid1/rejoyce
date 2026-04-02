@@ -55,7 +55,7 @@ def prepare_for_texttiling(text):
     """
     tokens = word_tokenize(text)
     paragraphs = []
-    chunk_size = 1000  # Increased from 200 to 1000 to avoid artificial boundaries
+    chunk_size = 1000
 
     for i in range(0, len(tokens), chunk_size):
         chunk = " ".join(tokens[i : i + chunk_size])
@@ -100,10 +100,7 @@ def segment_penelope():
     # TextTiling segmentation
     prepared = prepare_for_texttiling(penelope)
     try:
-        # Tune TextTilingTokenizer parameters to better detect genuine topic shifts
-        tiler = TextTilingTokenizer(
-            w=20, k=10
-        )  # Increased window size and smoothing block size
+        tiler = TextTilingTokenizer(w=20, k=10)
         segments = tiler.tokenize(prepared)
         tt_boundaries = []
         pos = 0

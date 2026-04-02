@@ -243,7 +243,6 @@ def detect_interpolations(sections):
             continue
 
         # Score each sentence by similarity to section centroid
-        # FIXED: Use TF-IDF for sentences too, for apples-to-apples comparison
         scored = []
         for sent in sentences:
             sent_vec = sentence_tfidf_vector(sent, df, N)

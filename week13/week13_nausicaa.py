@@ -548,8 +548,8 @@ def visualize_profiles(profiles):
         )
 
     plt.tight_layout()
-    plt.savefig("stylometric_profiles.png", dpi=300, bbox_inches="tight")
-    print("Visualization saved as 'stylometric_profiles.png'")
+    plt.savefig(os.path.join(os.path.dirname(__file__), "stylometric_profiles.png"), dpi=300, bbox_inches="tight")
+    print("Visualization saved as 'week13/stylometric_profiles.png'")
     plt.close()
 
 

@@ -308,7 +308,7 @@ LATIN_STOPWORDS = {
     "vos",
     "vester",
     "vestrum",
-    # Additional Latin words to improve detection
+    # Additional common Latin words
     "atque",
     "enim",
     "tamen",
@@ -495,7 +495,7 @@ LATIN_STOPWORDS = {
     "neuter",
     "uterlibet",
     "uterque",
-    # More Latin words for better detection to prevent misclassification as French
+    # Latin pronouns, numerals, and verb conjugations
     "ne",
     "mihi",
     "tibi",
@@ -896,7 +896,7 @@ LATIN_VERB_ENDINGS = {
     "emur",
     "emini",
     "entur",
-    # Additional Latin verb endings
+    # Standard conjugation endings
     "o",
     "s",
     "t",
@@ -984,7 +984,7 @@ def detect_languages(text, window_size=1):
             overlap = sum(1 for t in tokens if t in stops)
             scores[lang] = overlap / len(tokens)
 
-        # Boost Latin score based on verb endings if there's some Latin stopword overlap
+        # Boost Latin score when verb morphology supports the stopword signal
         if scores["latin"] > 0:
             latin_endings = sum(
                 1
@@ -992,12 +992,11 @@ def detect_languages(text, window_size=1):
                 if any(t.endswith(ending) for ending in LATIN_VERB_ENDINGS)
             )
             if latin_endings > 0:
-                scores["latin"] += 0.1  # Boost score for Latin verb endings
+                scores["latin"] += 0.1
 
-        # Special case for the specific Latin phrase that was being misclassified as French
-        # "Descende, calve, ut ne nimium decalveris"
+        # Phrases with distinctive Latin vocabulary get an extra boost
         if any("descende" in t.lower() or "calve" in t.lower() for t in tokens):
-            scores["latin"] += 0.2  # Strong boost for this specific Latin phrase
+            scores["latin"] += 0.2
 
         # Default to English if no clear winner
         best_lang = max(scores, key=scores.get)
@@ -1022,7 +1021,7 @@ def detect_languages(text, window_size=1):
     for sent, lang, scores in non_english[:15]:
         print(f"  [{lang:>8}] {sent}")
 
-    # Note about failure cases
+    # Known failure cases
     print("\n  Note: Dialectal English like 'De boys up in de hayloft' may be")
     print("        misclassified as Latin due to shared tokens like 'de'.")
     print("  Note: Cross-language homographs like 'hat' (German 'haben')")
@@ -1035,24 +1034,20 @@ def non_english_token_proportion(text):
     """Estimate the proportion of non-English tokens in the episode."""
     tokens = [t.lower() for t in word_tokenize(text) if t.isalpha()]
 
-    # Heuristic: words not in an English word list
-    # Use WordNet + NLTK English words corpus + English stopwords for better coverage
+    # Build English word set from WordNet lemmas, NLTK words corpus, and stopwords
     english_words = set()
 
-    # Add WordNet entries
     for synset in wordnet.all_synsets():
         for lemma in synset.lemmas():
             english_words.add(lemma.name().lower().replace("_", " "))
 
-    # Supplement with NLTK words corpus for better coverage including function words
     try:
         from nltk.corpus import words
 
         english_words.update(words.words())
     except LookupError:
-        pass  # If words corpus not available, continue with WordNet only
+        pass
 
-    # Supplement with English stopwords to include function words that are missing from WordNet
     english_words.update(stopwords.words("english"))
 
     non_english = [t for t in tokens if t not in english_words and len(t) > 2]
@@ -1062,9 +1057,8 @@ def non_english_token_proportion(text):
     print(f"  ({len(non_english)} of {len(tokens)} alpha tokens)")
     print(f"  Sample non-English tokens: {non_english[:20]}")
 
-    # Note about the limitation of this heuristic
-    print("  Note: This heuristic is flawed because WordNet lacks function words.")
-    print("  Consider supplementing with a proper English word list.")
+    print("  Note: This heuristic depends on the coverage of the combined word lists.")
+    print("  Archaic or dialectal spellings may still be counted as non-English.")
 
     return proportion
 
@@ -1139,13 +1133,11 @@ def hypothesize_parse(word):
     """Attempt to decompose a compound or neologism into recognizable parts."""
     word_lower = word.lower()
 
-    # Pre-check against German words to avoid spurious decompositions
-    # Skip English compound splitting for known German words
+    # Skip English compound splitting for known German/foreign words
     german_stopwords = (
         set(stopwords.words("german")) if "german" in stopwords.fileids() else set()
     )
 
-    # Extended check for common German words that might not be in stopwords
     known_german_words = {
         "nacheinander",
         "nebeneinander",

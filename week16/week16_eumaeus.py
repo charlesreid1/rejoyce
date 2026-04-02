@@ -23,7 +23,6 @@ from nltk.probability import FreqDist
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import cmudict
-from nltk import ne_chunk
 import matplotlib
 
 matplotlib.use("Agg")
@@ -39,8 +38,6 @@ for resource in [
     "averaged_perceptron_tagger",
     "averaged_perceptron_tagger_eng",
     "cmudict",
-    "maxent_ne_chunker",
-    "words",
 ]:
     nltk.download(resource, quiet=True)
 
@@ -122,18 +119,9 @@ def compute_all_metrics(text):
     avg_sl = sum(sent_lengths) / len(sent_lengths) if sent_lengths else 1
     flesch_kincaid = 0.39 * avg_sl + 11.8 * avg_syl - 15.59
 
-    # Named Entity Recognition
-    # Process a sample of sentences for performance
-    ner_sentences = sentences[:500] if len(sentences) > 500 else sentences
-    total_entities = 0
-    for sentence in ner_sentences:
-        sent_tokens = word_tokenize(sentence)
-        sent_pos = pos_tag(sent_tokens)
-        tree = ne_chunk(sent_pos)
-        total_entities += len([chunk for chunk in tree if hasattr(chunk, "label")])
-
-    # Calculate entity density per 1000 tokens
-    entity_density = (total_entities / len(tokens)) * 1000 if tokens else 0
+    # Named entity density approximation via POS tags (NNP/NNPS)
+    proper_nouns = sum(c for t, c in tag_counts.items() if t in ("NNP", "NNPS"))
+    entity_density = (proper_nouns / len(tokens)) * 1000 if tokens else 0
 
     metrics = {
         "total_tokens": len(tokens),

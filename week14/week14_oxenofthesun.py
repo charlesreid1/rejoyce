@@ -14,7 +14,6 @@ Exercises:
 """
 
 import os
-import re
 from collections import Counter
 
 import nltk
@@ -51,43 +50,12 @@ def load_episode(filename):
 # ---------------------------------------------------------------------------
 
 
-def segment_oxen(text, num_sections=9):
-    """Divide Oxen of the Sun into roughly equal sections representing
-    the chronological style periods.
+def segment_oxen(text):
+    """Segment Oxen of the Sun into sections corresponding to the
+    different historical periods Joyce is imitating.
 
     Since precise section boundaries require literary annotation,
-    we divide into N roughly equal parts as an approximation.
-    """
-    sentences = sent_tokenize(text)
-    section_size = len(sentences) // num_sections
-    sections = []
-    period_labels = [
-        "Anglo-Saxon/Medieval",
-        "Malory/Middle English",
-        "Elizabethan",
-        "King James/Bunyan",
-        "Addison/18th Century",
-        "Gibbon/Augustan",
-        "Sterne/Romantic",
-        "Victorian/Dickens",
-        "Modern/Slang",
-    ]
-
-    for i in range(num_sections):
-        start = i * section_size
-        end = start + section_size if i < num_sections - 1 else len(sentences)
-        section_text = " ".join(sentences[start:end])
-        label = period_labels[i] if i < len(period_labels) else f"Section {i + 1}"
-        sections.append((label, section_text))
-
-    return sections
-
-
-def segment_oxen_improved(text):
-    """Improved segmentation based on stylistic analysis of the text.
-
-    This segmentation attempts to identify major style changes in the text
-    that correspond to the different historical periods Joyce is imitating.
+    we use approximate boundaries based on stylistic analysis.
     """
     sentences = sent_tokenize(text)
     total_sentences = len(sentences)
@@ -290,7 +258,7 @@ def discretize_features(features, num_bins=5):
 def period_profiling():
     """Build stylistic profiles for Gutenberg reference texts and Oxen sections."""
     oxen = load_episode("14oxenofthesun.txt")
-    sections = segment_oxen_improved(oxen)
+    sections = segment_oxen(oxen)
 
     # Gutenberg reference texts (rough period mapping)
     gutenberg_refs = [
@@ -349,7 +317,7 @@ def period_profiling():
 def style_dating_game():
     """Train a period classifier and ask it to 'date' Oxen's sections."""
     oxen = load_episode("14oxenofthesun.txt")
-    sections = segment_oxen_improved(oxen)
+    sections = segment_oxen(oxen)
 
     # Training data from Gutenberg (finer-grained period labels)
     training_texts = [
@@ -400,22 +368,6 @@ def style_dating_game():
             )
             print(f"{count:>12}", end="")
         print()
-    for pred_label in labels:
-        print(f"  {pred_label:<15}", end="")
-        for true_label in labels:
-            count = sum(
-                1 for p, t in test_predictions if p == pred_label and t == true_label
-            )
-            print(f"{count:>10}", end="")
-        print()
-    for pred_label in labels:
-        print(f"  {pred_label:<15}", end="")
-        for true_label in labels:
-            count = sum(
-                1 for p, t in test_predictions if p == pred_label and t == true_label
-            )
-            print(f"{count:>10}", end="")
-        print()
 
     print(f"  Most informative features:")
     classifier.show_most_informative_features(10)
@@ -445,7 +397,7 @@ def style_dating_game():
 def arc_of_english():
     """Plot feature trajectories across Oxen's sections as a time series."""
     oxen = load_episode("14oxenofthesun.txt")
-    sections = segment_oxen_improved(oxen)
+    sections = segment_oxen(oxen)
 
     features_to_plot = [
         "avg_sent_len",

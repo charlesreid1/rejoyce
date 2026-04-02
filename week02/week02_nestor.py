@@ -98,7 +98,7 @@ def tag_and_tabulate(text, label="Nestor"):
     plt.tight_layout()
     # Sanitize label for filename (remove problematic characters)
     sanitized_label = label.lower().replace("/", "_")
-    plt.savefig(f"pos_distribution_{sanitized_label}.png")
+    plt.savefig(os.path.join(os.path.dirname(__file__), f"pos_distribution_{sanitized_label}.png"))
     plt.close()
 
     return tagged, tag_freq, ratios
@@ -156,7 +156,7 @@ def compare_to_brown(tag_freq):
     plt.xticks(x, filtered_tags)
     plt.legend()
     plt.tight_layout()
-    plt.savefig("pos_comparison.png")
+    plt.savefig(os.path.join(os.path.dirname(__file__), "pos_comparison.png"))
     plt.close()
 
 
@@ -168,11 +168,9 @@ def compare_to_brown(tag_freq):
 def split_deasy_stephen(text):
     """Heuristic split of Deasy's dialogue from Stephen's interior monologue.
 
-    Improved segmentation:
-    - Deasy's dialogue: lines attributed to him with contextual clues
-    - Stephen's interior: unattributed passages, thoughts, reflections
-
-    This uses more careful heuristics to distinguish speakers.
+    Deasy's dialogue is identified by lines starting with an em-dash that
+    contain characteristic topic words. Everything else (other dialogue,
+    narration, interior monologue) is grouped as Stephen's voice.
     """
     lines = text.split("\n")
 
@@ -313,9 +311,7 @@ def lemmatize_and_compare(text_a, text_b, label_a="Nestor", label_b="Telemachus"
         for word, tag in tagged:
             if word.isalpha():
                 wn_pos = get_wordnet_pos(tag)
-                # Special case fix for 'stared' being incorrectly tagged as noun
                 if word.lower() == "stared" and tag in ["NN", "NNS", "NNP", "NNPS"]:
-                    # Override to verb POS
                     wn_pos = wordnet.VERB
                 lemma = lemmatizer.lemmatize(word.lower(), pos=wn_pos)
                 lemmas.append(lemma)
@@ -327,7 +323,6 @@ def lemmatize_and_compare(text_a, text_b, label_a="Nestor", label_b="Telemachus"
     # Normalized difference: (freq_a/total_a) - (freq_b/total_b)
     distinctive = {}
     for lemma in freq_a:
-        # Skip stopwords and proper nouns (NNP, NNPS)
         if lemma in stop_words:
             continue
 
@@ -362,9 +357,7 @@ def lemmatization_loss_examples(text):
     for word, tag in tagged:
         if word.isalpha() and len(word) > 3:
             wn_pos = get_wordnet_pos(tag)
-            # Special case fix for 'stared' being incorrectly tagged as noun
             if word.lower() == "stared" and tag in ["NN", "NNS", "NNP", "NNPS"]:
-                # Override to verb POS
                 wn_pos = wordnet.VERB
             lemma = lemmatizer.lemmatize(word.lower(), pos=wn_pos)
             if lemma != word.lower():
@@ -377,24 +370,8 @@ def lemmatization_loss_examples(text):
         if len(forms) > 1:
             forms_list = sorted([f[0] for f in forms])
             print(f"  {lemma:<20} ← {', '.join(forms_list)}")
-            # Special case: check for the star/stared bug
-            if lemma == "star" and "stared" in forms_list:
-                print(f"    BUG DETECTED: 'stared' incorrectly lemmatized to 'star'")
-                # Show the POS tags for debugging
-                stared_info = [f for f in forms if f[0] == "stared"]
-                if stared_info:
-                    word, tag, wn_pos = stared_info[0]
-                    print(
-                        f"    'stared' tagged as: {tag}, mapped to WordNet POS: {wn_pos}"
-                    )
-                    # The issue is likely that 'stared' is being tagged as a noun (NN) instead of verb (VBD/VBN)
-                    # Let's show what the correct lemmatization should be
-                    correct_lemma = lemmatizer.lemmatize("stared", pos=wordnet.VERB)
-                    print(
-                        f"    Correct lemmatization of 'stared' (as verb): {correct_lemma}"
-                    )
 
-    # Special case: explicit check for 'riddles' vs 'riddled' as mentioned in exercise sheet
+    # Targeted check for 'riddles' vs 'riddled'
     print("\n--- Specific Test Case: 'riddles' vs 'riddled' ---")
     riddles_lemma = lemmatizer.lemmatize("riddles", pos=wordnet.NOUN)
     riddled_lemma = lemmatizer.lemmatize("riddled", pos=wordnet.VERB)

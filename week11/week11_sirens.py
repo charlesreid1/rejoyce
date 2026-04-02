@@ -120,7 +120,7 @@ def split_overture_body(text):
         ]
         body_start = structural_break
     else:
-        # Fallback: improved heuristic that allows occasional longer lines
+        # Fallback: heuristic that allows occasional longer lines
         short_line_count = 0
         for i, line in enumerate(lines):
             stripped = line.strip()
@@ -128,7 +128,7 @@ def split_overture_body(text):
                 continue
             # Overture lines are mostly short fragments, but allow some longer ones
             words = word_tokenize(stripped)
-            if len(words) < 20:  # Increased threshold slightly
+            if len(words) < 20:
                 overture_lines.append(stripped)
                 short_line_count += 1
                 # Continue collecting until we have enough fragments or hit a clearly long section
@@ -502,7 +502,7 @@ def track_motifs(text, motifs=None):
                     }
                 )
             else:
-                # Improved partial match logic: require higher word-overlap threshold
+                # Partial match: require high word-overlap threshold
                 # or multiple motif words co-occurring in the same sentence
                 motif_words = motif_lower.split()
                 if len(motif_words) > 1:
