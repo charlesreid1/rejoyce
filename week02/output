@@ -25,74 +25,73 @@ EXERCISE 1: Tag and Tabulate
 --- Nestor vs. Brown Corpus (Universal Tags) ---
 Tag        Nestor %    Brown %       Diff
 ----------------------------------------
-.             0.00%     12.71%    -12.71%
+.            16.26%     12.71%     +3.55%
 ADJ           5.62%      7.21%     -1.59%
 ADP           8.85%     12.47%     -3.62%
-ADV           3.68%      4.84%     -1.17%
+ADV           3.91%      4.84%     -0.93%
 CONJ          2.79%      3.29%     -0.49%
-DET           8.34%     11.80%     -3.46%
+DET           8.74%     11.80%     -3.06%
 NOUN         26.71%     23.73%     +2.98%
-NUM           0.00%      1.28%     -1.28%
+NUM           0.70%      1.28%     -0.58%
 PRON          8.99%      4.25%     +4.74%
-PRT           0.00%      2.57%     -2.57%
-VERB         14.62%     15.74%     -1.12%
-X            20.40%      0.12%    +20.28%
+PRT           1.77%      2.57%     -0.80%
+VERB         15.39%     15.74%     -0.35%
 
 ==============================================================
 EXERCISE 2: Deasy vs. Stephen
 ==============================================================
 
 --- Dialogue vs. Interior Monologue ---
-  Dialogue tokens:  1527
-  Interior tokens:  4022
+  Dialogue tokens:  189
+  Interior tokens:  5241
 
 --- POS Tag Distribution: Dialogue ---
-  NNP       193
-  NN        165
-  .         155
-  ,         154
-  PRP       127
-  VBD       110
-  DT         82
-  IN         78
-  JJ         76
-  VB         71
-  RB         57
-  VBP        46
-  VBZ        27
-  CC         23
-  NNS        23
+  ,          26
+  NNP        26
+  NN         23
+  VBD        16
+  .          16
+  DT         13
+  IN         11
+  PRP        10
+  VBZ         7
+  JJ          6
+  VB          5
+  RB          5
+  CC          4
+  VBG         3
+  UH          3
 
-  Noun/Verb ratio:  1.359
-  Adj/Adv ratio:    1.339
+  Noun/Verb ratio:  1.576
+  Adj/Adv ratio:    1.200
 
 --- POS Tag Distribution: Interior/Narration ---
-  NN        665
-  IN        414
-  DT        379
-  .         350
-  NNP       230
-  NNS       224
-  JJ        218
-  VBD       190
-  ,         185
-  PRP       181
-  RB        143
-  PRP$      134
-  CC        123
-  VB         85
-  VBN        72
+  NN        777
+  .         489
+  IN        479
+  DT        447
+  NNP       372
+  ,         313
+  PRP       298
+  VBD       283
+  JJ        259
+  NNS       242
+  RB        196
+  PRP$      154
+  CC        139
+  VB        126
+  VBP       105
 
-  Noun/Verb ratio:  2.127
-  Adj/Adv ratio:    1.579
+  Noun/Verb ratio:  1.867
+  Adj/Adv ratio:    1.353
 
 --- Voice Comparison ---
 Metric                        Dialogue     Interior
 --------------------------------------------------
-noun_verb_ratio                  1.359        2.127
-adj_adv_ratio                    1.339        1.579
-noun_count                     382.000     1121.000
-verb_count                     281.000      527.000
+noun_verb_ratio                  1.576        1.867
+adj_adv_ratio                    1.200        1.353
+noun_count                      52.000     1393.000
+verb_count                      33.000      746.000
 
 ==============================================================
 EXERCISE 3: Lemmatization and the Weight of History
@@ -102,33 +101,37 @@ EXERCISE 3: Lemmatization and the Weight of History
 Lemma                  Nestor (norm) Telemachus (norm)       Diff
 --------------------------------------------------------------
 mr                           0.00921         0.00027   +0.00893
-be                           0.02560         0.01690   +0.00870
 deasy                        0.00786         0.00000   +0.00786
 sir                          0.00898         0.00204   +0.00694
-of                           0.02874         0.02249   +0.00626
-their                        0.00764         0.00164   +0.00600
-the                          0.05974         0.05437   +0.00536
 know                         0.00472         0.00123   +0.00349
-a                            0.03054         0.02712   +0.00342
-they                         0.00539         0.00218   +0.00321
-what                         0.00561         0.00300   +0.00262
-will                         0.00382         0.00164   +0.00218
-this                         0.00314         0.00136   +0.00178
 back                         0.00269         0.00095   +0.00174
-no                           0.00292         0.00123   +0.00169
-do                           0.00494         0.00327   +0.00167
-but                          0.00337         0.00177   +0.00160
 never                        0.00157         0.00000   +0.00157
 sargent                      0.00157         0.00000   +0.00157
-just                         0.00180         0.00027   +0.00152
+boy                          0.00157         0.00014   +0.00144
+book                         0.00157         0.00014   +0.00144
+yes                          0.00225         0.00082   +0.00143
+one                          0.00314         0.00177   +0.00137
+pyrrhus                      0.00135         0.00000   +0.00135
+riddle                       0.00135         0.00000   +0.00135
+sheet                        0.00135         0.00000   +0.00135
+world                        0.00135         0.00014   +0.00121
+end                          0.00135         0.00014   +0.00121
+good                         0.00202         0.00082   +0.00120
+moment                       0.00157         0.00041   +0.00116
+form                         0.00157         0.00041   +0.00116
+shout                        0.00157         0.00041   +0.00116
 
 --- Lemmatization Collapses (surface forms → single lemma) ---
-  know                 ← knew, known, knows
+  know                 ← knew, knew, known, knows
+  go                   ← going, gone, gone, went
   be                   ← been, being, were
-  go                   ← going, gone, went
+  hear                 ← heard, heard, hearing
+  cry                  ← cried, cried, cries
   call                 ← called, calling, calls
   write                ← writes, written, wrote
+  arm                  ← armed, arms, arms
   step                 ← stepped, stepping, steps
+  shout                ← shouted, shouts, shouts
   leave                ← leaves, left
   say                  ← said, saying
   glance               ← glances, glancing
@@ -143,24 +146,32 @@ just                         0.00180         0.00027   +0.00152
   open                 ← opened, opening
   jerk                 ← jerked, jerks
   form                 ← formed, forms
+  repeat               ← repeated, repeated
   wave                 ← waves, waving
   bend                 ← bending, bends
   turn                 ← turned, turning
-  hear                 ← heard, hearing
+  lie                  ← lies, lies
   rustle               ← rustled, rustling
   crowd                ← crowding, crowds
   strap                ← strapped, strapping
   stand                ← standing, stood
-  cry                  ← cried, cries
   leap                 ← leaped, leaping
+  glass                ← glasses, glasses
   bear                 ← born, borne
-  arm                  ← armed, arms
   star                 ← stared, stars
+  scrap                ← scraped, scraped
   listen               ← listened, listening
   rattle               ← rattled, rattling
+  symbol               ← symbols, symbols
   move                 ← moved, moves
   copy                 ← copied, copies
+  heap                 ← heaped, heaped
+  proud                ← proudest, proudest
   begin                ← began, beginning
-  shout                ← shouted, shouts
   pass                 ← passed, passing
   sin                  ← sinned, sins
+
+--- Specific Test Case: 'riddles' vs 'riddled' ---
+  'riddles' (noun) → 'riddle'
+  'riddled' (verb) → 'riddle'
+  Note: Both forms lemmatize to the same base form, showing the loss of distinction.

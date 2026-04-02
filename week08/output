@@ -3,32 +3,32 @@ EXERCISE 1: Train and Generate
 ==============================================================
 
 --- Generated from Lestrygonians (bigram) ---
-  1. of your charges ? suggested with a rabbi . try all go to him , drinking electricity : i . ’ ll take 
-  2. on him pike hoses she did not exactly witty as pawns . a sprig of the same horses . in the land . he
-  3. bloom walked , silver over her mouth full . . heights , off some day . or fivebarred gate . the glen
-  4. a day joe chamberlain was a second somewhere . . a man for her fat on . thinking . . . cycleshop .
-  5. her . sum more filleted lemon sole , slush of your hare . he turned up something green playing the b
+  1. sorry to ask him . if i had mumbled sweetsour of his notice to be surprised they gave me ? s paralla
+  2. naughty darling because i heard perhaps . . work for ten shillings , taking a new set his eyes bulgi
+  3. foot on your daughters inveigling them waiting in my literary etherial people long ! loosen a — ther
+  4. theodore ’ s the allusion is getting £ . coming from its best butter . staring with a good . hook . 
+  5. reliable inkeraser kansell , martyr , sprawling suburbs , she wore choir picnic too they mistrust wh
 
 --- Generated from Lestrygonians (trigram) ---
-  1. mr bloom walked towards dawson street , mr bloom asked .
-  2. chargesheets crammed with cases get their percentage manufacturing crime .
-  3. duds .
-  4. .
-  5. life .
+  1. keyes : two months if i was told that by a — well , thanks .
+  2. and minced up .
+  3. day she wore choir picnic at the bar , hats shoved back , feeling again .
+  4. shirt gently , warning her : eyes , woman .
+  5. must almost see it now .
 
 --- Generated from Proteus (bigram) ---
-  1. her love he called queen victoria ? my feet . to her lord , pillowed and , stephen . to a red nose .
-  2. . occam thought through the suck his feet are consubstantial father , again his kind ran from a wido
-  3. . human shells . of them , won ’ . of ... weak wasting hand gentle , gentleman poet . no more .
-  4. dublins in tripudium , soon ceasing , nought , her lord , je suis socialiste . the drunken little be
-  5. deux minutes . pushedback chairs , a livid sea money ? et erant valde bona . of the land a fourworde
+  1. elbowed by the contransmagnificandjewbangtantiality . feet out of his fustian shirt , silent , stron
+  2. wolf ’ s library where you have forgotten kevin egan rolls gunpowder cigarettes through it tuesday w
+  3. rule , our sins , his snout lifted , qui vous savez ah , i am i ? her hand on the black clouds anywh
+  4. would you will leave me soon ceasing , the cornet player . consubstantial father ’ s midwatches i sp
+  5. aside and two maries . do , nebeneinander . beans down , he stopped to mulligan ’ s castoffs , crick
 
 --- Generated from Proteus (trigram) ---
-  1. his shadow lay over the dead .
-  2. spent , its speech ceases .
-  3. moon , his feet , curling , unfurling many crests , every ninth , breaking , plashing , from farther
-  4. he stood suddenly , his feet .
-  5. .
+  1. groped vainly in his broad bed nuncle richie , pillowed and blanketed , extends over the sand furrow
+  2. the water and , whispered to , they sigh .
+  3. that ’ s bag , the more the more .
+  4. dublins in o ’ loughlin ’ s love that dare not speak its name .
+  5. shouldering their bags and , lifting them again , waded out .
 
 ==============================================================
 EXERCISE 2: Perplexity as Style Measure
@@ -36,38 +36,70 @@ EXERCISE 2: Perplexity as Style Measure
 --- Perplexity: Lestrygonians-trained bigram model ---
 Test Text                             Perplexity
 -------------------------------------------------
-  Lestrygonians (self)                    390.93
-  Calypso (Bloom)                         582.01
-  Proteus (Stephen)                       728.61
-  Emma (Austen)                          1288.26
+  Lestrygonians (self)                    579.02
+  Calypso (Bloom)                        1020.96
+  Proteus (Stephen)                      1257.01
+  Bible (KJV)                            2093.87
 
 ==============================================================
 EXERCISE 3: Associative Chains
 ==============================================================
 
---- Top 20 Strongest Bigram Associations ---
+--- Top 20 Bigram Associations by PMI (All) ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18 
+  nosey → flynn                           6.0531       24 
+  mr → bloom                              5.5598       38 
+  men → men                               5.3586        2 
+  by → god                                5.1916        6 
+  never → put                             5.1305        3 
+  things → people                         5.1045        2 
+  some → chap                             5.0792        2 
+  other → chap                            5.0186        2 
+  so → davy                               4.8969        3 
+  little → watch                          4.8561        1 
+  today → today                           4.8561        1 
+  go → back                               4.8073        3 
+  bloom → asked                           4.7608        4 
+  used → men                              4.7608        1 
+  watch → let                             4.7608        1 
+  asked → tom                             4.7608        1 
+  where → did                             4.7608        3 
+  take → an                               4.7383        2 
+  always → bad                            4.6738        1 
+
+--- Top 20 Content-Word Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18
+  nosey → flynn                           6.0531       24
+  mr → bloom                              5.5598       38
+  men → men                               5.3586        2
+  by → god                                5.1916        6
+  never → put                             5.1305        3
+  things → people                         5.1045        2
+  some → chap                             5.0792        2
+  other → chap                            5.0186        2
+  so → davy                               4.8969        3
+  little → watch                          4.8561        1
+  today → today                           4.8561        1
+  go → back                               4.8073        3
+  bloom → asked                           4.7608        4
+  used → men                              4.7608        1
+  watch → let                             4.7608        1
+  asked → tom                             4.7608        1
+  where → did                             4.7608        3
+  take → an                               4.7383        2
+  always → bad                            4.6738        1
+
+--- Top 20 Proper Name Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+
+--- Top 20 Proper Name Bigram Associations ---
   Bigram                                P(w2|w1)    Count
   -------------------------------------------------------
-  washed → in                             1.0000        3
-  number → one                            1.0000        3
-  didn → t                                1.0000        9
-  wouldn → t                              1.0000        6
-  isn → t                                 1.0000        4
-  hely → s                                1.0000        3
-  doesn → t                               1.0000        6
-  lombard → street                        1.0000        3
-  couldn → t                              1.0000        7
-  ought → to                              1.0000        8
-  davy → byrne                            1.0000       18
-  paddy → leonard                         1.0000        8
-  bantam → lyons                          1.0000        4
-  blind → stripling                       1.0000        3
-  nosey → flynn                           0.9600       24
-  used → to                               0.9000        9
-  don → t                                 0.8667       13
-  mr → bloom                              0.8085       38
-  telling → me                            0.8000        4
-  want → to                               0.7778        7
 
 --- Cross-Sentence Associative Links (sample) ---
   said → he  (10 times)
@@ -87,53 +119,50 @@ EXERCISE 3: Associative Chains
   night → her  (2 times)
 
 --- Sample Cross-Sentence Transitions ---
-  ...Blood of the Lamb.
-     [lamb] → [his]
-  His slow feet walked him riverward, reading....
+  ...Home always breaks up when the mother
+goes.
+     [goes] → [fifteen]
+  Fifteen children he had....
 
-  ...I’d like to see them do
-the black fast Yom Kippur.
-     [kippur] → [crossbuns]
-  Crossbuns....
+  ...est they are this morning: we have sinned: we have suffered.
+     [suffered] → [he]
+  He
+read the scarlet letters on their five tall white hats: H...
 
-  ...After one.
-     [one] → [timeball]
-  Timeball on the ballastoffice is down....
+  ...lumtree’s potted
+under the obituaries, cold meat department.
+     [department] → [you]
+  You can’t lick ‘em....
 
-  ...Molly
-tasting it, her veil up.
-     [up] → [sister]
-  Sister?...
+  ...Rabbitpie we
+had that day.
+     [day] → [people]
+  People looking after her....
 
-  ...O yes!
-     [yes] → [mrs]
-  Mrs Miriam Dandrade that sold me her old
-wraps and black und...
+  ...Mr Bloom asked.
+     [asked] → [mina]
+  —Mina Purefoy?...
 
-  ...ter all with the job they have especially the young
-hornies.
-     [hornies] → [that]
-  That horsepoliceman the day Joe Chamberlain was given his
-de...
+  ...She broke off suddenly.
+     [suddenly] → [there]
+  —There he is, she said....
 
-  ...loud hiding the sun slowly,
-shadowing Trinity’s surly front.
-     [front] → [trams]
-  Trams passed one another, ingoing,
-outgoing, clanging....
+  ...Pothunters too.
+     [too] → [fear]
+  Fear injects juices make
+it tender enough for them....
 
-  ...How time flies,
-eh?
-     [eh] → [showing]
-  Showing long red pantaloons under his skirts....
+  ...I have it.
+     [it] → [it]
+  It grew bigger and bigger and bigger....
 
-  ...Then she mightn’t
-like it.
-     [it] → [women]
-  Women won’t pick up pins....
+  ...ished over her I lay, full lips full open, kissed her mouth.
+     [mouth] → [yum]
+  Yum....
 
-  ...Too
-heady.
-     [heady] → [yes]
-  Yes, it is....
+  ...odendrons a
+nannygoat walking surefooted, dropping currants.
+     [currants] → [screened]
+  Screened under ferns
+she laughed warmfolded....
 
