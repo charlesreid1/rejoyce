@@ -1,0 +1,168 @@
+==============================================================
+EXERCISE 1: Train and Generate
+==============================================================
+
+--- Generated from Lestrygonians (bigram) ---
+  1. . too . send him like a man , cold noses . not saying anything . to be merry . s ad
+  2. esthetes they paused at epsom . museum standing between the altar . chinese eating eggs fifty thousa
+  3. on the where least expected that ’ s head in mullingar , shoulders and munched hum un munchday . cel
+  4. have . the chiltern hundreds and home . molly looks out into his descendants musterred and gingerpop
+  5. drop into his way it ? faint brown thomas connellan ’ s alf bergan or am . fun gets some time with a
+
+--- Generated from Lestrygonians (trigram) ---
+  1. on show .
+  2. member of the bars : don giovanni , a stick and an umbrella dangled to his lips with two smart girls
+  3. — day , i heard of .
+  4. halffed enthusiasts .
+  5. believe you .
+
+--- Generated from Proteus (bigram) ---
+  1. his boots are your damned lawdeedaw airs here ? trascines her bare feet . un demi sétier ! , bayed a
+  2. his broadtoed boots trod again slowly in the press . he said . a mahamanvantara . father lies . a wr
+  3. my own house of brown steersmen and master goff and no less ! jésus by christ ! a pickmeup . can put
+  4. with the shallows . on the air , unsought by the footpace ( now . a pin in our mighty mother . i am 
+  5. backache pills . lows of the post office slammed in the bloody bits man that was a cocked hindleg , 
+
+--- Generated from Proteus (trigram) ---
+  1. — c ’ est tordant , vous savez ah , poor dogsbody !
+  2. he threw it .
+  3. his hindpaws then scattered the sand again with a bang shotgun , bits man spattered walls all brass 
+  4. ah , see now !
+  5. dane vikings , torcs of tomahawks aglitter on their creepystools in heaven spilt from their pintpots
+
+==============================================================
+EXERCISE 2: Perplexity as Style Measure
+==============================================================
+--- Perplexity: Lestrygonians-trained bigram model ---
+Test Text                             Perplexity
+-------------------------------------------------
+  Lestrygonians (self)                    579.02
+  Calypso (Bloom)                        1020.96
+  Proteus (Stephen)                      1257.01
+  Bible (KJV)                            2093.87
+
+==============================================================
+EXERCISE 3: Associative Chains
+==============================================================
+
+--- Top 20 Bigram Associations by PMI (All) ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18 
+  nosey → flynn                           6.0531       24 
+  mr → bloom                              5.5598       38 
+  men → men                               5.3586        2 
+  by → god                                5.1916        6 
+  never → put                             5.1305        3 
+  things → people                         5.1045        2 
+  some → chap                             5.0792        2 
+  other → chap                            5.0186        2 
+  so → davy                               4.8969        3 
+  little → watch                          4.8561        1 
+  today → today                           4.8561        1 
+  go → back                               4.8073        3 
+  bloom → asked                           4.7608        4 
+  used → men                              4.7608        1 
+  watch → let                             4.7608        1 
+  asked → tom                             4.7608        1 
+  where → did                             4.7608        3 
+  take → an                               4.7383        2 
+  always → bad                            4.6738        1 
+
+--- Top 20 Content-Word Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18
+  nosey → flynn                           6.0531       24
+  mr → bloom                              5.5598       38
+  men → men                               5.3586        2
+  by → god                                5.1916        6
+  never → put                             5.1305        3
+  things → people                         5.1045        2
+  some → chap                             5.0792        2
+  other → chap                            5.0186        2
+  so → davy                               4.8969        3
+  little → watch                          4.8561        1
+  today → today                           4.8561        1
+  go → back                               4.8073        3
+  bloom → asked                           4.7608        4
+  used → men                              4.7608        1
+  watch → let                             4.7608        1
+  asked → tom                             4.7608        1
+  where → did                             4.7608        3
+  take → an                               4.7383        2
+  always → bad                            4.6738        1
+
+--- Top 20 Proper Name Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+
+--- Top 20 Proper Name Bigram Associations ---
+  Bigram                                P(w2|w1)    Count
+  -------------------------------------------------------
+
+--- Cross-Sentence Associative Links (sample) ---
+  said → he  (10 times)
+  said → i  (7 times)
+  coming → is  (3 times)
+  that → yes  (3 times)
+  me → i  (3 times)
+  so → davy  (3 times)
+  him → does  (2 times)
+  too → they  (2 times)
+  is → the  (2 times)
+  it → he  (2 times)
+  out → molly  (2 times)
+  too → now  (2 times)
+  said → how  (2 times)
+  that → just  (2 times)
+  night → her  (2 times)
+
+--- Sample Cross-Sentence Transitions ---
+  ...Home always breaks up when the mother
+goes.
+     [goes] → [fifteen]
+  Fifteen children he had....
+
+  ...est they are this morning: we have sinned: we have suffered.
+     [suffered] → [he]
+  He
+read the scarlet letters on their five tall white hats: H...
+
+  ...lumtree’s potted
+under the obituaries, cold meat department.
+     [department] → [you]
+  You can’t lick ‘em....
+
+  ...Rabbitpie we
+had that day.
+     [day] → [people]
+  People looking after her....
+
+  ...Mr Bloom asked.
+     [asked] → [mina]
+  —Mina Purefoy?...
+
+  ...She broke off suddenly.
+     [suddenly] → [there]
+  —There he is, she said....
+
+  ...Pothunters too.
+     [too] → [fear]
+  Fear injects juices make
+it tender enough for them....
+
+  ...I have it.
+     [it] → [it]
+  It grew bigger and bigger and bigger....
+
+  ...ished over her I lay, full lips full open, kissed her mouth.
+     [mouth] → [yum]
+  Yum....
+
+  ...odendrons a
+nannygoat walking surefooted, dropping currants.
+     [currants] → [screened]
+  Screened under ferns
+she laughed warmfolded....
+

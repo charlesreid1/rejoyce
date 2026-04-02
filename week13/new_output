@@ -1,0 +1,104 @@
+==============================================================
+EXERCISE 1: The Split Test
+==============================================================
+--- The Split Test ---
+  Nausicaa split at sentence 729
+
+Metric                             Gerty   Bloom (Naus)        Calypso  Lestrygonians
+-------------------------------------------------------------------------------------
+  total_tokens                     12400           4588           5957          12852
+  total_types                       2727           1522           1989           3522
+  ttr                             0.2199         0.3317         0.3339         0.2740
+  hapax_ratio                     0.6568         0.6695         0.6626         0.6638
+  yule_k                         94.9987        62.5965        86.0208        60.2667
+  mean_sent_len                  19.0562         7.7041         8.9757         8.0687
+  median_sent_len                     10              6              7              7
+  std_sent_len                   23.2719         6.5962         6.3435         5.7334
+  exclamation_per_sent            0.0809         0.0205         0.0243         0.0298
+  question_per_sent               0.0672         0.0671         0.0608         0.0682
+  ellipsis_per_sent               0.0014         0.0000         0.0012         0.0096
+  comma_per_sent                  0.6557         0.2301         0.3990         0.2476
+  em_dash_per_sent                0.0466         0.0000         0.0706         0.0743
+
+--- Function Word Comparison (top differences) ---
+  Word              Gerty      Bloom       Diff
+  and             0.04194    0.02049    0.02145
+  she             0.02395    0.00763    0.01632
+  was             0.02097    0.00523    0.01574
+  her             0.02274    0.00915    0.01359
+  to              0.02468    0.01569    0.00898
+  had             0.00694    0.00196    0.00497
+  he              0.01081    0.00588    0.00492
+  is              0.00185    0.00632    0.00447
+  with            0.01056    0.00610    0.00446
+  a               0.02282    0.01853    0.00430
+  would           0.00476    0.00065    0.00410
+  his             0.01008    0.00632    0.00376
+  at              0.00492    0.00806    0.00315
+  but             0.00613    0.00305    0.00308
+  were            0.00387    0.00109    0.00278
+
+--- Visualization ---
+Visualization saved as 'stylometric_profiles.png'
+
+==============================================================
+EXERCISE 2: Burrows' Delta
+==============================================================
+--- Burrows' Delta: Gerty Half vs. Reference Corpus ---
+  Reference Text                 Delta
+  -------------------------------------
+  Lestrygonians                 2.0321
+  Cyclops                       2.0678
+  Bloom (Nausicaa)              2.1930
+  Lotus Eaters                  2.2569
+  Telemachus                    2.3490
+  Calypso                       2.3795
+  Scylla                        2.4388
+  Proteus                       2.7705
+
+  Lower delta = more stylistically similar
+  Note: Ideally would include Victorian sentimental fiction (e.g.,
+        Maria Cummins' 'The Lamplighter') for better comparison
+        to Gerty's romantic prose style.
+
+==============================================================
+EXERCISE 3: The Cliché Detector
+==============================================================
+--- Cliché Detector ---
+  Gerty: 1080 cliché n-grams, density: 87.10 per 1000 tokens
+  Bloom: 242 cliché n-grams, density: 52.75 per 1000 tokens
+  Ratio (Gerty/Bloom): 1.65x
+
+--- Sample Gerty Clichés ---
+    9  on account of
+    7  she could see
+    6  and she was
+    6  and that was
+    6  that he was
+    5  account of the
+    5  that she was
+    5  and it was
+    5  and there was
+    5  he could see
+    4  there was a
+    4  when she was
+    4  and she had
+    4  she had a
+    4  she felt that
+
+--- Sample Bloom Clichés ---
+    3  kind of a
+    2  it was a
+    2  a kind of
+    2  in the city
+    2  in the dark
+    2  in the morning
+    2  in the sun
+    2  what do you
+    2  it out of
+    2  at each other
+    2  look at it
+    2  to find out
+    2  out of the
+    1  it was all
+    1  might have made

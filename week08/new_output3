@@ -1,0 +1,168 @@
+==============================================================
+EXERCISE 1: Train and Generate
+==============================================================
+
+--- Generated from Lestrygonians (bigram) ---
+  1. t he comes on my mouth . witty as if i suppose they call him . all your charges ? seedcake warm , th
+  2. along sofas , dung , groping for joe chamberlain was a chunk of the tuesday ... answers iying there 
+  3. bread . ’ t taste it now he always walks outside world . . game . elijah thirtytwo chews to dive int
+  4. bluey greeny . it . we stuffing food , miss dubedat lived in hand touched his lips , when and rice .
+  5. man , the dark to call that gust . . she kissed her , venus , evening dress to eat pig ’ m ’ s heat 
+
+--- Generated from Lestrygonians (trigram) ---
+  1. a pass through hancock to see them library museum standing in the best butter all the time of year .
+  2. of course because he didn ’ t see it now .
+  3. a second helping stared towards the foodlift across his stained square of newspaper .
+  4. old friends , mrs breen ’ s standing ?
+  5. tenements , along sofas , creaking beds .
+
+--- Generated from Proteus (bigram) ---
+  1. , in strasburg terrace prudently , she said , diebus ac noctibus iniurias patiens ingemiscit . , dra
+  2. the edge of his three taverns , you come to a spit of ferrando ’ s body ambled about her , sigh . wi
+  3. . then released , soused their breasts when night . vampire , c ’ t see him in your eyes , spent , s
+  4. in the shore flabbily , stogged to all things i bet she trusts me last night : then from the shore ;
+  5. obelisk valise , oui . paree he hopes to his master goff and his helpmate , know : at clongowes gent
+
+--- Generated from Proteus (trigram) ---
+  1. pleasures of the lochlanns ran here to beach , in breeches of silk of whiterose ivory , wonder of a 
+  2. , bonne à tout faire , who rubs male nakedness in the black adiaphane .
+  3. wormwood , her hand gentle , the stoneheaps of dead builders , a mahamanvantara .
+  4. of jerkined dwarfs , my obelisk valise , around a board of abandoned platters .
+  5. he counted the creases of rucked leather wherein another ’ s or not at all .
+
+==============================================================
+EXERCISE 2: Perplexity as Style Measure
+==============================================================
+--- Perplexity: Lestrygonians-trained bigram model ---
+Test Text                             Perplexity
+-------------------------------------------------
+  Lestrygonians (self)                    579.02
+  Calypso (Bloom)                        1020.96
+  Proteus (Stephen)                      1257.01
+  Bible (KJV)                            2093.87
+
+==============================================================
+EXERCISE 3: Associative Chains
+==============================================================
+
+--- Top 20 Bigram Associations by PMI (All) ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18 
+  nosey → flynn                           6.0531       24 
+  mr → bloom                              5.5598       38 
+  men → men                               5.3586        2 
+  by → god                                5.1916        6 
+  never → put                             5.1305        3 
+  things → people                         5.1045        2 
+  some → chap                             5.0792        2 
+  other → chap                            5.0186        2 
+  so → davy                               4.8969        3 
+  little → watch                          4.8561        1 
+  today → today                           4.8561        1 
+  go → back                               4.8073        3 
+  bloom → asked                           4.7608        4 
+  used → men                              4.7608        1 
+  watch → let                             4.7608        1 
+  asked → tom                             4.7608        1 
+  where → did                             4.7608        3 
+  take → an                               4.7383        2 
+  always → bad                            4.6738        1 
+
+--- Top 20 Content-Word Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+  davy → byrne                            6.4167       18
+  nosey → flynn                           6.0531       24
+  mr → bloom                              5.5598       38
+  men → men                               5.3586        2
+  by → god                                5.1916        6
+  never → put                             5.1305        3
+  things → people                         5.1045        2
+  some → chap                             5.0792        2
+  other → chap                            5.0186        2
+  so → davy                               4.8969        3
+  little → watch                          4.8561        1
+  today → today                           4.8561        1
+  go → back                               4.8073        3
+  bloom → asked                           4.7608        4
+  used → men                              4.7608        1
+  watch → let                             4.7608        1
+  asked → tom                             4.7608        1
+  where → did                             4.7608        3
+  take → an                               4.7383        2
+  always → bad                            4.6738        1
+
+--- Top 20 Proper Name Bigram Associations by PMI ---
+  Bigram                                     PMI    Count
+  -------------------------------------------------------
+
+--- Top 20 Proper Name Bigram Associations ---
+  Bigram                                P(w2|w1)    Count
+  -------------------------------------------------------
+
+--- Cross-Sentence Associative Links (sample) ---
+  said → he  (10 times)
+  said → i  (7 times)
+  coming → is  (3 times)
+  that → yes  (3 times)
+  me → i  (3 times)
+  so → davy  (3 times)
+  him → does  (2 times)
+  too → they  (2 times)
+  is → the  (2 times)
+  it → he  (2 times)
+  out → molly  (2 times)
+  too → now  (2 times)
+  said → how  (2 times)
+  that → just  (2 times)
+  night → her  (2 times)
+
+--- Sample Cross-Sentence Transitions ---
+  ...Home always breaks up when the mother
+goes.
+     [goes] → [fifteen]
+  Fifteen children he had....
+
+  ...est they are this morning: we have sinned: we have suffered.
+     [suffered] → [he]
+  He
+read the scarlet letters on their five tall white hats: H...
+
+  ...lumtree’s potted
+under the obituaries, cold meat department.
+     [department] → [you]
+  You can’t lick ‘em....
+
+  ...Rabbitpie we
+had that day.
+     [day] → [people]
+  People looking after her....
+
+  ...Mr Bloom asked.
+     [asked] → [mina]
+  —Mina Purefoy?...
+
+  ...She broke off suddenly.
+     [suddenly] → [there]
+  —There he is, she said....
+
+  ...Pothunters too.
+     [too] → [fear]
+  Fear injects juices make
+it tender enough for them....
+
+  ...I have it.
+     [it] → [it]
+  It grew bigger and bigger and bigger....
+
+  ...ished over her I lay, full lips full open, kissed her mouth.
+     [mouth] → [yum]
+  Yum....
+
+  ...odendrons a
+nannygoat walking surefooted, dropping currants.
+     [currants] → [screened]
+  Screened under ferns
+she laughed warmfolded....
+

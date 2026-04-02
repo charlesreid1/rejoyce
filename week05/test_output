@@ -1,0 +1,95 @@
+==============================================================
+EXERCISE 1: Semantic Fields of Narcosis
+==============================================================
+--- Semantic Fields: Hypernym Analysis ---
+  flower          [flower.n.01              ] depth=11  synsets= 4  ...vascular_plant → spermatophyte → angiosperm → flower
+  languid         [dreamy.s.02              ] depth= 1  synsets= 1  ...dreamy
+  body            [body.n.01                ] depth= 6  synsets=12  ...object → whole → natural_object → body
+  pin             [pin.n.01                 ] depth= 9  synsets=15  ...decoration → adornment → jewelry → pin
+  altar           [altar.n.01               ] depth=10  synsets= 2  ...furnishing → furniture → table → altar
+  bath            [bath.n.01                ] depth= 9  synsets= 7  ...instrumentality → container → vessel → bath
+  drug            [drug.n.01                ] depth= 5  synsets= 3  ...physical_entity → causal_agent → agent → drug
+  floating        [floating.n.01            ] depth=11  synsets=15  ...sport → water_sport → swimming → floating
+  dissolve        [dissolve.n.01            ] depth= 9  synsets=12  ...section → passage → transition → dissolve
+  communion       [communion.n.01           ] depth= 9  synsets= 3  ...activity → practice → ritual → communion
+  bread           [bread.n.01               ] depth= 7  synsets= 3  ...solid → food → baked_goods → bread
+  blood           [blood.n.01               ] depth= 7  synsets= 6  ...substance → body_substance → liquid_body_substance → blood
+  lotus           [lotus.n.01               ] depth=11  synsets= 3  ...vascular_plant → aquatic_plant → water_lily → lotus
+  water           [water.n.01               ] depth= 6  synsets=10  ...matter → fluid → liquid → water
+  sacrament       [sacrament.n.01           ] depth= 9  synsets= 1  ...activity → ceremony → religious_ceremony → sacrament
+
+--- Hypernym Convergence (Lowest Common Subsumer) ---
+  flower       + body         → LCS: whole.n.02                     WuP sim: 0.471
+  flower       + pin          → LCS: whole.n.02                     WuP sim: 0.400
+  flower       + altar        → LCS: whole.n.02                     WuP sim: 0.381
+  flower       + bath         → LCS: whole.n.02                     WuP sim: 0.400
+  flower       + lotus        → LCS: vascular_plant.n.01            WuP sim: 0.727
+  body         + pin          → LCS: whole.n.02                     WuP sim: 0.533
+  body         + altar        → LCS: whole.n.02                     WuP sim: 0.500
+  body         + bath         → LCS: whole.n.02                     WuP sim: 0.533
+  body         + drug         → LCS: physical_entity.n.01           WuP sim: 0.364
+  body         + bread        → LCS: physical_entity.n.01           WuP sim: 0.308
+  body         + blood        → LCS: physical_entity.n.01           WuP sim: 0.308
+  body         + lotus        → LCS: whole.n.02                     WuP sim: 0.471
+  body         + water        → LCS: physical_entity.n.01           WuP sim: 0.333
+  pin          + altar        → LCS: artifact.n.01                  WuP sim: 0.526
+  pin          + bath         → LCS: artifact.n.01                  WuP sim: 0.556
+  pin          + lotus        → LCS: whole.n.02                     WuP sim: 0.400
+  altar        + bath         → LCS: instrumentality.n.03           WuP sim: 0.632
+  altar        + lotus        → LCS: whole.n.02                     WuP sim: 0.381
+  bath         + lotus        → LCS: whole.n.02                     WuP sim: 0.400
+  drug         + bread        → LCS: substance.n.07                 WuP sim: 0.571
+  drug         + blood        → LCS: matter.n.03                    WuP sim: 0.462
+  drug         + water        → LCS: matter.n.03                    WuP sim: 0.500
+  floating     + communion    → LCS: activity.n.01                  WuP sim: 0.600
+  floating     + sacrament    → LCS: activity.n.01                  WuP sim: 0.600
+  communion    + sacrament    → LCS: activity.n.01                  WuP sim: 0.667
+  bread        + blood        → LCS: matter.n.03                    WuP sim: 0.429
+  bread        + water        → LCS: matter.n.03                    WuP sim: 0.462
+  blood        + water        → LCS: substance.n.01                 WuP sim: 0.444
+
+==============================================================
+EXERCISE 2: Martha's Malapropism
+==============================================================
+
+--- Martha's Malapropism: world/word ---
+Pair                        Path Sim    WuP Sim  Phon Dist
+---------------------------------------------------------
+  world/word                     0.143      0.556          1
+  flower/flour                   0.100      0.250          0
+  altar/alter                    0.111      0.200          0
+  body/bawdy                     0.143      0.462          1
+  sole/soul                      0.143      0.600          0
+  sun/son                        0.143      0.600          0
+  holy/wholly                    0.333      0.500          0
+  rite/right                     0.091      0.500          0
+  bread/bred                     0.200      0.333          0
+  wine/whine                     0.167      0.286          0
+
+  Key insight: phonological closeness (low phon_dist) does NOT predict
+  semantic closeness (high similarity). The pun lives in this gap.
+
+==============================================================
+EXERCISE 3: Substitution Chains
+==============================================================
+
+--- Substitution Chains (10 steps) ---
+
+  body:
+    → body → organic structure → [dead end]
+
+  bread:
+    → bread → breadstuff → staff of life → [dead end]
+
+  flower:
+    → flower → angiosperm → flowering plant → [dead end]
+
+  drug:
+    → drug → agent → causal agent → [dead end]
+
+  water:
+    → water → H2O → binary compound → [dead end]
+
+--- Chain Convergence Check ---
+
+==============================================================

@@ -21,15 +21,15 @@ from nltk.corpus import wordnet as wn
 from nltk.corpus import cmudict
 import matplotlib.pyplot as plt
 
-for resource in ['punkt', 'punkt_tab', 'wordnet', 'omw-1.4', 'cmudict']:
+for resource in ["punkt", "punkt_tab", "wordnet", "omw-1.4", "cmudict"]:
     nltk.download(resource, quiet=True)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'txt')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "txt")
 
 
 def load_episode(filename):
     path = os.path.join(DATA_DIR, filename)
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 
@@ -38,9 +38,21 @@ def load_episode(filename):
 # ---------------------------------------------------------------------------
 
 THEMATIC_WORDS = [
-    'flower', 'languid', 'body', 'pin', 'altar', 'bath',
-    'drug', 'floating', 'dissolve', 'communion', 'bread',
-    'blood', 'lotus', 'water', 'sacrament',
+    "flower",
+    "languid",
+    "body",
+    "pin",
+    "altar",
+    "bath",
+    "drug",
+    "floating",
+    "dissolve",
+    "communion",
+    "bread",
+    "blood",
+    "lotus",
+    "water",
+    "sacrament",
 ]
 
 
@@ -62,27 +74,40 @@ def semantic_fields(words=None):
             print(f"  {word:<15} — not in WordNet")
             continue
 
-        # Use first synset (most common sense)
+        # Use first synset (most common sense), but prefer noun or verb over satellite adjectives
         ss = synsets[0]
+        # If the first synset is a satellite adjective (has depth 1), try to find a noun or verb
+        if (
+            ss.pos() == "s"
+            and len(ss.hypernym_paths()) > 0
+            and len(min(ss.hypernym_paths(), key=len)) <= 1
+        ):
+            # Look for a noun or verb synset instead
+            for s in synsets:
+                if s.pos() in ["n", "v"] and len(s.hypernym_paths()) > 0:
+                    ss = s
+                    break
         paths = ss.hypernym_paths()
         shortest_path = min(paths, key=len) if paths else []
 
         hypernym_data[word] = {
-            'synset': ss,
-            'definition': ss.definition(),
-            'num_synsets': len(synsets),
-            'path': [s.name() for s in shortest_path],
-            'depth': len(shortest_path),
+            "synset": ss,
+            "definition": ss.definition(),
+            "num_synsets": len(synsets),
+            "path": [s.name() for s in shortest_path],
+            "depth": len(shortest_path),
         }
 
-        path_str = ' → '.join(s.name().split('.')[0] for s in shortest_path[-4:])
-        print(f"  {word:<15} [{ss.name():<25}] depth={len(shortest_path):>2}  ...{path_str}")
+        path_str = " → ".join(s.name().split(".")[0] for s in shortest_path[-4:])
+        print(
+            f"  {word:<15} [{ss.name():<25}] depth={len(shortest_path):>2}  synsets={len(synsets):>2}  ...{path_str}"
+        )
 
     # Find convergence: common ancestors between thematic word pairs
     print("\n--- Hypernym Convergence (Lowest Common Subsumer) ---")
     pairs_checked = set()
     for i, w1 in enumerate(words):
-        for w2 in words[i+1:]:
+        for w2 in words[i + 1 :]:
             if w1 not in hypernym_data or w2 not in hypernym_data:
                 continue
             pair = tuple(sorted([w1, w2]))
@@ -90,15 +115,17 @@ def semantic_fields(words=None):
                 continue
             pairs_checked.add(pair)
 
-            ss1 = hypernym_data[w1]['synset']
-            ss2 = hypernym_data[w2]['synset']
+            ss1 = hypernym_data[w1]["synset"]
+            ss2 = hypernym_data[w2]["synset"]
             lcs_list = ss1.lowest_common_hypernyms(ss2)
             if lcs_list:
                 lcs = lcs_list[0]
                 sim = ss1.wup_similarity(ss2) or 0
                 if sim > 0.3:  # Only show meaningfully related pairs
-                    print(f"  {w1:<12} + {w2:<12} → LCS: {lcs.name():<30} "
-                          f"WuP sim: {sim:.3f}")
+                    print(
+                        f"  {w1:<12} + {w2:<12} → LCS: {lcs.name():<30} "
+                        f"WuP sim: {sim:.3f}"
+                    )
 
     return hypernym_data
 
@@ -106,6 +133,7 @@ def semantic_fields(words=None):
 # ---------------------------------------------------------------------------
 # Exercise 2: Martha's Malapropism and Semantic Distance
 # ---------------------------------------------------------------------------
+
 
 def marthas_malapropism():
     """Compute semantic distance between 'world' and 'word', and other near-homophones.
@@ -116,16 +144,16 @@ def marthas_malapropism():
 
     # Semantic distances
     pairs = [
-        ('world', 'word'),
-        ('flower', 'flour'),
-        ('altar', 'alter'),
-        ('body', 'bawdy'),
-        ('sole', 'soul'),
-        ('sun', 'son'),
-        ('holy', 'wholly'),
-        ('rite', 'right'),
-        ('bread', 'bred'),
-        ('wine', 'whine'),
+        ("world", "word"),
+        ("flower", "flour"),
+        ("altar", "alter"),
+        ("body", "bawdy"),
+        ("sole", "soul"),
+        ("sun", "son"),
+        ("holy", "wholly"),
+        ("rite", "right"),
+        ("bread", "bred"),
+        ("wine", "whine"),
     ]
 
     # Load CMU dict for phonological comparison
@@ -142,21 +170,34 @@ def marthas_malapropism():
         ss2 = wn.synsets(w2)
 
         if ss1 and ss2:
-            path_sim = ss1[0].path_similarity(ss2[0]) or 0
-            wup_sim = ss1[0].wup_similarity(ss2[0]) or 0
+            # Compute max similarity across all synset pairs
+            max_path_sim = 0
+            max_wup_sim = 0
+            for s1 in ss1:
+                for s2 in ss2:
+                    path_sim = s1.path_similarity(s2) or 0
+                    wup_sim = s1.wup_similarity(s2) or 0
+                    if path_sim > max_path_sim:
+                        max_path_sim = path_sim
+                    if wup_sim > max_wup_sim:
+                        max_wup_sim = wup_sim
+            path_sim = max_path_sim
+            wup_sim = max_wup_sim
         else:
             path_sim = 0
             wup_sim = 0
 
         # Phonological distance (edit distance on phoneme sequences)
-        phon_dist = '-'
+        phon_dist = "-"
         if w1 in pronouncing and w2 in pronouncing:
             p1 = pronouncing[w1][0]
             p2 = pronouncing[w2][0]
             phon_dist = nltk.edit_distance(p1, p2)
 
         pair_label = f"{w1}/{w2}"
-        print(f"  {pair_label:<25} {path_sim:>10.3f} {wup_sim:>10.3f} {str(phon_dist):>10}")
+        print(
+            f"  {pair_label:<25} {path_sim:>10.3f} {wup_sim:>10.3f} {str(phon_dist):>10}"
+        )
 
     print("\n  Key insight: phonological closeness (low phon_dist) does NOT predict")
     print("  semantic closeness (high similarity). The pun lives in this gap.")
@@ -166,36 +207,90 @@ def marthas_malapropism():
 # Exercise 3: Substitution Chains
 # ---------------------------------------------------------------------------
 
+
 def substitution_chain(start_word, steps=10):
     """Build a chain of synonym substitutions through WordNet.
 
-    At each step, replace the current word with its closest synonym
-    (the first lemma of the first synset that isn't the word itself).
+    At each step, replace the current word with a synonym from WordNet.
+    Tries to find diverse candidates by looking through all synsets.
 
     Returns the chain as a list of words.
     """
     chain = [start_word]
     current = start_word
-    visited = {start_word}
+    visited = {start_word.lower()}
 
     for _ in range(steps):
         synsets = wn.synsets(current)
         found_next = False
 
+        # Collect all possible candidates from all synsets
+        candidates = []
         for ss in synsets:
+            # First try lemmas from this synset
             for lemma in ss.lemmas():
-                candidate = lemma.name().replace('_', ' ')
-                if candidate.lower() != current.lower() and candidate.lower() not in visited:
-                    chain.append(candidate)
-                    visited.add(candidate.lower())
-                    current = candidate
-                    found_next = True
-                    break
-            if found_next:
-                break
+                candidate = lemma.name().replace("_", " ")
+                if (
+                    candidate.lower() != current.lower()
+                    and candidate.lower() not in visited
+                ):
+                    candidates.append(candidate)
+
+            # If still no candidates, try related synsets (hypernyms, hyponyms)
+            if not candidates:
+                # Check hypernyms
+                for hypernym in ss.hypernyms():
+                    for lemma in hypernym.lemmas():
+                        candidate = lemma.name().replace("_", " ")
+                        if (
+                            candidate.lower() != current.lower()
+                            and candidate.lower() not in visited
+                        ):
+                            candidates.append(candidate)
+
+                # Check hyponyms
+                for hyponym in ss.hyponyms():
+                    for lemma in hyponym.lemmas():
+                        candidate = lemma.name().replace("_", " ")
+                        if (
+                            candidate.lower() != current.lower()
+                            and candidate.lower() not in visited
+                        ):
+                            candidates.append(candidate)
+
+            # If still no candidates, try meronyms and holonyms
+            if not candidates:
+                # Check meronyms (parts)
+                for meronym in ss.part_meronyms() + ss.substance_meronyms():
+                    for lemma in meronym.lemmas():
+                        candidate = lemma.name().replace("_", " ")
+                        if (
+                            candidate.lower() != current.lower()
+                            and candidate.lower() not in visited
+                        ):
+                            candidates.append(candidate)
+
+                # Check holonyms (wholes)
+                for holonym in ss.part_holonyms() + ss.substance_holonyms():
+                    for lemma in holonym.lemmas():
+                        candidate = lemma.name().replace("_", " ")
+                        if (
+                            candidate.lower() != current.lower()
+                            and candidate.lower() not in visited
+                        ):
+                            candidates.append(candidate)
+
+        # If we have candidates, pick one
+        if candidates:
+            # Take the first valid candidate
+            best_candidate = candidates[0]
+            chain.append(best_candidate)
+            visited.add(best_candidate.lower())
+            current = best_candidate
+            found_next = True
 
         if not found_next:
-            chain.append('[dead end]')
+            chain.append("[dead end]")
             break
 
     return chain
@@ -203,7 +298,7 @@ def substitution_chain(start_word, steps=10):
 
 def run_substitution_chains():
     """Run substitution chains for key thematic words."""
-    start_words = ['body', 'bread', 'flower', 'drug', 'water']
+    start_words = ["body", "bread", "flower", "drug", "water"]
 
     print("\n--- Substitution Chains (10 steps) ---")
     all_chains = {}
@@ -216,9 +311,10 @@ def run_substitution_chains():
     # Check for convergence
     print("\n--- Chain Convergence Check ---")
     for i, w1 in enumerate(start_words):
-        for w2 in start_words[i+1:]:
-            c1 = set(w.lower() for w in all_chains[w1])
-            c2 = set(w.lower() for w in all_chains[w2])
+        for w2 in start_words[i + 1 :]:
+            # Exclude '[dead end]' from convergence check
+            c1 = set(w.lower() for w in all_chains[w1] if w != "[dead end]")
+            c2 = set(w.lower() for w in all_chains[w2] if w != "[dead end]")
             overlap = c1 & c2
             if overlap:
                 print(f"  {w1} and {w2} converge at: {overlap}")
@@ -229,6 +325,7 @@ def run_substitution_chains():
 # ---------------------------------------------------------------------------
 # Exercise Bonus: Synset richness per content word
 # ---------------------------------------------------------------------------
+
 
 def avg_synset_count(text):
     """Compute average number of WordNet synsets per content word."""
@@ -245,7 +342,9 @@ def avg_synset_count(text):
 
     avg = total_synsets / words_with_synsets if words_with_synsets else 0
     print(f"\n  Average synsets per content word: {avg:.2f}")
-    print(f"  ({words_with_synsets} words with synsets out of {len(content_words)} content words)")
+    print(
+        f"  ({words_with_synsets} words with synsets out of {len(content_words)} content words)"
+    )
     return avg
 
 
@@ -253,8 +352,8 @@ def avg_synset_count(text):
 # Main
 # ---------------------------------------------------------------------------
 
-if __name__ == '__main__':
-    lotus = load_episode('05lotuseaters.txt')
+if __name__ == "__main__":
+    lotus = load_episode("05lotuseaters.txt")
 
     print("=" * 62)
     print("EXERCISE 1: Semantic Fields of Narcosis")

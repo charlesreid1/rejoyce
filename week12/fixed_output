@@ -1,0 +1,157 @@
+==============================================================
+EXERCISE 1: Annotate and Classify
+==============================================================
+--- Segmentation ---
+  Barfly segments:        533
+  Interpolation segments: 34
+
+--- Naive Bayes Classification Results ---
+  Training samples: 396
+  Test samples:     171
+  Accuracy:         0.965
+  Balanced Accuracy:0.897
+
+--- Per-Class Metrics ---
+  barfly:
+    Precision: 0.987
+    Recall:    0.975
+    F1-Score:  0.981
+  interpolation:
+    Precision: 0.692
+    Recall:    0.818
+    F1-Score:  0.750
+
+--- Most Informative Features ---
+Most Informative Features
+                     ttr = 'medium'       interp : barfly =     22.5 : 1.0
+            avg_sent_len = 'long'         interp : barfly =     14.0 : 1.0
+            passive_rate = 'high'         interp : barfly =     12.2 : 1.0
+            avg_word_len = 'long'         interp : barfly =      6.5 : 1.0
+            avg_sent_len = 'medium'       barfly : interp =      3.9 : 1.0
+       discourse_markers = 'low'          interp : barfly =      3.4 : 1.0
+            avg_word_len = 'short'        barfly : interp =      2.9 : 1.0
+               verb_prop = 'low'          interp : barfly =      2.6 : 1.0
+            passive_rate = 'low'          barfly : interp =      2.4 : 1.0
+                adj_prop = 'medium'       interp : barfly =      1.7 : 1.0
+               noun_prop = 'low'          barfly : interp =      1.6 : 1.0
+        exclamation_rate = 'high'         barfly : interp =      1.5 : 1.0
+       first_person_rate = 'low'          interp : barfly =      1.5 : 1.0
+                adj_prop = 'high'         barfly : interp =      1.4 : 1.0
+                     ttr = 'high'         barfly : interp =      1.4 : 1.0
+
+--- Decision Tree Classification Results ---
+  Training samples: 396
+  Test samples:     171
+  Accuracy:         0.947
+  Balanced Accuracy:0.591
+
+--- Per-Class Metrics ---
+  barfly:
+    Precision: 0.947
+    Recall:    1.000
+    F1-Score:  0.973
+  interpolation:
+    Precision: 1.000
+    Recall:    0.182
+    F1-Score:  0.308
+
+==============================================================
+EXERCISE 2: The Barfly's Fingerprint
+==============================================================
+
+--- Barfly Probability Scores by Episode ---
+Computing P(barfly) for each episode using trained classifier...
+  Telemachus           P(barfly): 0.9748
+  Hades                P(barfly): 0.9869
+  Aeolus               P(barfly): 0.9677
+  Wandering Rocks      P(barfly): 0.8891
+  Nausicaa             P(barfly): 0.6492
+  Circe                P(barfly): 0.9636
+
+--- Barfly Similarity by Feature Matching ---
+Comparing episode features to barfly profile...
+  Telemachus           similarity: 0.6200
+  Hades                similarity: 0.6620
+  Aeolus               similarity: 0.6320
+  Wandering Rocks      similarity: 0.5960
+  Nausicaa             similarity: 0.5280
+  Circe                similarity: 0.6160
+
+==============================================================
+EXERCISE 3: Gigantism as Feature Amplification
+==============================================================
+--- Gigantism: Feature Amplification ---
+Feature                    Interpolations     Calypso Baseline     Reuters Baseline
+---------------------------------------------------------------------------------------
+  adj_prop                         medium               medium               medium
+  avg_sent_len                       long                short               medium
+  avg_word_len                     medium               medium               medium
+  discourse_markers                   low                  low                  low
+  exclamation_rate                 medium               medium                  low
+  first_person_rate                   low               medium                  low
+  noun_prop                        medium               medium               medium
+  passive_rate                       high                  low                 high
+  ttr                              medium               medium               medium
+  verb_prop                        medium               medium               medium
+
+  Key insight: gigantism should manifest as feature values
+  systematically MORE EXTREME than baseline prose —
+  longer sentences, more adjectives, higher latinate vocabulary.
+
+--- Interpolation Genre Analysis ---
+Genre distribution of interpolation segments:
+  biblical       : 3
+  epic           : 6
+  journalistic   : 7
+  legal          : 2
+  unknown        : 16
+
+--- Genre-Specific Feature Analysis ---
+
+Biblical genre features vs Reuters baseline:
+  adj_prop                         medium               medium
+  avg_sent_len                       long               medium
+  avg_word_len                     medium               medium
+  discourse_markers                   low                  low
+  exclamation_rate                    low                  low
+  first_person_rate                   low                  low
+  noun_prop                        medium               medium
+  passive_rate                       high                 high
+  ttr                              medium               medium
+  verb_prop                        medium               medium
+
+Epic genre features vs Reuters baseline:
+  adj_prop                         medium               medium
+  avg_sent_len                       long               medium
+  avg_word_len                     medium               medium
+  discourse_markers                   low                  low
+  exclamation_rate                    low                  low
+  first_person_rate                   low                  low
+  noun_prop                        medium               medium
+  passive_rate                       high                 high
+  ttr                                high               medium
+  verb_prop                           low               medium
+
+Unknown genre features vs Reuters baseline:
+  adj_prop                         medium               medium
+  avg_sent_len                       long               medium
+  avg_word_len                     medium               medium
+  discourse_markers                   low                  low
+  exclamation_rate                 medium                  low
+  first_person_rate                   low                  low
+  noun_prop                        medium               medium
+  passive_rate                       high                 high
+  ttr                              medium               medium
+  verb_prop                        medium               medium
+
+Journalistic genre features vs Reuters baseline:
+  adj_prop                         medium               medium
+  avg_sent_len                       long               medium
+  avg_word_len                     medium               medium
+  discourse_markers                   low                  low
+  exclamation_rate                   high                  low
+  first_person_rate                   low                  low
+  noun_prop                        medium               medium
+  passive_rate                       high                 high
+  ttr                              medium               medium
+  verb_prop                           low               medium

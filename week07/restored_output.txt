@@ -1,0 +1,287 @@
+==============================================================
+PARSING AEOLUS SECTIONS
+==============================================================
+  Found 31 sections
+  [1] [OPENING]
+  [2] GENTLEMEN OF THE PRESS
+  [3] We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDYMOUNT
+  [4] THE CROZIER AND THE PEN
+  [5] Nannetti’s reading closet. WITH UNFEIGNED REGRET IT IS WE AN
+
+==============================================================
+EXERCISE 1: TF-IDF from Scratch
+==============================================================
+--- TF-IDF Keywords vs. Joyce's Headlines ---
+
+  Section 1:
+    Joyce's headline: [OPENING]
+    TF-IDF keywords:  sandymount, rathgar, terenure, parallel, palmerston
+
+  Section 2:
+    Joyce's headline: GENTLEMEN OF THE PRESS
+    TF-IDF keywords:  murray, grossbooted, draymen, stores, brewery
+
+  Section 3:
+    Joyce's headline: We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDYMOUNT
+    TF-IDF keywords:  saviour, mario, neck, fat, murray
+
+  Section 4:
+    Joyce's headline: THE CROZIER AND THE PEN
+    TF-IDF keywords:  stepped, thumping, along, gravely, watched
+
+  Section 6:
+    Joyce's headline: DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS
+    TF-IDF keywords:  tearing, away, probably, remains, patrick
+
+  Section 7:
+    Joyce's headline: DAILY ORGAN IS TURNED OUT
+    TF-IDF keywords:  hynes, country, thump, sheet, foreman
+
+  Section 8:
+    Joyce's headline: CANVASSER AT WORK
+    TF-IDF keywords:  sllt, foreman, monks, house, bloom
+
+  Section 9:
+    Joyce's headline: THAT SOAP
+    TF-IDF keywords:  handkerchief, soap, pocket, deuce, scrawled
+
+  Section 10:
+    Joyce's headline: He entered softly. ERIN, GREEN GEM OF THE SILVER SEA
+    TF-IDF keywords:  ned, lambert, dedalus, high, newspaper
+
+  Section 11:
+    Joyce's headline: EOLIAN!
+    TF-IDF keywords:  sir, tissues, shoved, aha, knee
+
+  Section 12:
+    Joyce's headline: EXIT BLOOM
+    TF-IDF keywords:  crossblind, white, seems, round, running
+
+  Section 13:
+    Joyce's headline: matches? THE CALUMET OF PEACE
+    TF-IDF keywords:  fat, twas, fire, offered, empire
+
+  Section 14:
+    Joyce's headline: ROME
+    TF-IDF keywords:  forget, mouth, stephen, foot, meet
+
+  Section 15:
+    Joyce's headline: day... LOST CAUSES NOBLE MARQUESS MENTIONED
+    TF-IDF keywords:  loyal, greek, kyrie, lord, burke
+
+  Section 16:
+    Joyce's headline: GATHERUM
+    TF-IDF keywords:  gumley, gallaher, gate, bite, york
+
+  Section 17:
+    Joyce's headline: see? CLEVER, VERY
+    TF-IDF keywords:  south, mouth, bloody, whiteside, rhymes
+
+  Section 18:
+    Joyce's headline: newspaper thereof. LINKS WITH BYGONE DAYS OF YORE
+    TF-IDF keywords:  bushe, seymour, polished, case, volunteers
+
+  Section 19:
+    Joyce's headline: PERIOD
+    TF-IDF keywords:  magennis, say, divine, deserves, morale
+
+  Section 20:
+    Joyce's headline: focus. IMPROMPTU
+    TF-IDF keywords:  speech, stephen, addressed, yelling, along
+
+  Section 21:
+    Joyce's headline: THE EDITOR
+    TF-IDF keywords:  tell, arm, renewal, kiss, arse
+
+  Section 22:
+    Joyce's headline: jerkily. RAISING THE WIND
+    TF-IDF keywords:  bread, walked, jack, nulla, bona
+
+  Section 23:
+    Joyce's headline: WADDLER ONE SAID
+    TF-IDF keywords:  copy, waxies, dargle, trickies, roofs
+
+  Section 24:
+    Joyce's headline: FEMALES
+    TF-IDF keywords:  onehandled, adulterer, easy, poetic, licence
+
+  Section 26:
+    Joyce's headline: AEROLITHS, BELIEF
+    TF-IDF keywords:  plums, gives, crick, necks, tired
+
+  Section 27:
+    Joyce's headline: ITHACANS VOW PEN IS CHAMP.
+    TF-IDF keywords:  penelope, sandymount, rathmines, poor, remind
+
+  Section 28:
+    Joyce's headline: WHAT?—AND LIKEWISE—WHERE?
+    TF-IDF keywords:  call, plums, moses, virgilian, sophomore
+
+  Section 29:
+    Joyce's headline: FAIR JUNE DAY
+    TF-IDF keywords:  weary, sidelong, peace, gray, pavement
+
+  Section 31:
+    Joyce's headline: BLAME THEM?
+    TF-IDF keywords:  grimly, tickles, tickled, ones, almighty
+
+
+==============================================================
+EXERCISE 2: Rhetoric Detection
+==============================================================
+--- Anaphora Detection ---
+
+  Repeated opener: '—' (213 sentences)
+    → —Come on, Sandymount Green!...
+    → —Start, Palmerston Park!...
+    → —There it is, Red Murray said....
+
+  Repeated opener: 'mr' (24 sentences)
+    → Mr Bloom said, and I’ll take it round to the
+Telegraph office....
+    → Mr Bloom turned and saw the liveried porter raise his lettered cap as a
+stately ...
+    → Mr Bloom said slowly:
+
+—Well, he is one of our saviours also....
+
+  Repeated opener: 'lenehan' (15 sentences)
+    → Lenehan began to paw the tissues up from the floor, grunting as he
+stooped twice...
+    → Lenehan cried, running to the window....
+    → Lenehan
+promptly struck a match for them and lit their cigarettes in turn....
+
+  Repeated opener: 'j.' (14 sentences)
+    → J. J. O’Molloy shook his head....
+    → J. J. O’Molloy asked, looking towards the
+inner door....
+    → J. J. O’Molloy strolled to the sloping desk and began to turn back the
+pink page...
+
+  Repeated opener: 'myles' (13 sentences)
+    → Myles Crawford began on
+the Independent....
+    → Myles Crawford said with a start....
+    → Myles Crawford said....
+
+  Repeated opener: 'yes' (10 sentences)
+    → Yes....
+    → Yes?...
+    → Yes....
+
+  Repeated opener: 'let' (9 sentences)
+    → Let him take that in first....
+    → Let him give us a three months’ renewal....
+    → Let us build an altar to Jehovah....
+
+  Repeated opener: 'ned' (9 sentences)
+    → Ned Lambert it
+is....
+    → Ned Lambert, seated on the table, read on:
+
+—Or again, note the meanderings of s...
+    → Ned Lambert, laughing, struck the newspaper on his knees, repeating:
+
+—The pensi...
+
+  Repeated opener: 'professor' (6 sentences)
+    → professor MacHugh said grandly....
+    → professor MacHugh asked, coming to
+the editor and laying a firm hand on his shou...
+    → Professor MacHugh strode across the room and seized the cringing urchin
+by the c...
+
+  Repeated opener: 'stephen' (6 sentences)
+    → Stephen Dedalus, behind him, uncovered as he entered....
+    → Stephen handed over the typed sheets, pointing to the title and
+signature....
+    → Stephen asked....
+
+--- Tricolon Detection ---
+
+  Lengths: [3, 5, 2]
+    → Rathgar and Terenure
+    → Palmerston Park and upper Rathmines
+    → Sandymount Green
+
+  Lengths: [4, 6, 8]
+    → Mr Bloom stood by
+    → hearing the loud throbs of cranks
+    → watching
+the silent typesetters at their cases.
+
+  Lengths: [3, 4, 5]
+    → sixth of May
+    → time of
+the invincibles
+    → murder in the Phoenix park
+
+  Lengths: [4, 5, 4]
+    → time of
+the invincibles
+    → murder in the Phoenix park
+    → before you were born
+
+  Lengths: [10, 6, 10]
+    → MAGISTRA ARTIUM
+
+—He spoke on the law of evidence
+    → J. J. O’Molloy said
+    → of Roman justice
+as contrasted with the earlier Mosaic code
+
+  Lengths: [5, 2, 3]
+    → —It was the speech
+    → mark you
+    → the professor said
+
+  Lengths: [6, 3, 4]
+    → —You remind me of Antisthenes
+    → the professor said
+    → a disciple of
+Gorgias
+
+  Lengths: [3, 4, 3]
+    → the professor said
+    → a disciple of
+Gorgias
+    → the sophist.
+
+  Total tricolons detected: 8
+
+==============================================================
+EXERCISE 3: Headline Generation
+==============================================================
+--- Generated Headlines vs. Joyce ---
+
+#    Joyce                                              Generated                                         
+---------------------------------------------------------------------------------------------------------
+  1   [OPENING]                                          SANDYMOUNT RATHGAR TERENURE                       
+  2   GENTLEMEN OF THE PRESS                             MURRAY GROSSBOOTED DRAYMEN                        
+  3   We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDY   SAVIOUR MARIO NECK                                
+  4   THE CROZIER AND THE PEN                            STEPPED THUMPING ALONG                            
+  6   DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS     TEARING AWAY PROBABLY                             
+  7   DAILY ORGAN IS TURNED OUT                          HYNES COUNTRY THUMP                               
+  8   CANVASSER AT WORK                                  SLLT FOREMAN MONKS                                
+  9   THAT SOAP                                          HANDKERCHIEF SOAP POCKET                          
+  10  He entered softly. ERIN, GREEN GEM OF THE SILVER   NED LAMBERT DEDALUS                               
+  11  EOLIAN!                                            SIR TISSUES SHOVED                                
+  12  EXIT BLOOM                                         CROSSBLIND WHITE SEEMS                            
+  13  matches? THE CALUMET OF PEACE                      FAT TWAS FIRE                                     
+  14  ROME                                               FORGET MOUTH STEPHEN                              
+  15  day... LOST CAUSES NOBLE MARQUESS MENTIONED        LOYAL GREEK KYRIE                                 
+  16  GATHERUM                                           GUMLEY GALLAHER GATE                              
+  17  see? CLEVER, VERY                                  SOUTH MOUTH BLOODY                                
+  18  newspaper thereof. LINKS WITH BYGONE DAYS OF YOR   BUSHE SEYMOUR POLISHED                            
+  19  PERIOD                                             MAGENNIS SAY DIVINE                               
+  20  focus. IMPROMPTU                                   SPEECH STEPHEN ADDRESSED                          
+  21  THE EDITOR                                         TELL ARM RENEWAL                                  
+  22  jerkily. RAISING THE WIND                          BREAD WALKED JACK                                 
+  23  WADDLER ONE SAID                                   COPY WAXIES DARGLE                                
+  24  FEMALES                                            ONEHANDLED ADULTERER EASY                         
+  26  AEROLITHS, BELIEF                                  PLUMS GIVES CRICK                                 
+  27  ITHACANS VOW PEN IS CHAMP.                         PENELOPE SANDYMOUNT RATHMINES                     
+  28  WHAT?—AND LIKEWISE—WHERE?                          CALL PLUMS MOSES                                  
+  29  FAIR JUNE DAY                                      WEARY SIDELONG PEACE                              
+  31  BLAME THEM?                                        GRIMLY TICKLES TICKLED                            
