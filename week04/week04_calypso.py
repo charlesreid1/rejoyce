@@ -52,7 +52,7 @@ for resource in [
 ]:
     nltk.download(resource, quiet=True)
 
-SHORT = False  # True = limit to 100 sentences per text (fast); False = process all
+SHORT = True  # True = limit to 100 sentences per text (fast); False = process all
 SHORT_LIMIT = 100
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "txt")
