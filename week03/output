@@ -7,44 +7,46 @@ EXERCISE 1: The Stemmer's Struggle
   ------------------------------------------------------------------------
   witnesses                           wit                                6
   imitations                          imit                               6
-  delectation                         delect                             5
-  remembering                         rememb                             5
   hospitality                         hospit                             5
   carefully                           care                               5
-  elevating                           elev                               5
   abstrusiosities                     abstrusios                         5
-  peacocktwittering                   peacocktwitt                       5
+  elevating                           elev                               5
+  awfully                             aw                                 5
+  remembering                         rememb                             5
+  delectation                         delect                             5
   contransmagnificandjewbangtantiality contransmagnificandjewbangtanti          5
 
 --- Lancaster Stemmer: Top 10 Most Aggressive Reductions ---
   Original                            Stem                       Edit Dist
   ------------------------------------------------------------------------
   contransmagnificandjewbangtantiality contransmagnificandjewbangt          9
-  socialiste                          soc                                7
   existence                           ex                                 7
-  signatures                          sign                               6
+  socialiste                          soc                                7
   redpanting                          redp                               6
-  missionary                          miss                               6
   witnesses                           wit                                6
+  carefully                           car                                6
   consubstantial                      consubst                           6
   squealing                           squ                                6
-  carefully                           car                                6
+  visuality                           vis                                6
+  nakedness                           nak                                6
 
 --- Snowball Stemmer: Top 10 Most Aggressive Reductions ---
   Original                            Stem                       Edit Dist
   ------------------------------------------------------------------------
   witnesses                           wit                                6
   imitations                          imit                               6
-  delectation                         delect                             5
-  remembering                         rememb                             5
   hospitality                         hospit                             5
   carefully                           care                               5
-  elevating                           elev                               5
   abstrusiosities                     abstrusios                         5
-  peacocktwittering                   peacocktwitt                       5
+  elevating                           elev                               5
+  awfully                             aw                                 5
+  remembering                         rememb                             5
+  delectation                         delect                             5
   contransmagnificandjewbangtantiality contransmagnificandjewbangtanti          5
 
   Stemmer disagreement rate: 0.366 (813/2222 unique words)
+  Note: Porter and Snowball produce identical results because
+        Snowball English is a reimplementation of Porter's algorithm.
 
 ==============================================================
 EXERCISE 2: Multilingual Detection
@@ -52,15 +54,17 @@ EXERCISE 2: Multilingual Detection
 
 --- Language Detection Summary ---
   Total sentences analyzed: 709
-  english        683 sentences (96.3%)
-  french          16 sentences (2.3%)
+  english        670 sentences (94.5%)
+  latin           18 sentences (2.5%)
+  french          14 sentences (2.0%)
   italian          6 sentences (0.8%)
-  latin            3 sentences (0.4%)
   german           1 sentences (0.1%)
 
 --- Non-English Detections ---
   [   latin] De boys up in de hayloft.
-  [  french] Descende, calve, ut
+  [   latin] Let Stephen in.
+  [   latin] It lowers.
+  [   latin] Descende, calve, ut
 ne nimium decalveris.
   [ italian] O si, certo!
   [ italian] Pico della Mirandola like.
@@ -73,15 +77,19 @@ l’existence de Dieu.
   [  french] Faut pas le dire à mon père.
   [  french] —Il croit?
   [  french] —Mon père, oui.
-  [  german] Hat, tie,
-overcoat, nose.
-  [  french] Lui, c’est moi.
-  [  french] Un demi
-sétier!
+  [   latin] P. C. N., you know: physiques, chimiques et
+naturelles.
 
-  Non-English token proportion (heuristic): 0.351
-  (2022 of 5760 alpha tokens)
-  Sample non-English tokens: ['the', 'that', 'signatures', 'seaspawn', 'and', 'seawrack', 'the', 'nearing', 'that', 'snotgreen', 'bluesilver', 'signs', 'limits', 'the', 'diaphane', 'adds', 'bodies', 'was', 'them', 'bodies']
+  Note: Dialectal English like 'De boys up in de hayloft' may be
+        misclassified as Latin due to shared tokens like 'de'.
+  Note: Cross-language homographs like 'hat' (German 'haben')
+        can cause false positives in language detection.
+
+  Non-English token proportion (heuristic): 0.134
+  (769 of 5760 alpha tokens)
+  Sample non-English tokens: ['signatures', 'seaspawn', 'seawrack', 'nearing', 'snotgreen', 'bluesilver', 'signs', 'limits', 'adds', 'bodies', 'bodies', 'sanno', 'adiaphane', 'fingers', 'shells', 'nacheinander', 'beetles', 'nebeneinander', 'hangs', 'feet']
+  Note: This heuristic depends on the coverage of the combined word lists.
+  Archaic or dialectal spellings may still be counted as non-English.
 
 ==============================================================
 EXERCISE 3: Derivational Morphology and Neologism
@@ -91,8 +99,8 @@ EXERCISE 3: Derivational Morphology and Neologism
 Word                                     In WordNet?  Synsets  Analysis
 ----------------------------------------------------------------------------------------------------
   ineluctable                            Yes          1        impossible to avoid or evade:
-  nacheinander                           No           0        Compound: 'nac' (in WN) + 'heinander' (not in WN)
-  nebeneinander                          No           0        Compound: 'neb' (in WN) + 'eneinander' (not in WN)
+  nacheinander                           No           0        German word - no decomposition attempted
+  nebeneinander                          No           0        German word - no decomposition attempted
   diaphane                               No           0        Compound: 'dia' (in WN) + 'phane' (not in WN)
   adiaphane                              No           0        Compound: 'adiaph' (not in WN) + 'ane' (in WN)
   maestro                                Yes          1        an artist of consummate skill

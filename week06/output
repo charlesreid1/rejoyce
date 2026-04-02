@@ -34,68 +34,76 @@ him a woman....
 ==============================================================
 EXERCISE 2: Bloom's Stoicism vs. Narrator
 ==============================================================
---- Dialogue vs. Narration Sentiment ---
+--- Dialogue vs. Interior vs. Exterior Sentiment ---
 
   Dialogue:
     Sentences: 276
     Mean compound: 0.0048
     Variance: 0.0763
 
-  Narration/Interior:
-    Sentences: 1316
-    Mean compound: -0.0126
-    Variance: 0.0830
+  Bloom's Interior Thoughts:
+    Sentences: 223
+    Mean compound: 0.0035
+    Variance: 0.0631
 
-  Variance ratio (interior/dialogue): 1.09
+  External Narration:
+    Sentences: 1093
+    Mean compound: -0.0156
+    Variance: 0.0864
+
+  Variance ratio (interior/dialogue): 0.83
+  Variance ratio (exterior/dialogue): 1.13
 
 ==============================================================
 EXERCISE 3: Death Lexicon
 ==============================================================
 --- SentiWordNet: Death Words ---
-Word               Pos    Neg    Obj Synset
+Word               Pos    Neg    Obj Best Synset
 -------------------------------------------------------
   coffin         0.000  0.000  1.000 coffin.n.01
   cemetery       0.000  0.000  1.000 cemetery.n.01
-  grave          0.000  0.000  1.000 grave.n.01
+  grave          0.000  0.125  0.875 grave.n.02
   corpse         0.000  0.000  1.000 cadaver.n.01
   funeral        0.000  0.000  1.000 funeral.n.01
-  mourning       0.000  0.375  0.625 mourning.n.01
+  mourning       0.000  0.750  0.250 mourn.v.01
   burial         0.000  0.000  1.000 burial.n.01
   decay          0.000  0.375  0.625 decay.n.01
-  death          0.000  0.000  1.000 death.n.01
-  dead           0.000  0.000  1.000 dead.n.01
-  dying          0.000  0.625  0.375 death.n.04
+  death          0.125  0.625  0.250 death.n.03
+  dead           0.000  0.750  0.250 dead.a.01
+  dying          0.250  0.250  0.500 die.v.06
   hearse         0.000  0.000  1.000 hearse.n.01
   tomb           0.000  0.125  0.875 grave.n.02
   skeleton       0.000  0.000  1.000 skeleton.n.01
   ashes          0.000  0.000  1.000 ash.n.01
   widow          0.000  0.125  0.875 widow.n.01
   grief          0.000  0.625  0.375 grief.n.01
-  loss           0.000  0.250  0.750 loss.n.01
+  loss           0.000  0.750  0.250 loss.n.04
   weep           0.000  0.750  0.250 cry.v.02
-  sorrow         0.000  0.625  0.375 sorrow.n.01
+  sorrow         0.000  0.875  0.125 sorrow.n.02
 
 --- SentiWordNet: Proximity Words (context-dependent valence) ---
-Word               Pos    Neg    Obj Synset
+Word               Pos    Neg    Obj Best Synset
 -------------------------------------------------------
-  warm           0.250  0.000  0.750 warm.v.01
-  quiet          0.000  0.000  1.000 lull.n.02
-  home           0.000  0.000  1.000 home.n.01
+  warm           0.500  0.375  0.125 ardent.s.02
+  quiet          0.125  0.625  0.250 quiet.a.01
+  home           0.250  0.000  0.750 home.n.07
   garden         0.000  0.000  1.000 garden.n.01
-  rest           0.000  0.000  1.000 remainder.n.01
+  rest           0.125  0.000  0.875 respite.n.04
   sleep          0.000  0.000  1.000 sleep.n.01
-  peace          0.125  0.000  0.875 peace.n.01
-  gentle         0.875  0.000  0.125 pacify.v.01
-  soft           0.000  0.250  0.750 soft.a.01
+  peace          0.125  0.500  0.375 peace.n.03
+  gentle         0.250  0.750  0.000 gentle.s.01
+  soft           0.250  0.125  0.625 soft.a.02
   clean          0.000  0.000  1.000 clean_and_jerk.n.01
-  white          0.000  0.000  1.000 white.n.01
-  green          0.000  0.000  1.000 green.n.01
-  light          0.000  0.000  1.000 light.n.01
-  bloom          0.000  0.000  1.000 blooming.n.01
+  white          0.000  0.250  0.750 white.a.01
+  green          0.000  0.625  0.375 green.a.03
+  light          0.500  0.250  0.250 luminosity.n.01
+  bloom          0.625  0.000  0.375 bloom.n.04
 
-  Avg negativity of death words: 0.194
-  Avg positivity of proximity words: 0.089
+  Avg negativity of death words: 0.187
+  Avg positivity of proximity words: 0.113
+  Count of proximity words with positive scores: 12/14
 
-  Key insight: proximity words like 'rest', 'sleep', 'peace' score
-  positively in SentiWordNet, but in a funeral context they carry
-  the weight of death — context-free sentiment fails here.
+  Key insight: Only 12 of 14 proximity words
+  score positively in SentiWordNet. Words like 'rest', 'sleep', 'home'
+  have some positive sentiment, but context-free sentiment analysis
+  still fails to capture their meaning in a funeral context.

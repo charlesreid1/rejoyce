@@ -1,145 +1,0 @@
-==============================================================
-EXERCISE 1: NER as Characterization
-==============================================================
-  NER processing: 50/100 sentences  NER processing: 100/100 sentences
-  NER processing: 50/100 sentences  NER processing: 100/100 sentences
---- NER Comparison: Calypso vs. Proteus ---
-Metric                                   Calypso      Proteus
-------------------------------------------------------------
-Total tokens                                7378         7237
-Named entities found                          28           46
-Entities per 1,000 tokens                   3.80         6.36
-
---- Entity Type Distribution ---
-Type               Calypso    Proteus
--------------------------------------
-FACILITY                 1          0
-GPE                     19         26
-ORGANIZATION             2          1
-PERSON                   6         19
-
---- Sample Calypso Entities ---
-  [PERSON      ] Leopold Bloom
-  [GPE         ] Gelid
-  [GPE         ] Good
-  [GPE         ] Mouth
-  [PERSON      ] Bloom
-  [GPE         ] Prr
-  [GPE         ] Scratch
-  [GPE         ] Prr
-  [PERSON      ] Bloom
-  [GPE         ] Clean
-  [PERSON      ] Milk
-  [GPE         ] Cruel
-  [GPE         ] Curious
-  [GPE         ] Seem
-  [GPE         ] Afraid
-  [PERSON      ] Hanlon
-  [GPE         ] Wonder
-  [GPE         ] Ham
-  [GPE         ] Want
-  [FACILITY    ] Buckley
-
---- Sample Proteus Entities ---
-  [GPE         ] Ineluctable
-  [GPE         ] Snotgreen
-  [GPE         ] Limit
-  [GPE         ] Diaphane
-  [GPE         ] Shut
-  [PERSON      ] Stephen
-  [GPE         ] Jesus
-  [GPE         ] Sounds
-  [GPE         ] Los Demiurgos
-  [GPE         ] Sandymount
-  [GPE         ] Crush
-  [GPE         ] Wild
-  [PERSON      ] Dominie
-  [PERSON      ] Deasy
-  [PERSON      ] Won
-  [GPE         ] Sandymount
-  [GPE         ] Madeline
-  [GPE         ] Rhythm
-  [GPE         ] Basta
-  [PERSON      ] Leahy
-
-==============================================================
-EXERCISE 2: Noun Phrase Chunking
-==============================================================
-  Chunking: 50/100 sentences  Chunking: 100/100 sentences
-
---- Top 25 Noun Phrases: Calypso ---
-     4  the cat
-     3  butter
-     3  ’ t
-     3  eyes
-     3  the dark
-     2  the kitchen
-     2  the kettle
-     2  the fire
-     2  stiffly round
-     2  a leg
-     2  the table
-     2  tail
-     2  mr bloom
-     2  prr
-     2  the pussens
-     2  —
-     2  anything
-     2  course
-     2  sir
-     2  stamps
-     1  mr leopold bloom ate
-     1  the inner organs
-     1  beasts
-     1  fowls
-     1  thick giblet soup
-
---- Top 25 Prepositional Phrases: Calypso ---
-
-  Total unique NPs: 170
-  Total unique PPs: 0
-
-==============================================================
-EXERCISE 3: Entity Co-occurrence
-==============================================================
-  Co-occurrence: 10/100 paragraphs  Co-occurrence: 20/100 paragraphs  Co-occurrence: 30/100 paragraphs  Co-occurrence: 40/100 paragraphs  Co-occurrence: 50/100 paragraphs  Co-occurrence: 60/100 paragraphs  Co-occurrence: 70/100 paragraphs  Co-occurrence: 80/100 paragraphs  Co-occurrence: 90/100 paragraphs  Co-occurrence: 100/100 paragraphs
-
---- Entity Co-occurrence: Calypso ---
-  Total paragraphs/segments: 100
-  Unique entities found: 150
-
---- Entities Appearing in Most Paragraphs ---
-  Bloom                          appears in   4 paragraphs
-  Good                           appears in   3 paragraphs
-  Wonder                         appears in   2 paragraphs
-  Dlugacz                        appears in   2 paragraphs
-  Gibraltar                      appears in   2 paragraphs
-  Molly                          appears in   2 paragraphs
-  George                         appears in   2 paragraphs
-  Dorset                         appears in   2 paragraphs
-  Fifteen                        appears in   2 paragraphs
-  Hurry                          appears in   2 paragraphs
-  Eccles                         appears in   2 paragraphs
-  Jaffa                          appears in   2 paragraphs
-  Grey                           appears in   2 paragraphs
-  Bold                           appears in   2 paragraphs
-  Milly                          appears in   2 paragraphs
-
---- Top 15 Co-occurring Entity Pairs ---
-    1  Good <-> Mouth
-    1  Prr <-> Scratch
-    1  Bloom <-> Clean
-    1  Cruel <-> Curious
-    1  Cruel <-> Seem
-    1  Curious <-> Seem
-    1  Buckley <-> Dlugacz
-    1  Buckley <-> Ham
-    1  Buckley <-> Want
-    1  Dlugacz <-> Ham
-    1  Dlugacz <-> Want
-    1  Ham <-> Want
-    1  Gibraltar <-> Hard
-    1  Gibraltar <-> Old
-    1  Gibraltar <-> Pity
-
-  Entity trajectory plot saved to week04/week04_entity_trajectory.png

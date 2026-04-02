@@ -21,22 +21,23 @@ import matplotlib.pyplot as plt
 import math
 
 # Ensure NLTK data is available
-for resource in ['punkt', 'punkt_tab', 'stopwords', 'gutenberg']:
+for resource in ["punkt", "punkt_tab", "stopwords", "gutenberg"]:
     nltk.download(resource, quiet=True)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'txt')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "txt")
 
 
 def load_episode(filename):
     """Load raw text for an episode."""
     path = os.path.join(DATA_DIR, filename)
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 
 # ---------------------------------------------------------------------------
 # Exercise 1: Tokenize and Profile
 # ---------------------------------------------------------------------------
+
 
 def tokenize_and_profile(text, label="Episode"):
     """Compute basic token statistics for a text.
@@ -56,38 +57,66 @@ def tokenize_and_profile(text, label="Episode"):
     alpha_tokens = [t for t in tokens if t.isalpha()]
 
     stats = {
-        'label': label,
-        'total_tokens': len(tokens),
-        'total_alpha_tokens': len(alpha_tokens),
-        'total_types': len(types),
-        'type_token_ratio': len(types) / len(alpha_tokens) if alpha_tokens else 0,
-        'total_sentences': len(sentences),
-        'avg_sentence_length': len(tokens) / len(sentences) if sentences else 0,
-        'hapax_legomena': sum(1 for w, c in FreqDist(t.lower() for t in alpha_tokens).items() if c == 1),
+        "label": label,
+        "total_tokens": len(tokens),
+        "total_alpha_tokens": len(alpha_tokens),
+        "total_types": len(types),
+        "type_token_ratio": len(types) / len(alpha_tokens) if alpha_tokens else 0,
+        "total_sentences": len(sentences),
+        "avg_sentence_length": len(tokens) / len(sentences) if sentences else 0,
+        "hapax_legomena": sum(
+            1 for w, c in FreqDist(t.lower() for t in alpha_tokens).items() if c == 1
+        ),
     }
-    stats['hapax_ratio'] = stats['hapax_legomena'] / stats['total_types'] if stats['total_types'] else 0
+    stats["hapax_ratio"] = (
+        stats["hapax_legomena"] / stats["total_types"] if stats["total_types"] else 0
+    )
     return stats
 
 
 def compare_profiles():
     """Compare Telemachus with a reference Gutenberg text (Austen's Emma ch.1 equivalent)."""
-    telemachus = load_episode('01telemachus.txt')
+    telemachus = load_episode("01telemachus.txt")
     telem_stats = tokenize_and_profile(telemachus, label="Telemachus")
 
     # Use a comparable-length passage from Austen's Emma via Gutenberg
-    emma_text = gutenberg.raw('austen-emma.txt')
-    # Take roughly the same number of characters as Telemachus
-    emma_excerpt = emma_text[:len(telemachus)]
+    emma_text = gutenberg.raw("austen-emma.txt")
+
+    # Truncate at sentence boundary for cleaner comparison
+    from nltk.tokenize import sent_tokenize
+
+    target_chars = len(telemachus)
+
+    emma_sentences = sent_tokenize(emma_text)
+    emma_excerpt = ""
+    current_length = 0
+
+    # Build excerpt by adding complete sentences until we reach target length
+    for sentence in emma_sentences:
+        sentence_length = len(sentence) + 1  # +1 for space
+        if current_length + sentence_length <= target_chars:
+            emma_excerpt += sentence + " "
+            current_length += sentence_length
+        else:
+            break
+
     emma_stats = tokenize_and_profile(emma_excerpt, label="Emma (excerpt)")
 
     print(f"{'Metric':<30} {'Telemachus':>15} {'Emma (excerpt)':>15}")
     print("-" * 62)
-    for key in ['total_tokens', 'total_alpha_tokens', 'total_types',
-                'type_token_ratio', 'total_sentences', 'avg_sentence_length',
-                'hapax_legomena', 'hapax_ratio']:
+    for key in [
+        "total_tokens",
+        "total_alpha_tokens",
+        "total_types",
+        "type_token_ratio",
+        "total_sentences",
+        "avg_sentence_length",
+        "hapax_legomena",
+        "hapax_ratio",
+    ]:
         tv = telem_stats[key]
         ev = emma_stats[key]
-        fmt = '.4f' if isinstance(tv, float) else 'd'
+        fmt = ".4f" if isinstance(tv, float) else "d"
         print(f"{key:<30} {tv:>15{fmt}} {ev:>15{fmt}}")
 
     return telem_stats, emma_stats
@@ -97,13 +126,14 @@ def compare_profiles():
 # Exercise 2: Concordance as Close Reading
 # ---------------------------------------------------------------------------
 
+
 def concordance_analysis(text, words=None):
     """Build concordance views for thematic keywords.
 
     Returns a dict mapping each keyword to its concordance lines.
     """
     if words is None:
-        words = ['mother', 'sea', 'key', 'tower', 'God']
+        words = ["mother", "sea", "key", "tower", "God"]
 
     tokens = word_tokenize(text)
     t = Text(tokens)
@@ -123,6 +153,7 @@ def concordance_analysis(text, words=None):
 # Exercise 3: Frequency and Stopwords
 # ---------------------------------------------------------------------------
 
+
 def frequency_analysis(text, top_n=50):
     """Generate frequency distributions with and without stopwords.
 
@@ -134,7 +165,7 @@ def frequency_analysis(text, top_n=50):
 
     raw_fdist = FreqDist(alpha_tokens)
 
-    stop_words = set(stopwords.words('english'))
+    stop_words = set(stopwords.words("english"))
     filtered_tokens = [t for t in alpha_tokens if t not in stop_words]
     filtered_fdist = FreqDist(filtered_tokens)
 
@@ -142,25 +173,37 @@ def frequency_analysis(text, top_n=50):
 
     # Raw frequency plot
     raw_top = raw_fdist.most_common(top_n)
-    axes[0].bar([w for w, _ in raw_top], [c for _, c in raw_top], color='steelblue')
-    axes[0].set_title(f'Top {top_n} Words (with stopwords)')
-    axes[0].set_ylabel('Frequency')
-    axes[0].tick_params(axis='x', rotation=60)
+    axes[0].bar([w for w, _ in raw_top], [c for _, c in raw_top], color="steelblue")
+    axes[0].set_title(f"Top {top_n} Words (with stopwords)")
+    axes[0].set_ylabel("Frequency")
+    axes[0].tick_params(axis="x", rotation=60)
 
     # Filtered frequency plot
     filt_top = filtered_fdist.most_common(top_n)
-    axes[1].bar([w for w, _ in filt_top], [c for _, c in filt_top], color='coral')
-    axes[1].set_title(f'Top {top_n} Words (stopwords removed)')
-    axes[1].set_ylabel('Frequency')
-    axes[1].tick_params(axis='x', rotation=60)
+    axes[1].bar([w for w, _ in filt_top], [c for _, c in filt_top], color="coral")
+    axes[1].set_title(f"Top {top_n} Words (stopwords removed)")
+    axes[1].set_ylabel("Frequency")
+    axes[1].tick_params(axis="x", rotation=60)
 
     plt.tight_layout()
-    plt.savefig(os.path.join(os.path.dirname(__file__), 'week01_frequency.png'), dpi=150)
+    plt.savefig(
+        os.path.join(os.path.dirname(__file__), "week01_frequency.png"), dpi=150
+    )
     plt.close()
 
     print("\nTop 20 content words (stopwords removed):")
     for word, count in filtered_fdist.most_common(20):
         print(f"  {word:<20} {count:>5}")
+
+    # Note prominent dialogue tags
+    dialogue_tags = ["said", "asked"]
+    print("\nNotable dialogue tags:")
+    for tag in dialogue_tags:
+        if tag in filtered_fdist:
+            count = filtered_fdist[tag]
+            print(
+                f"  {tag:<20} {count:>5} (dialogue tag - may function as semi-stopword in fiction)"
+            )
 
     return raw_fdist, filtered_fdist
 
@@ -174,30 +217,42 @@ def zipf_plot(text):
     ranks = range(1, len(fdist) + 1)
     freqs = [count for _, count in fdist.most_common()]
 
+    # Calculate R-squared value using scipy
+    import numpy as np
+    from scipy.stats import linregress
+
+    log_ranks = np.log(list(ranks))
+    log_freqs = np.log(freqs)
+
+    slope, intercept, r_value, p_value, std_err = linregress(log_ranks, log_freqs)
+    r_squared = r_value**2
+
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.loglog(list(ranks), freqs, 'b.', markersize=3, alpha=0.6)
+    ax.loglog(list(ranks), freqs, "b.", markersize=3, alpha=0.6)
 
     # Ideal Zipf line: f = C / r
     C = freqs[0]
     ideal = [C / r for r in ranks]
-    ax.loglog(list(ranks), ideal, 'r--', alpha=0.5, label="Ideal Zipf (C/r)")
+    ax.loglog(list(ranks), ideal, "r--", alpha=0.5, label="Ideal Zipf (C/r)")
 
-    ax.set_xlabel('Rank (log)')
-    ax.set_ylabel('Frequency (log)')
-    ax.set_title("Zipf's Law: Telemachus")
+    ax.set_xlabel("Rank (log)")
+    ax.set_ylabel("Frequency (log)")
+    ax.set_title(f"Zipf's Law: Telemachus (R² = {r_squared:.4f})")
     ax.legend()
     plt.tight_layout()
-    plt.savefig(os.path.join(os.path.dirname(__file__), 'week01_zipf.png'), dpi=150)
+    plt.savefig(os.path.join(os.path.dirname(__file__), "week01_zipf.png"), dpi=150)
     plt.close()
-    print("Zipf plot saved to week01/week01_zipf.png")
+    print(f"Zipf plot saved to week01/week01_zipf.png")
+    print(f"R-squared value: {r_squared:.4f}")
+    return r_squared
 
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
-if __name__ == '__main__':
-    text = load_episode('01telemachus.txt')
+if __name__ == "__main__":
+    text = load_episode("01telemachus.txt")
 
     print("=" * 62)
     print("EXERCISE 1: Tokenize and Profile")
@@ -217,4 +272,4 @@ if __name__ == '__main__':
     print("\n" + "=" * 62)
     print("DIVING DEEPER: Zipf's Law")
     print("=" * 62)
-    zipf_plot(text)
+    r_squared = zipf_plot(text)

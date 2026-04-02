@@ -2,25 +2,25 @@
 EXERCISE 1: Parse the Catechism
 ==============================================================
 --- Catechism Parsed ---
-  Total Q&A pairs: 390
+  Total Q&A pairs: 298
 
 --- Question Type Distribution ---
-  other                       151 ( 38.7%)
-  what (entity)               124 ( 31.8%)
-  yes/no                       50 ( 12.8%)
-  why (causal)                 20 (  5.1%)
-  how (procedural)             16 (  4.1%)
-  what (list/inventory)        13 (  3.3%)
-  which (selection)             7 (  1.8%)
-  where (locative)              4 (  1.0%)
-  when (temporal)               3 (  0.8%)
-  who (person)                  2 (  0.5%)
+  what (entity)               110 ( 36.9%)
+  other                        89 ( 29.9%)
+  yes/no                       46 ( 15.4%)
+  why (causal)                 18 (  6.0%)
+  what (list/inventory)        12 (  4.0%)
+  how (procedural)             11 (  3.7%)
+  which (selection)             6 (  2.0%)
+  when (temporal)               3 (  1.0%)
+  where (locative)              2 (  0.7%)
+  who (person)                  1 (  0.3%)
 
 --- Answer Length Statistics ---
-  Mean answer length:   61.0 words
-  Median answer length: 34 words
+  Mean answer length:   77.9 words
+  Median answer length: 49 words
   Max answer length:    832 words
-  Min answer length:    0 words
+  Min answer length:    2 words
 
 --- Sample Q&A Pairs ---
 
@@ -30,10 +30,7 @@ EXERCISE 1: Parse the Catechism
   Q: Of what did the duumvirate deliberate during their itinerary?
   A: Music, literature, Ireland, Dublin, Paris, friendship, woman, prostitution, diet, the influence of gaslight or the light...
 
-  Q: Did Bloom discover common factors of similarity between their respective
-  A: ...
-
-  Q: like and unlike reactions to experience?
+  Q: Did Bloom discover common factors of similarity between their respective like and unlike reactions t
   A: Both were sensitive to artistic impressions, musical in preference to plastic or pictorial. Both preferred a continental...
 
   Q: Were their views on some points divergent?
@@ -42,106 +39,126 @@ EXERCISE 1: Parse the Catechism
   Q: Was there one point on which their views were equal and negative?
   A: The influence of gaslight or electric light on the growth of adjoining paraheliotropic trees....
 
-  Q: Had Bloom discussed similar subjects during nocturnal perambulations in
-  A: ...
+  Q: In 1884 with Owen Goldberg and Cecil Turnbull at night on public
+  A: thoroughfares between Longwood avenue and Leonard’s corner and Leonard’s corner and Synge street and Synge street and Bl...
 
-  Q: the past?
-  A: In 1884 with Owen Goldberg and Cecil Turnbull at night on public thoroughfares between Longwood avenue and Leonard’s cor...
+  Q: In 1886 occasionally with casual acquaintances and prospective
+  A: purchasers on doorsteps, in front parlours, in third class railway carriages of suburban lines. In 1888 frequently with ...
+
+  Q: What reflection concerning the irregular sequence of dates 1884, 1885, their destination?
+  A: 1886, 1888, 1892, 1893, 1904 did Bloom make before their arrival at He reflected that the progressive extension of the f...
 
 ==============================================================
 EXERCISE 2: Triple Extraction
 ==============================================================
 --- Knowledge Triples ---
-  Total triples extracted: 1676
+  Total triples extracted: 1677
 
 --- Sample Triples ---
-  (other, contains, dimension)
-  (equanimity, contains, beverages)
-  (rooms, tiled, kitchen)
-  (retribution, contains, two)
-  (flowerville, contains, loose)
-  (propositions, contains, solitary)
-  (faded, contains, hozier)
-  (turn, derived, existence)
-  (committee, had, use)
-  (income, giltedged, securities)
-  (reminiscences, contains, kilmainham)
-  (deceased, contains, london)
-  (equanimity, contains, acquired)
-  (part, contains, implacable)
-  (immune, contains, having)
-  (hospitality, contains, his)
-  (desirable, contains, formerly)
+  (companion, was, composition)
+  (indignities, contains, unsympathetic)
+  (reminiscences, contains, reduce)
+  (bills, had, recourse)
+  (state, was, agent)
+  (nightshirt, inserted, head)
+  (issue, deceased, january)
+  (theme, contains, where)
+  (brow, contains, late)
+  (ability, contains, inflammably)
+  (kindergarten, contains, elastic)
+  (stephen, contains, mentioned)
+  (wallpresses, fumed, bookcase)
+  (marriage, contains, ejaculation)
+  (capacity, contains, actuated)
+  (itself, contains, corporal)
+  (recall, contains, royal)
+  (silent, contains, superstition)
+  (proceeding, contains, produced)
+  (right, hob, blue)
   (pace, crossed, circus)
-  (moon, revealed, phases)
-  (then, contains, their)
-  (impotent, disfranchised, pauper)
-  (poets, sung, rhyme)
-  (tons, elevated, altitude)
-  (power, obtained, plant)
-  (remain, contains, with)
-  (rain, liked, woman)
-  (then, contains, each)
-  (bearing, left, gardiner)
-  (leg, extended, line)
-  (pence, rose, paper)
+  (consignments, given, commodity)
+  (solutions, contains, spilikins)
+  (equanimity, contains, vehicles)
+  (theme, contains, being)
+  (years, entitled, brian)
+  (digestion, stimulated, appreciation)
+  (pier, hung, square)
+  (justice, tempered, mitigants)
+  (years, uttered, sleep)
 
 --- Most Common Subjects ---
-  ’                            42
-  contain                      39
-  bloom                        37
-  faded                        32
-  equanimity                   18
-  part                         18
-  solution                     18
-  guest                        17
-  capacity                     16
-  reminiscences                14
+  bloom                        41
+  contain                      38
+  faded                        26
+  equanimity                   23
+  part                         20
+  reminiscences                19
+  tradition                    16
+  scope                        15
+  marriage                     14
+  guest                        14
 
 --- Most Common Predicates ---
-  contains                   1006
-  s                            41
-  had                          36
-  was                          17
-  been                         12
-  born                          8
+  contains                   1075
+  had                          32
+  was                          16
+  been                         11
   produced                      8
+  born                          8
   placed                        7
   contained                     6
   were                          6
+  followed                      5
 
 --- Most Common Objects ---
-  the                          74
-  with                         19
-  and                          18
-  bloom                        15
-  stephen                      14
-  had                          11
-  from                          9
-  which                         8
-  his                           7
+  bloom                        14
+  stephen                      11
+  which                        11
+  not                           8
+  right                         7
   one                           7
+  place                         7
+  because                       6
+  first                         5
+  dublin                        5
+
+--- Knowledge Graph Visualization ---
+  Triples exported to: /Users/creid/charlesreid1/rejoyce/week17/triples.txt
+  Graph visualization saved to: /Users/creid/charlesreid1/rejoyce/week17/knowledge_graph.png
 
 ==============================================================
 EXERCISE 3: The Question Ithaca Doesn't Ask
 ==============================================================
 
 --- Question Topic Distribution ---
-  other                  215 ( 55.1%) ███████████████████████████
-  human_relations         88 ( 22.6%) ███████████
-  physical_objects        40 ( 10.3%) █████
-  geography               21 (  5.4%) ██
-  science_math            15 (  3.8%) █
-  abstract_concepts        7 (  1.8%) 
-  economics                4 (  1.0%) 
+  human_relations         77 ( 25.8%) ████████████
+  other                   66 ( 22.1%) ███████████
+  physical_objects        54 ( 18.1%) █████████
+  daily_routine           18 (  6.0%) ███
+  history_memory          18 (  6.0%) ███
+  geography               17 (  5.7%) ██
+  science_math            14 (  4.7%) ██
+  body_health             11 (  3.7%) █
+  abstract_concepts       10 (  3.4%) █
+  food_drink               5 (  1.7%) 
+  economics                5 (  1.7%) 
+  emotion_inner_life       3 (  1.0%) 
+
+--- Topic Treemap ---
+  Treemap visualization saved to: /Users/creid/charlesreid1/rejoyce/week17/topic_treemap.png
 
 --- Comparison: Ithaca vs. Calypso Topic Distribution ---
   Topic                  Ithaca %    Calypso %
   --------------------------------------------
-  abstract_concepts          1.8%         0.4%
-  economics                  1.0%         0.4%
-  geography                  5.4%         2.2%
-  human_relations           22.6%         1.9%
-  other                     55.1%        90.5%
-  physical_objects          10.3%         3.8%
-  science_math               3.8%         0.9%
+  abstract_concepts          3.4%         2.2%
+  body_health                3.7%         3.9%
+  daily_routine              6.0%         8.9%
+  economics                  1.7%         1.8%
+  emotion_inner_life         1.0%         1.4%
+  food_drink                 1.7%         4.2%
+  geography                  5.7%         3.2%
+  history_memory             6.0%         3.8%
+  human_relations           25.8%         4.2%
+  other                     22.1%        51.0%
+  physical_objects          18.1%        14.4%
+  science_math               4.7%         1.1%

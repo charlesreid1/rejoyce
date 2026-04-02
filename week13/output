@@ -2,39 +2,44 @@
 EXERCISE 1: The Split Test
 ==============================================================
 --- The Split Test ---
-  Nausicaa split at sentence 845
+  Nausicaa split at sentence 729
 
 Metric                             Gerty   Bloom (Naus)        Calypso  Lestrygonians
 -------------------------------------------------------------------------------------
-  total_tokens                     13257           3731           5957          12852
-  total_types                       2861           1338           1989           3522
-  ttr                             0.2158         0.3586         0.3339         0.2740
-  hapax_ratio                     0.6501         0.6824         0.6626         0.6638
-  mean_sent_len                  17.6568         7.4853         8.9757         8.0687
+  total_tokens                     12400           4588           5957          12852
+  total_types                       2727           1522           1989           3522
+  ttr                             0.2199         0.3317         0.3339         0.2740
+  hapax_ratio                     0.6568         0.6695         0.6626         0.6638
+  yule_k                         94.9987        62.5965        86.0208        60.2667
+  mean_sent_len                  19.0562         7.7041         8.9757         8.0687
   median_sent_len                     10              6              7              7
-  std_sent_len                   22.0312         6.5881         6.3435         5.7334
-  exclamation_per_sent            0.0722         0.0212         0.0243         0.0298
-  semicolon_per_sent              0.0000         0.0000         0.0000         0.0000
-  comma_per_sent                  0.6012         0.2248         0.3990         0.2476
-  em_dash_per_sent                0.0402         0.0000         0.0706         0.0743
+  std_sent_len                   23.2719         6.5962         6.3435         5.7334
+  exclamation_per_sent            0.0809         0.0205         0.0243         0.0298
+  question_per_sent               0.0672         0.0671         0.0608         0.0682
+  ellipsis_per_sent               0.0014         0.0000         0.0012         0.0096
+  comma_per_sent                  0.6557         0.2301         0.3990         0.2476
+  em_dash_per_sent                0.0466         0.0000         0.0706         0.0743
 
 --- Function Word Comparison (top differences) ---
   Word              Gerty      Bloom       Diff
-  and             0.04111    0.01849    0.02262
-  was             0.02014    0.00456    0.01558
-  she             0.02278    0.00804    0.01474
-  her             0.02195    0.00884    0.01311
-  to              0.02421    0.01528    0.00894
-  he              0.01049    0.00590    0.00459
-  had             0.00656    0.00214    0.00442
-  would           0.00460    0.00027    0.00433
-  with            0.01026    0.00616    0.00409
-  a               0.02248    0.01876    0.00372
-  is              0.00226    0.00590    0.00363
-  what            0.00332    0.00643    0.00311
-  that            0.01773    0.01474    0.00299
-  on              0.00777    0.01072    0.00295
-  at              0.00513    0.00804    0.00291
+  and             0.04194    0.02049    0.02145
+  she             0.02395    0.00763    0.01632
+  was             0.02097    0.00523    0.01574
+  her             0.02274    0.00915    0.01359
+  to              0.02468    0.01569    0.00898
+  had             0.00694    0.00196    0.00497
+  he              0.01081    0.00588    0.00492
+  is              0.00185    0.00632    0.00447
+  with            0.01056    0.00610    0.00446
+  a               0.02282    0.01853    0.00430
+  would           0.00476    0.00065    0.00410
+  his             0.01008    0.00632    0.00376
+  at              0.00492    0.00806    0.00315
+  but             0.00613    0.00305    0.00308
+  were            0.00387    0.00109    0.00278
+
+--- Visualization ---
+Visualization saved as 'week13/stylometric_profiles.png'
 
 ==============================================================
 EXERCISE 2: Burrows' Delta
@@ -42,24 +47,27 @@ EXERCISE 2: Burrows' Delta
 --- Burrows' Delta: Gerty Half vs. Reference Corpus ---
   Reference Text                 Delta
   -------------------------------------
-  Lestrygonians                 1.8732
-  Cyclops                       1.9788
-  Bloom (Nausicaa)              2.0851
-  Lotus Eaters                  2.1110
-  Telemachus                    2.2105
-  Calypso                       2.2573
-  Scylla                        2.3181
-  Proteus                       2.6256
+  Lestrygonians                 2.0321
+  Cyclops                       2.0678
+  Bloom (Nausicaa)              2.1930
+  Lotus Eaters                  2.2569
+  Telemachus                    2.3490
+  Calypso                       2.3795
+  Scylla                        2.4388
+  Proteus                       2.7705
 
   Lower delta = more stylistically similar
+  Note: Ideally would include Victorian sentimental fiction (e.g.,
+        Maria Cummins' 'The Lamplighter') for better comparison
+        to Gerty's romantic prose style.
 
 ==============================================================
 EXERCISE 3: The Cliché Detector
 ==============================================================
 --- Cliché Detector ---
-  Gerty: 1195 cliché n-grams, density: 90.14 per 1000 tokens
-  Bloom: 231 cliché n-grams, density: 61.91 per 1000 tokens
-  Ratio (Gerty/Bloom): 1.46x
+  Gerty: 1080 cliché n-grams, density: 87.10 per 1000 tokens
+  Bloom: 242 cliché n-grams, density: 52.75 per 1000 tokens
+  Ratio (Gerty/Bloom): 1.65x
 
 --- Sample Gerty Clichés ---
     9  on account of
@@ -71,26 +79,26 @@ EXERCISE 3: The Cliché Detector
     5  that she was
     5  and it was
     5  and there was
+    5  he could see
     4  there was a
     4  when she was
     4  and she had
     4  she had a
     4  she felt that
-    4  because it was
 
 --- Sample Bloom Clichés ---
-    3  pray for us
+    3  kind of a
+    2  it was a
+    2  a kind of
+    2  in the city
+    2  in the dark
+    2  in the morning
+    2  in the sun
     2  what do you
     2  it out of
+    2  at each other
     2  look at it
     2  to find out
-    2  for us and
-    2  and pray for
-    2  in the priest
     2  out of the
-    1  to think of
-    1  think of me
-    1  me when i
-    1  what is it
-    1  i think she
-    1  of that kind
+    1  it was all
+    1  might have made

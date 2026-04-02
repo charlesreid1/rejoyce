@@ -22,59 +22,60 @@ EXERCISE 1: The Master Table
 --- Master Table ---
 Episode                    total_tokens   total_types           ttr   hapax_ratio  avg_sent_len  median_sent_  sent_len_std  noun_verb_ra
 -----------------------------------------------------------------------------------------------------------------------------------------
-  01. Telemachus                   9094          2004         0.273         0.655        12.013             9         8.819         1.630
-  02. Nestor                       5549          1493         0.335         0.671        10.945             9         7.634         1.921
-  03. Proteus                      7237          2282         0.396         0.737        10.207             8         7.451         2.319
-  04. Calypso                      7378          1989         0.334         0.663         8.976             7         6.344         2.042
-  05. Lotus Eaters                 8074          1989         0.306         0.662         8.672             7         6.481         1.972
-  06. Hades                       13774          2763         0.249         0.640         8.652             7         5.958         1.927
-  07. Aeolus                      12698          2822         0.281         0.670        10.555             8         8.935         2.113
-  08. Lestrygonians               15967          3522         0.274         0.664         8.069             7         5.733         2.086
-  09. Scylla & Charybdis          14708          3474         0.292         0.707        12.125             8        11.669         1.925
-  10. Wandering Rocks             15575          3341         0.264         0.630        12.168            10        10.053         2.241
-  11. Sirens                      16300          3140         0.254         0.603         7.399             5         6.977         1.961
-  12. Cyclops                     25599          5532         0.260         0.710        18.537            11        25.231         2.351
-  13. Nausicaa                    19516          3500         0.206         0.632        13.376             7        18.016         1.667
-  14. Oxen of the Sun             23343          5825         0.284         0.733        20.898            10        25.351         1.530
-  15. Circe                       50979          9654         0.250         0.657        10.087             7        10.795         2.763
-  16. Eumaeus                     26034          5252         0.229         0.648        28.515            18        31.438         1.709
+  01. Telemachus                   9094          2004         0.273         0.144        12.013             9         8.819         1.575
+  02. Nestor                       5549          1493         0.335         0.181        10.945             9         7.634         1.827
+  03. Proteus                      7237          2282         0.396         0.232        10.207             8         7.451         2.251
+  04. Calypso                      7378          1989         0.334         0.179         8.976         7.000         6.344         2.026
+  05. Lotus Eaters                 8074          1989         0.306         0.163         8.672             7         6.481         2.019
+  06. Hades                       13774          2763         0.249         0.128         8.652         7.000         5.958         1.837
+  07. Aeolus                      12698          2822         0.281         0.149        10.555             8         8.935         2.068
+  08. Lestrygonians               15967          3522         0.274         0.146         8.069             7         5.733         2.044
+  09. Scylla & Charybdis          14708          3474         0.292         0.167        12.125             8        11.669         1.903
+  10. Wandering Rocks             15575          3341         0.264         0.135        12.168        10.000        10.053         2.177
+  11. Sirens                      16300          3140         0.254         0.116         7.399             5         6.977         2.101
+  12. Cyclops                     25599          5532         0.260         0.153        18.537            11        25.231         2.248
+  13. Nausicaa                    19516          3500         0.206         0.113        13.376             7        18.016         1.609
+  14. Oxen of the Sun             23343          5825         0.284         0.183        20.898            10        25.351         1.935
+  15. Circe                       50979          9654         0.250         0.124        10.087         7.000        10.795         2.651
+  16. Eumaeus                     26034          5252         0.229         0.131        28.515            18        31.438         1.727
 
   (continued)
-Episode                     adj_density    vader_mean     vader_var  avg_word_len  flesch_kinca  exclamation_    comma_rate
----------------------------------------------------------------------------------------------------------------------------
-  01. Telemachus                  6.060         0.025         0.091         4.216         5.005         0.081         0.701
-  02. Nestor                      5.780         0.012         0.070         4.284         4.455         0.022         0.669
-  03. Proteus                     6.160        -0.004         0.069         4.385         4.828         0.052         0.781
-  04. Calypso                     6.140         0.027         0.069         4.296         3.770         0.024         0.399
-  05. Lotus Eaters                5.680         0.023         0.074         4.198         3.423         0.020         0.322
-  06. Hades                       5.540         0.024         0.077         4.245         3.832         0.027         0.328
-  07. Aeolus                      5.720         0.029         0.057         4.365         4.944         0.071         0.577
-  08. Lestrygonians               6.020         0.016         0.061         4.271         3.487         0.030         0.248
-  09. Scylla & Charybdis          6.180         0.046         0.107         4.375         6.009         0.045         0.793
-  10. Wandering Rocks             6.280         0.080         0.090         4.439         5.758         0.049         0.666
-  11. Sirens                      5.860         0.003         0.067         4.330         3.190         0.047         0.466
-  12. Cyclops                     6.100         0.044         0.146         4.369         8.278         0.059         1.147
-  13. Nausicaa                    7.700         0.164         0.191         4.157         5.576         0.051         0.443
-  14. Oxen of the Sun             6.500         0.066         0.212         4.406         9.029         0.116         1.132
-  15. Circe                       5.880         0.011         0.064         4.587         5.021         0.139         0.536
-  16. Eumaeus                     6.340         0.065         0.136         4.454        12.822         0.030         1.617
+Episode                     adj_density    vader_mean     vader_var  avg_word_len  flesch_kinca  exclamation_    comma_rate  entity_densi
+-----------------------------------------------------------------------------------------------------------------------------------------
+  01. Telemachus                  5.938         0.015         0.083         4.216         4.795         0.081         0.701        73.565
+  02. Nestor                      5.623         0.016         0.070         4.284         4.596         0.022         0.669        73.347
+  03. Proteus                     6.121        -0.007         0.068         4.385         4.550         0.052         0.781        69.642
+  04. Calypso                     5.855         0.035         0.071         4.296         3.615         0.024         0.399        69.396
+  05. Lotus Eaters                5.685         0.029         0.070         4.198         3.613         0.020         0.322        88.432
+  06. Hades                       5.525        -0.009         0.082         4.245         3.771         0.027         0.328       103.093
+  07. Aeolus                      5.253         0.031         0.066         4.365         5.013         0.071         0.577       137.423
+  08. Lestrygonians               5.906         0.029         0.062         4.271         3.438         0.030         0.248        99.580
+  09. Scylla & Charybdis          5.650         0.056         0.107         4.375         5.706         0.045         0.793        99.062
+  10. Wandering Rocks             6.061         0.053         0.091         4.439         5.640         0.049         0.666       126.485
+  11. Sirens                      5.785         0.032         0.064         4.330         3.173         0.047         0.466       117.669
+  12. Cyclops                     6.012         0.035         0.132         4.369         8.431         0.059         1.147       115.864
+  13. Nausicaa                    6.231         0.076         0.117         4.157         5.032         0.051         0.443        63.896
+  14. Oxen of the Sun             6.786         0.057         0.146         4.406         9.335         0.116         1.132        60.189
+  15. Circe                       5.746         0.020         0.074         4.587         5.505         0.139         0.536        93.352
+  16. Eumaeus                     7.052         0.081         0.154         4.454        12.882         0.030         1.617        52.662
 
 --- Eumaeus Rank (out of 16 episodes) ---
   total_tokens             : rank  2/16  (value: 26034.000)
   total_types              : rank  4/16  (value: 5252.000)
   ttr                      : rank 15/16  (value: 0.229)
-  hapax_ratio              : rank 12/16  (value: 0.648)
+  hapax_ratio              : rank 12/16  (value: 0.131)
   avg_sent_len             : rank  1/16  (value: 28.515)
   median_sent_len          : rank  1/16  (value: 18.000)
   sent_len_std             : rank  1/16  (value: 31.438)
-  noun_verb_ratio          : rank 13/16  (value: 1.709)
-  adj_density              : rank  3/16  (value: 6.340)
-  vader_mean               : rank  4/16  (value: 0.065)
-  vader_var                : rank  4/16  (value: 0.136)
+  noun_verb_ratio          : rank 14/16  (value: 1.727)
+  adj_density              : rank  1/16  (value: 7.052)
+  vader_mean               : rank  1/16  (value: 0.081)
+  vader_var                : rank  1/16  (value: 0.154)
   avg_word_len             : rank  2/16  (value: 4.454)
-  flesch_kincaid           : rank  1/16  (value: 12.822)
+  flesch_kincaid           : rank  1/16  (value: 12.882)
   exclamation_rate         : rank 12/16  (value: 0.030)
   comma_rate               : rank  1/16  (value: 1.617)
+  entity_density           : rank 16/16  (value: 52.662)
 
 ==============================================================
 EXERCISE 2: The Dashboard
@@ -83,22 +84,19 @@ EXERCISE 2: The Dashboard
     week16_heatmap.png
     week16_sparklines.png
     week16_correlation.png
+    week16_radar_chart.png
 
 ==============================================================
 EXERCISE 3: The Error Audit
 ==============================================================
 
 --- Error Audit Framework ---
-Episode              Tool                 Expected             Actual             Diagnosis
-----------------------------------------------------------------------------------------------------
-  06 Hades           VADER sentiment    Expected negative  Mixed/neutral    VADER misreads irony and gallows humor a...
-  03 Proteus         Language detection Multi-language     Mostly English   Stopword overlap too sparse for short co...
-  04 Calypso         NER                Expect Bloom, Molly Many false entities NLTK ne_chunk misclassifies Irish place ...
-  07 Aeolus          TF-IDF headlines   Match Joyce's headlines Low match rate   TF-IDF captures content salience but not...
-  09 Scylla          CFG parsing        Parse complex sentences Very low coverage Hand-written grammar covers <50% of toke...
-  11 Sirens          CMU dict coverage  Full phonetic conversion ~80% coverage    Onomatopoeia and neologisms — the most i...
-  12 Cyclops         Genre classification Clear barfly/interpolation Heuristic boundary Some paragraphs are ambiguous; the barfl...
+Episode              Issues Count    Top Issue Metric
+------------------------------------------------------------
+  16. Eumaeus        7               median_sent_len
+  15. Circe          5               total_tokens
+  03. Proteus        2               hapax_ratio
 
-  Total known issues: 7
-  Pattern: errors concentrate in stylistically extreme episodes
-  and in tools designed for standard English (sentiment, NER, parsing).
+  Total detected outliers: 14
+  Pattern: Errors concentrate in episodes with extreme metric values
+  These episodes may require special consideration in analysis

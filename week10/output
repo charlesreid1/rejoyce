@@ -1,89 +1,72 @@
-Parsed 373 sections from Wandering Rocks
+Parsed 19 sections from Wandering Rocks
 
 ==============================================================
 EXERCISE 1: Section Similarity Matrix
 ==============================================================
 --- Top 5 Most Similar Section Pairs ---
-  Section 228 <-> Section 267: cosine = 1.0000
-    Shared keywords: simon, things, hello, cowley, father
-  Section 229 <-> Section 268: cosine = 1.0000
-    Shared keywords: stopping, bob, answered, hello, man
-  Section 49 <-> Section 127: cosine = 0.5997
-    Shared keywords: young, clinging, twig, detached, slow
-  Section 81 <-> Section 158: cosine = 0.5578
-    Shared keywords: arch, hawker, merchants, darkbacked, scanned
-  Section 121 <-> Section 334: cosine = 0.4960
-    Shared keywords: gaze, hung, chessboard, beard
+  Section 1 <-> Section 2: cosine = 0.2483
+    Shared keywords: conmee, father, church, saluted, boys
+  Section 2 <-> Section 3: cosine = 0.2460
+    Shared keywords: conmee, father, kelleher, corny, souls
+  Section 15 <-> Section 16: cosine = 0.2438
+    Shared keywords: martin, cunningham, nolan, wyse, power
+  Section 14 <-> Section 15: cosine = 0.2245
+    Shared keywords: ben, cowley, dollard, dedalus, father
+  Section 1 <-> Section 3: cosine = 0.1735
+    Shared keywords: conmee, father, belvedere, name, walking
 
 ==============================================================
 EXERCISE 2: Interpolation Detection
 ==============================================================
 
 --- Interpolation Detection ---
-  Total low-similarity sentences found: 7
+  Total low-similarity sentences found: 19
+
+  Precision and Recall Calculation:
+  (Manual verification needed against known interpolations)
+  Precision = True Positives / (True Positives + False Positives)
+  Recall = True Positives / (True Positives + False Negatives)
 
   Most anomalous sentences (potential interpolations):
-  [Section 110, sim=0.0000] —Who’s that?...
-  [Section 259, sim=0.0000] —What are you doing?...
-  [Section 260, sim=0.0000] —What have you there?...
-  [Section 329, sim=0.0000] —What’s that?...
-  [Section 370, sim=0.0811] She shouted in his ear the
-tidings....
-  [Section 224, sim=0.0904] Well now, look
-at that....
-  [Section 373, sim=0.0983] His collar too sprang up....
+  [Section 14, sim=0.0150] It’s all right....
+  [Section 10, sim=0.0166] —It’s time for you, she said....
+  [Section 10, sim=0.0183] That’s a good one....
+  [Section 13, sim=0.0211] Who has passed here before me?...
+  [Section  4, sim=0.0212] —Where did you get it?...
+  [Section 13, sim=0.0212] Don’t let see....
+  [Section 16, sim=0.0213] All turned where they stood....
+  [Section  1, sim=0.0260] Such a... what should he
+say?......
+  [Section  2, sim=0.0266] And now it was an office or something....
+  [Section  6, sim=0.0268] I’ll tell him....
 
 ==============================================================
 EXERCISE 3: Entity Tracking
 ==============================================================
 
 --- Entities Spanning Multiple Sections ---
-  Father                         sections: [2, 3, 4, 5, 6, 7, 10, 11, 14, 18, 19, 20, 21, 23, 24, 25, 30, 32, 33, 36, 39, 41, 44, 45, 47, 50, 52, 67, 256, 269, 283]
-  Conmee                         sections: [2, 3, 4, 5, 6, 7, 10, 11, 14, 18, 19, 20, 21, 23, 24, 25, 30, 32, 33, 36, 39, 41, 44, 45, 47, 50, 67, 256]
-  Dedalus                        sections: [195, 198, 199, 203, 204, 205, 208, 210, 212, 213, 215, 217, 219, 229, 244, 268, 269, 270, 271, 274, 276, 277, 280, 286, 298, 340]
-  Father Conmee                  sections: [12, 13, 14, 16, 22, 25, 26, 29, 30, 31, 34, 35, 36, 37, 38, 43, 302]
-  Lenehan                        sections: [144, 147, 148, 150, 154, 157, 158, 160, 161, 165, 166, 170, 176, 177, 370]
-  Dilly                          sections: [71, 202, 204, 207, 209, 214, 217, 218, 221, 261, 265]
-  Stephen                        sections: [91, 94, 97, 98, 100, 244, 250, 252, 259, 260, 265]
-  Father Cowley                  sections: [228, 267, 270, 271, 272, 277, 287, 291, 293, 295, 297]
-  Bloom                          sections: [160, 169, 171, 175, 178, 179, 189, 192, 308]
-  Haines                         sections: [333, 335, 338, 340, 345, 347, 349, 352, 370]
-  Dignam                         sections: [1, 15, 237, 323, 329, 363, 364, 366]
-  John                           sections: [198, 272, 305, 309, 313, 330, 337, 370]
-  Ben Dollard                    sections: [272, 276, 277, 279, 282, 289, 294, 296]
-  Martin Cunningham              sections: [299, 302, 309, 311, 313, 318, 327, 329]
-  John Fanning                   sections: [316, 317, 319, 322, 323, 326, 328, 329]
+  Father Conmee                  sections: [1, 2, 3, 4, 13, 14, 15]
+  Dedalus                        sections: [10, 11, 12, 13, 14, 15, 17]
+  John                           sections: [10, 14, 15, 16, 17, 19]
+  Ireland                        sections: [1, 6, 7, 17, 19]
+  Irish                          sections: [1, 13, 16, 17, 19]
+  Dignam                         sections: [1, 12, 16, 18]
+  Mary                           sections: [1, 3, 7, 15]
+  Good                           sections: [1, 7, 12, 13]
+  Lambert                        sections: [4, 6, 7, 12]
+  Stephen                        sections: [5, 6, 13, 14]
+  Elijah                         sections: [5, 12, 17, 18]
+  Marie Kendall                  sections: [6, 8, 18, 19]
+  Ormond                         sections: [6, 8, 15, 19]
+  Bloom                          sections: [8, 9, 10, 15]
+  James                          sections: [11, 12, 15, 19]
 
 --- Section × Entity Matrix (top 20 entities) ---
-  Section       Father    Conmee   Dedalus  Father C   Lenehan     Dilly   Stephen  Father C     Bloom    Haines
-  1                  .         .         .         .         .         .         .         .         .         .
-  2                  X         X         .         .         .         .         .         .         .         .
-  3                  X         X         .         .         .         .         .         .         .         .
-  4                  X         X         .         .         .         .         .         .         .         .
-  5                  X         X         .         .         .         .         .         .         .         .
-  6                  X         X         .         .         .         .         .         .         .         .
-  7                  X         X         .         .         .         .         .         .         .         .
-  8                  .         .         .         .         .         .         .         .         .         .
-  9                  .         .         .         .         .         .         .         .         .         .
-  10                 X         X         .         .         .         .         .         .         .         .
-  11                 X         X         .         .         .         .         .         .         .         .
-  12                 .         .         .         X         .         .         .         .         .         .
-  13                 .         .         .         X         .         .         .         .         .         .
-  14                 X         X         .         X         .         .         .         .         .         .
-  15                 .         .         .         .         .         .         .         .         .         .
-  16                 .         .         .         X         .         .         .         .         .         .
-  17                 .         .         .         .         .         .         .         .         .         .
-  18                 X         X         .         .         .         .         .         .         .         .
-  19                 X         X         .         .         .         .         .         .         .         .
-
---- Most Connected Section Pairs (by shared entities) ---
-  Section 323 <-> Section 329: 4 shared entities
-  Section 10 <-> Section 14: 4 shared entities
-  Section 3 <-> Section 5: 3 shared entities
-  Section 3 <-> Section 10: 3 shared entities
-  Section 3 <-> Section 14: 3 shared entities
-  Section 4 <-> Section 7: 3 shared entities
-  Section 4 <-> Section 10: 3 shared entities
-  Section 4 <-> Section 39: 3 shared entities
-  Section 10 <-> Section 39: 3 shared entities
-  Section 14 <-> Section 25: 3 shared entities
+  Section     Father C   Dedalus      John   Ireland     Irish    Dignam      Mary      Good   Lambert   Stephen    Elijah  Marie Ke    Ormond     Bloom     James   Dollard  John Wys  Denis J     Master      Jack
+Traceback (most recent call last):
+  File "/Users/creid/charlesreid1/rejoyce/week10/week10_wanderingrocks.py", line 420, in <module>
+    entity_tracking(sections)
+  File "/Users/creid/charlesreid1/rejoyce/week10/week10_wanderingrocks.py", line 352, in entity_tracking
+    present = "X" if entity in section_entities.get(entity, []) else "."
+                               ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'

@@ -1,136 +1,154 @@
 ==============================================================
 PARSING AEOLUS SECTIONS
 ==============================================================
-  Found 30 sections
+  Found 29 sections
   [1] [OPENING]
   [2] GENTLEMEN OF THE PRESS
   [3] We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDYMOUNT
   [4] THE CROZIER AND THE PEN
-  [5] DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS
+  [5] Nannetti’s reading closet. WITH UNFEIGNED REGRET IT IS WE AN
 
 ==============================================================
-EXERCISE 1: TF-IDF from Scratch
+EXERCISE 1: TF-IDF from Scratch - Aeolus
 ==============================================================
 --- TF-IDF Keywords vs. Joyce's Headlines ---
 
   Section 1:
     Joyce's headline: [OPENING]
     TF-IDF keywords:  sandymount, rathgar, terenure, parallel, palmerston
+    Overlap: None
 
   Section 2:
     Joyce's headline: GENTLEMEN OF THE PRESS
     TF-IDF keywords:  murray, grossbooted, draymen, stores, brewery
+    Overlap: None
 
   Section 3:
     Joyce's headline: We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDYMOUNT
     TF-IDF keywords:  saviour, mario, neck, fat, murray
+    Overlap: None
 
   Section 4:
     Joyce's headline: THE CROZIER AND THE PEN
     TF-IDF keywords:  stepped, thumping, along, gravely, watched
-
-  Section 5:
-    Joyce's headline: DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS
-    TF-IDF keywords:  tearing, away, probably, remains, patrick
+    Overlap: None
 
   Section 6:
-    Joyce's headline: DAILY ORGAN IS TURNED OUT
-    TF-IDF keywords:  hynes, country, thump, sheet, thanks
+    Joyce's headline: DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS
+    TF-IDF keywords:  tearing, away, probably, remains, patrick
+    Overlap: None
 
   Section 7:
-    Joyce's headline: CANVASSER AT WORK
-    TF-IDF keywords:  sllt, foreman, keys, wants, house
+    Joyce's headline: DAILY ORGAN IS TURNED OUT
+    TF-IDF keywords:  hynes, country, thump, sheet, foreman
+    Overlap: None
 
   Section 8:
-    Joyce's headline: own way. Sllt. NOTED CHURCHMAN AN OCCASIONAL CONTRIBUTOR
-    TF-IDF keywords:  monks, dayfather, sir, get, good
+    Joyce's headline: CANVASSER AT WORK
+    TF-IDF keywords:  foreman, monks, house, better, kills
+    Overlap: None
 
   Section 9:
-    Joyce's headline: nonsense. AND IT WAS THE FEAST OF THE PASSOVER
-    TF-IDF keywords:  kills, backwards, cat, dog, butcher
+    Joyce's headline: THAT SOAP
+    TF-IDF keywords:  handkerchief, soap, pocket, deuce, scrawled
+    Overlap: soap
 
   Section 10:
-    Joyce's headline: THAT SOAP
-    TF-IDF keywords:  ned, lambert, dedalus, high, asked
+    Joyce's headline: He entered softly. ERIN, GREEN GEM OF THE SILVER SEA
+    TF-IDF keywords:  ned, lambert, dedalus, high, newspaper
+    Overlap: None
 
   Section 11:
     Joyce's headline: EOLIAN!
-    TF-IDF keywords:  sir, tissues, door, shoved, aha
+    TF-IDF keywords:  sir, tissues, shoved, aha, knee
+    Overlap: None
 
   Section 12:
     Joyce's headline: EXIT BLOOM
     TF-IDF keywords:  crossblind, white, seems, round, running
+    Overlap: None
 
   Section 13:
     Joyce's headline: matches? THE CALUMET OF PEACE
     TF-IDF keywords:  fat, twas, fire, offered, empire
+    Overlap: None
 
   Section 14:
     Joyce's headline: ROME
     TF-IDF keywords:  forget, mouth, stephen, foot, meet
+    Overlap: None
 
   Section 15:
     Joyce's headline: day... LOST CAUSES NOBLE MARQUESS MENTIONED
     TF-IDF keywords:  loyal, greek, kyrie, lord, burke
+    Overlap: None
 
   Section 16:
     Joyce's headline: GATHERUM
     TF-IDF keywords:  gumley, gallaher, gate, bite, york
+    Overlap: None
 
   Section 17:
     Joyce's headline: see? CLEVER, VERY
-    TF-IDF keywords:  bushe, south, mouth, psha, like
+    TF-IDF keywords:  south, mouth, bloody, whiteside, rhymes
+    Overlap: None
 
   Section 18:
-    Joyce's headline: PERIOD
-    TF-IDF keywords:  speech, stephen, heard, terrible, live
+    Joyce's headline: newspaper thereof. LINKS WITH BYGONE DAYS OF YORE
+    TF-IDF keywords:  bushe, seymour, polished, case, volunteers
+    Overlap: None
 
   Section 19:
-    Joyce's headline: THE EDITOR
-    TF-IDF keywords:  tell, bread, arm, kiss, arse
+    Joyce's headline: PERIOD
+    TF-IDF keywords:  speech, stephen, heard, terrible, live
+    Overlap: None
 
   Section 20:
-    Joyce's headline: WADDLER ONE SAID
-    TF-IDF keywords:  copy, waxies, dargle, trickies, roofs
+    Joyce's headline: THE EDITOR
+    TF-IDF keywords:  tell, bread, arm, renewal, kiss
+    Overlap: None
 
   Section 21:
+    Joyce's headline: WADDLER ONE SAID
+    TF-IDF keywords:  copy, waxies, dargle, trickies, roofs
+    Overlap: None
+
+  Section 22:
     Joyce's headline: FEMALES
     TF-IDF keywords:  onehandled, adulterer, easy, poetic, licence
+    Overlap: None
 
-  Section 23:
+  Section 24:
     Joyce's headline: AEROLITHS, BELIEF
     TF-IDF keywords:  plums, gives, crick, necks, tired
+    Overlap: None
 
   Section 25:
     Joyce's headline: ITHACANS VOW PEN IS CHAMP.
     TF-IDF keywords:  penelope, sandymount, rathmines, poor, remind
+    Overlap: None
 
   Section 26:
     Joyce's headline: WHAT?—AND LIKEWISE—WHERE?
-    TF-IDF keywords:  call, asked, get, myles, crawford
+    TF-IDF keywords:  call, plums, moses, virgilian, sophomore
+    Overlap: None
 
   Section 27:
-    Joyce's headline: plums? VIRGILIAN, SAYS PEDAGOGUE. SOPHOMORE PLUMPS FOR OLD MAN MOSES.
-    TF-IDF keywords:  call, deus, nobis, hæc, otia
-
-  Section 28:
     Joyce's headline: FAIR JUNE DAY
     TF-IDF keywords:  weary, sidelong, peace, gray, pavement
+    Overlap: None
 
-  Section 30:
+  Section 29:
     Joyce's headline: BLAME THEM?
     TF-IDF keywords:  grimly, tickles, tickled, ones, almighty
+    Overlap: None
 
+Keyword-headline overlap: 1/26 sections (3.8%)
 
 ==============================================================
-EXERCISE 2: Rhetoric Detection
+EXERCISE 2: Rhetoric Detection - Aeolus
 ==============================================================
 --- Anaphora Detection ---
-
-  Repeated opener: '—' (213 sentences)
-    → —Come on, Sandymount Green!...
-    → —Start, Palmerston Park!...
-    → —There it is, Red Murray said....
 
   Repeated opener: 'mr' (24 sentences)
     → Mr Bloom said, and I’ll take it round to the
@@ -147,13 +165,6 @@ stooped twice...
     → Lenehan cried, running to the window....
     → Lenehan
 promptly struck a match for them and lit their cigarettes in turn....
-
-  Repeated opener: 'j.' (14 sentences)
-    → J. J. O’Molloy shook his head....
-    → J. J. O’Molloy asked, looking towards the
-inner door....
-    → J. J. O’Molloy strolled to the sloping desk and began to turn back the
-pink page...
 
   Repeated opener: 'myles' (13 sentences)
     → Myles Crawford began on
@@ -194,6 +205,19 @@ by the c...
 signature....
     → Stephen asked....
 
+  Repeated opener: 'right' (5 sentences)
+    → Right and left parallel clanging ringing a doubledecker and a singledeck
+moved f...
+    → Right....
+    → Right....
+
+  Repeated opener: 'two' (5 sentences)
+    → Two bridegrooms laughing heartily at
+each other....
+    → Two crossed keys here....
+    → Two and three in silver and one and seven
+in coppers....
+
 --- Tricolon Detection ---
 
   Lengths: [3, 5, 2]
@@ -219,35 +243,10 @@ the invincibles
     → murder in the Phoenix park
     → before you were born
 
-  Lengths: [10, 6, 10]
-    → MAGISTRA ARTIUM
-
-—He spoke on the law of evidence
-    → J. J. O’Molloy said
-    → of Roman justice
-as contrasted with the earlier Mosaic code
-
-  Lengths: [5, 2, 3]
-    → —It was the speech
-    → mark you
-    → the professor said
-
-  Lengths: [6, 3, 4]
-    → —You remind me of Antisthenes
-    → the professor said
-    → a disciple of
-Gorgias
-
-  Lengths: [3, 4, 3]
-    → the professor said
-    → a disciple of
-Gorgias
-    → the sophist.
-
-  Total tricolons detected: 8
+  Total tricolons detected: 4
 
 ==============================================================
-EXERCISE 3: Headline Generation
+EXERCISE 3: Headline Generation - Aeolus
 ==============================================================
 --- Generated Headlines vs. Joyce ---
 
@@ -257,26 +256,35 @@ EXERCISE 3: Headline Generation
   2   GENTLEMEN OF THE PRESS                             MURRAY GROSSBOOTED DRAYMEN                        
   3   We. WILLIAM BRAYDEN, ESQUIRE, OF OAKLANDS, SANDY   SAVIOUR MARIO NECK                                
   4   THE CROZIER AND THE PEN                            STEPPED THUMPING ALONG                            
-  5   DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS     TEARING AWAY PROBABLY                             
-  6   DAILY ORGAN IS TURNED OUT                          HYNES COUNTRY THUMP                               
-  7   CANVASSER AT WORK                                  SLLT FOREMAN KEYS                                 
-  8   own way. Sllt. NOTED CHURCHMAN AN OCCASIONAL CON   MONKS DAYFATHER SIR                               
-  9   nonsense. AND IT WAS THE FEAST OF THE PASSOVER     KILLS BACKWARDS CAT                               
-  10  THAT SOAP                                          NED LAMBERT DEDALUS                               
-  11  EOLIAN!                                            SIR TISSUES DOOR                                  
+  6   DISSOLUTION OF A MOST RESPECTED DUBLIN BURGESS     TEARING AWAY PROBABLY                             
+  7   DAILY ORGAN IS TURNED OUT                          HYNES COUNTRY THUMP                               
+  8   CANVASSER AT WORK                                  FOREMAN MONKS HOUSE                               
+  9   THAT SOAP                                          HANDKERCHIEF SOAP POCKET                          
+  10  He entered softly. ERIN, GREEN GEM OF THE SILVER   NED LAMBERT DEDALUS                               
+  11  EOLIAN!                                            SIR TISSUES SHOVED                                
   12  EXIT BLOOM                                         CROSSBLIND WHITE SEEMS                            
   13  matches? THE CALUMET OF PEACE                      FAT TWAS FIRE                                     
   14  ROME                                               FORGET MOUTH STEPHEN                              
   15  day... LOST CAUSES NOBLE MARQUESS MENTIONED        LOYAL GREEK KYRIE                                 
   16  GATHERUM                                           GUMLEY GALLAHER GATE                              
-  17  see? CLEVER, VERY                                  BUSHE SOUTH MOUTH                                 
-  18  PERIOD                                             SPEECH STEPHEN HEARD                              
-  19  THE EDITOR                                         TELL BREAD ARM                                    
-  20  WADDLER ONE SAID                                   COPY WAXIES DARGLE                                
-  21  FEMALES                                            ONEHANDLED ADULTERER EASY                         
-  23  AEROLITHS, BELIEF                                  PLUMS GIVES CRICK                                 
+  17  see? CLEVER, VERY                                  SOUTH MOUTH BLOODY                                
+  18  newspaper thereof. LINKS WITH BYGONE DAYS OF YOR   BUSHE SEYMOUR POLISHED                            
+  19  PERIOD                                             SPEECH STEPHEN HEARD                              
+  20  THE EDITOR                                         TELL BREAD ARM                                    
+  21  WADDLER ONE SAID                                   COPY WAXIES DARGLE                                
+  22  FEMALES                                            ONEHANDLED ADULTERER EASY                         
+  24  AEROLITHS, BELIEF                                  PLUMS GIVES CRICK                                 
   25  ITHACANS VOW PEN IS CHAMP.                         PENELOPE SANDYMOUNT RATHMINES                     
-  26  WHAT?—AND LIKEWISE—WHERE?                          CALL ASKED GET                                    
-  27  plums? VIRGILIAN, SAYS PEDAGOGUE. SOPHOMORE PLUM   CALL DEUS NOBIS                                   
-  28  FAIR JUNE DAY                                      WEARY SIDELONG PEACE                              
-  30  BLAME THEM?                                        GRIMLY TICKLES TICKLED                            
+  26  WHAT?—AND LIKEWISE—WHERE?                          CALL PLUMS MOSES                                  
+  27  FAIR JUNE DAY                                      WEARY SIDELONG PEACE                              
+  29  BLAME THEM?                                        GRIMLY TICKLES TICKLED                            
+
+==============================================================
+CROSS-EPISODE ANALYSIS: HADES
+==============================================================
+Applying the same TF-IDF method to Hades (which has no headlines)
+--- Generated Headlines vs. Joyce ---
+
+#    Joyce                                              Generated                                         
+---------------------------------------------------------------------------------------------------------
+  1   [HADES TEXT]                                       MARTIN CUNNINGHAM FIRST                           
