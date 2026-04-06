@@ -63,9 +63,7 @@ DEFAULT_WORD_PAIRS = [
     ("wine", "whine"),
 ]
 
-LOTUS_EATERS_SUGGESTIONS = ["opium", "priest", "mass", "sleep", "perfume"]
 
-LOTUS_EATERS_CHAIN_DEFAULTS = ["body", "bread", "flower", "drug", "water"]
 
 
 # --- Stopwords for content word extraction ---
@@ -95,15 +93,6 @@ CLUSTER_COLORS = {
     "other": "#999999",
 }
 
-RELATION_COLORS = {
-    "synonym": "#4A90D9",
-    "hypernym": "#50C878",
-    "hyponym": "#E07A5F",
-    "part_meronym": "#9B59B6",
-    "substance_meronym": "#9B59B6",
-    "part_holonym": "#F2CC8F",
-    "substance_holonym": "#F2CC8F",
-}
 
 # --- Page config ---
 
@@ -122,9 +111,9 @@ episode_file, episode_label = episode_sidebar(
 with st.sidebar:
     st.divider()
     st.markdown(
-        "**Week 5** explores how Joyce's Lotus Eaters vocabulary forms a web of "
-        "narcotic dissolution where religious, bodily, and chemical terms converge "
-        "through shared WordNet hypernyms — and Martha Clifford's malapropisms "
+        "**Week 5** uses WordNet to measure the semantic distance between Joyce's "
+        "thematic words in Lotus Eaters — how long is the bridge from *blood* to "
+        "*wine*, or from *altar* to *bath*? Martha Clifford's malapropisms "
         "('other world' / 'other word') exploit the gap between sound and meaning "
         "that taxonomies cannot bridge."
     )
@@ -159,30 +148,6 @@ def extract_thematic_words(text, n=15):
                 break
     return result
 
-
-@st.cache_data
-def extract_chain_seeds(text, n=5):
-    """Extract N good chain-starting words from episode text.
-
-    Picks frequent content nouns with high synset counts (polysemous words
-    make more interesting chains).
-    """
-    tokens = word_tokenize(text)
-    content_words = [
-        t.lower() for t in tokens
-        if t.isalpha() and len(t) > 3 and t.lower() not in _STOPWORDS
-    ]
-    freq = Counter(content_words)
-    # Score by frequency * synset count (prefer polysemous frequent words)
-    scored = []
-    for word, count in freq.most_common(50):
-        synsets = wn.synsets(word)
-        # Prefer nouns for chain exploration
-        noun_synsets = [s for s in synsets if s.pos() == "n"]
-        if noun_synsets:
-            scored.append((word, count * len(noun_synsets)))
-    scored.sort(key=lambda x: -x[1])
-    return [w for w, _ in scored[:n]]
 
 
 @st.cache_data
@@ -319,101 +284,97 @@ def compute_malapropism_data(pairs):
 
 
 @st.cache_data
-def compute_chain(word, steps, relations):
-    """Build a substitution chain through WordNet relations.
+def discover_near_homophones(text, max_pairs=10):
+    """Find near-homophone pairs among words that appear in the episode text.
 
-    Returns list of dicts with word, definition, relation_used.
+    Extracts frequent content words that exist in both CMU dict and WordNet,
+    then finds pairs with low phonological distance and low semantic similarity.
     """
-    chain = [{"word": word, "definition": "", "relation": "start"}]
-    synsets = wn.synsets(word)
-    if synsets:
-        chain[0]["definition"] = synsets[0].definition()
+    try:
+        pronouncing = cmudict.dict()
+    except Exception:
+        return []
 
-    current = word
-    visited = {word.lower()}
+    tokens = word_tokenize(text)
+    content_words = [
+        t.lower() for t in tokens
+        if t.isalpha() and len(t) > 3 and t.lower() not in _STOPWORDS
+    ]
+    freq = Counter(content_words)
 
-    relation_map = {
-        "Synonyms": "synonym",
-        "Hypernyms": "hypernym",
-        "Hyponyms": "hyponym",
-        "Part meronyms": "part_meronym",
-        "Substance meronyms": "substance_meronym",
-        "Part holonyms": "part_holonym",
-        "Substance holonyms": "substance_holonym",
-    }
-
-    for _ in range(steps):
-        synsets = wn.synsets(current)
-        found = False
-
-        for ss in synsets:
-            if found:
+    # Keep top 150 frequent words that are in both CMU and WordNet
+    candidates = []
+    for word, _ in freq.most_common(300):
+        if word in pronouncing and wn.synsets(word):
+            candidates.append(word)
+            if len(candidates) >= 150:
                 break
 
-            # Try each relation type in order
-            candidates = []
+    # Find pairs with phonological distance ≤ 3
+    pairs = []
+    for i in range(len(candidates)):
+        p1 = pronouncing[candidates[i]][0]
+        for j in range(i + 1, len(candidates)):
+            p2 = pronouncing[candidates[j]][0]
+            phon_dist = nltk.edit_distance(p1, p2)
+            if phon_dist <= 3:
+                ss1 = wn.synsets(candidates[i])
+                ss2 = wn.synsets(candidates[j])
+                wup = ss1[0].wup_similarity(ss2[0]) or 0
+                phon_closeness = 1.0 - phon_dist / 4.0
+                pun_gap = phon_closeness * (1.0 - wup)
+                pairs.append((candidates[i], candidates[j], phon_dist, wup, pun_gap))
 
-            if "Synonyms" in relations:
-                for lemma in ss.lemmas():
-                    c = lemma.name().replace("_", " ")
-                    if c.lower() != current.lower() and c.lower() not in visited:
-                        candidates.append((c, ss.definition(), "synonym"))
+    # Sort by pun gap descending, return top pairs
+    pairs.sort(key=lambda x: -x[4])
+    return [(a, b) for a, b, _, _, _ in pairs[:max_pairs]]
 
-            if "Hypernyms" in relations:
-                for h in ss.hypernyms():
-                    for lemma in h.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, h.definition(), "hypernym"))
 
-            if "Hyponyms" in relations:
-                for h in ss.hyponyms():
-                    for lemma in h.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, h.definition(), "hyponym"))
+@st.cache_data
+def discover_near_homophones_corpus(max_candidates=1000, max_pairs=15):
+    """Find near-homophone pairs across the entire Ulysses corpus.
 
-            if "Part meronyms" in relations:
-                for m in ss.part_meronyms():
-                    for lemma in m.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, m.definition(), "part_meronym"))
+    Concatenates all 18 episodes and searches the top N most frequent
+    content words for near-homophones. Slower but finds more pairs.
+    """
+    all_text = "\n".join(cached_load_episode(ef) for ef in EPISODE_FILES)
+    try:
+        pronouncing = cmudict.dict()
+    except Exception:
+        return []
 
-            if "Substance meronyms" in relations:
-                for m in ss.substance_meronyms():
-                    for lemma in m.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, m.definition(), "substance_meronym"))
+    tokens = word_tokenize(all_text)
+    content_words = [
+        t.lower() for t in tokens
+        if t.isalpha() and len(t) > 3 and t.lower() not in _STOPWORDS
+    ]
+    freq = Counter(content_words)
 
-            if "Part holonyms" in relations:
-                for h in ss.part_holonyms():
-                    for lemma in h.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, h.definition(), "part_holonym"))
+    candidates = []
+    for word, _ in freq.most_common(max_candidates * 2):
+        if word in pronouncing and wn.synsets(word):
+            candidates.append(word)
+            if len(candidates) >= max_candidates:
+                break
 
-            if "Substance holonyms" in relations:
-                for h in ss.substance_holonyms():
-                    for lemma in h.lemmas():
-                        c = lemma.name().replace("_", " ")
-                        if c.lower() not in visited:
-                            candidates.append((c, h.definition(), "substance_holonym"))
+    pairs = []
+    for i in range(len(candidates)):
+        p1 = pronouncing[candidates[i]][0]
+        for j in range(i + 1, len(candidates)):
+            p2 = pronouncing[candidates[j]][0]
+            if abs(len(p1) - len(p2)) > 3:
+                continue
+            phon_dist = nltk.edit_distance(p1, p2)
+            if phon_dist <= 3:
+                ss1 = wn.synsets(candidates[i])
+                ss2 = wn.synsets(candidates[j])
+                wup = ss1[0].wup_similarity(ss2[0]) or 0
+                phon_closeness = 1.0 - phon_dist / 4.0
+                pun_gap = phon_closeness * (1.0 - wup)
+                pairs.append((candidates[i], candidates[j], phon_dist, wup, pun_gap))
 
-            if candidates:
-                best = candidates[0]
-                chain.append(
-                    {"word": best[0], "definition": best[1], "relation": best[2]}
-                )
-                visited.add(best[0].lower())
-                current = best[0]
-                found = True
-
-        if not found:
-            break
-
-    return chain
+    pairs.sort(key=lambda x: -x[4])
+    return [(a, b) for a, b, _, _, _ in pairs[:max_pairs]]
 
 
 @st.cache_data
@@ -475,16 +436,17 @@ def compute_chapter_coherence(episode_file):
 
 
 # ============================================================================
-# Section 1: Semantic Fields of Narcosis
+# Section 1: Semantic Fields
 # ============================================================================
 
-st.header("1. Semantic Fields of Narcosis")
+st.header("1. Semantic Fields")
 
 st.markdown(
     "How do Joyce's thematic words relate in WordNet's taxonomy? "
-    "This section reveals hidden conceptual clusters beneath the surface vocabulary — "
-    "body/blood/bread converging through shared hypernyms, water/bath/floating "
-    "clustering in substance, altar/sacrament/communion in activity."
+    "This section maps the semantic distances between the episode's key vocabulary — "
+    "how close or far apart are words like *blood* and *bread*, *altar* and *bath*? "
+    "The heatmap and network graph reveal which words are nearby neighbors in "
+    "meaning and which are connected only by long bridges through abstract concepts."
 )
 
 # --- Word selection (dynamic based on selected episode) ---
@@ -492,13 +454,17 @@ is_lotus_eaters = episode_file == "05lotuseaters.txt"
 
 if is_lotus_eaters:
     default_thematic = LOTUS_EATERS_WORDS
-    suggestions = LOTUS_EATERS_SUGGESTIONS
 else:
     default_thematic = extract_thematic_words(episode_text, n=15)
-    # Suggest Lotus Eaters words that aren't already in the dynamic list
-    suggestions = [w for w in LOTUS_EATERS_WORDS if w not in default_thematic][:5]
 
-all_options = list(dict.fromkeys(default_thematic + suggestions))
+all_options = list(dict.fromkeys(default_thematic))
+
+# Reset word selection and pair selection when the episode changes
+if st.session_state.get("_prev_episode") != episode_file:
+    st.session_state["_prev_episode"] = episode_file
+    st.session_state["thematic_words"] = default_thematic
+    st.session_state.pop("pair_select", None)
+    st.rerun()
 
 selected_words = st.multiselect(
     "Thematic words",
@@ -507,15 +473,6 @@ selected_words = st.multiselect(
     key="thematic_words",
 )
 
-# Quick-add buttons
-if suggestions:
-    st.caption("Quick-add suggestions:")
-    add_cols = st.columns(len(suggestions))
-    for i, suggestion in enumerate(suggestions):
-        with add_cols[i]:
-            if st.button(suggestion, key=f"add_{suggestion}"):
-                if suggestion not in selected_words:
-                    selected_words.append(suggestion)
 
 threshold = st.slider(
     "WuP similarity threshold", 0.1, 0.8, 0.3, 0.05, key="wup_threshold"
@@ -593,6 +550,17 @@ if selected_words:
         # --- Hypernym Depth Bar Chart ---
         st.subheader("Hypernym Depth by Word")
 
+        st.markdown(
+            "WordNet organizes words into a tree of increasingly general categories "
+            "called **hypernyms** — for example, *lotus* is a kind of *plant*, which "
+            "is a kind of *organism*, which is a kind of *entity*. **Hypernym depth** "
+            "counts how many steps a word sits below the root (*entity*). "
+            "Deeper words are more specific and concrete (e.g., *sacrament* at depth 10), "
+            "while shallower words are broader and more abstract (e.g., *body* at depth 4). "
+            "Colors group words by their top-level ancestor: "
+            "blue = physical objects, green = substances, coral = activities, grey = other."
+        )
+
         depths = [(w, word_data[w]["depth"], word_data[w]["cluster"]) for w in valid_words]
         depths.sort(key=lambda x: -x[1])
 
@@ -626,6 +594,21 @@ if selected_words:
 
         # --- Semantic Network Graph ---
         st.subheader("Semantic Network Graph")
+
+        st.markdown(
+            f"Each word is a node in the graph, connected to other words whose "
+            f"**Wu-Palmer similarity** exceeds the threshold you set above "
+            f"(currently **{threshold}**). Wu-Palmer (WuP) measures how closely "
+            f"two words relate in WordNet's noun hierarchy — 1.0 means identical "
+            f"meaning, while values below ~0.2 indicate very distant concepts. "
+            f"**Larger nodes** have more synsets (distinct dictionary senses), "
+            f"meaning Joyce can exploit more shades of meaning. "
+            f"**Edge labels** show the lowest common hypernym — the most specific "
+            f"ancestor two words share in WordNet's taxonomy — revealing the "
+            f"hidden conceptual bridge between them. "
+            f"Node colors indicate top-level cluster: "
+            f"blue = physical objects, green = substances, coral = activities, grey = other."
+        )
 
         if not NETWORKX_AVAILABLE:
             st.warning("Install `networkx` for the network graph.")
@@ -722,6 +705,18 @@ if selected_words:
 
         # --- Semantic Coherence across chapters ---
         with st.expander("Semantic coherence across all 18 chapters"):
+            st.markdown(
+                "**Semantic coherence** measures how tightly a chapter's vocabulary "
+                "hangs together conceptually. For each episode, we take the 15 most "
+                "frequent content words and compute the average Wu-Palmer similarity "
+                "across every pair. Higher scores mean the chapter's key words are "
+                "close semantic neighbors; lower scores mean the vocabulary is more "
+                "spread out across unrelated domains. Lotus Eaters scores relatively "
+                "low — its key words (*body*, *flower*, *altar*, *drug*) span several "
+                "distant branches of WordNet's hierarchy, which is precisely what makes "
+                "the semantic bridges in Section 3 interesting: Joyce is yoking together "
+                "concepts that the taxonomy considers far apart."
+            )
             if st.button("Compute coherence for all episodes", key="compute_coherence"):
                 coherence_data = []
                 progress = st.progress(0)
@@ -762,17 +757,62 @@ st.markdown(
     "Martha Clifford's letter confuses 'I do not like that other **world**' "
     "with 'other **word**' — a pun that exposes the gap between phonological "
     "and semantic similarity. Near-homophones sound alike but mean nothing alike; "
-    "the best puns live in this mismatch."
+    "the best puns live in this mismatch.\n\n"
+    "**Algorithmic note:** These pairs are discovered automatically from each "
+    "episode's text. First, we extract the most frequent content words that appear "
+    "in both the CMU Pronouncing Dictionary (for phoneme sequences) and WordNet "
+    "(for semantic similarity). Next, we compare every pair's phonological edit "
+    "distance — the number of phoneme insertions, deletions, or substitutions needed "
+    "to transform one pronunciation into the other — and keep only pairs within 3 edits. "
+    "Finally, we rank by a **pun gap** score: pairs that sound very alike (low "
+    "phonological distance) but mean very different things (low Wu-Palmer similarity) "
+    "score highest. The result is a ranked list of the episode's best latent puns."
 )
 
-# --- Pair selection ---
-pair_labels = [f"{w1} / {w2}" for w1, w2 in DEFAULT_WORD_PAIRS]
+# --- Pair selection (dynamic based on selected episode) ---
+if is_lotus_eaters:
+    episode_word_pairs = DEFAULT_WORD_PAIRS
+else:
+    episode_word_pairs = discover_near_homophones(episode_text, max_pairs=10)
+    if not episode_word_pairs:
+        episode_word_pairs = DEFAULT_WORD_PAIRS  # fallback
+
+# Corpus-wide search (triggered by button, results stored in session state)
+with st.expander("Search all 18 episodes for pun pairs"):
+    st.markdown(
+        "The pairs above are discovered from the selected episode's vocabulary. "
+        "For a broader search, scan the top 1,000 most frequent words across all "
+        "of *Ulysses* — this takes longer but surfaces puns that span the full novel."
+    )
+    if st.button("Search full Ulysses corpus", key="corpus_pun_search"):
+        with st.spinner("Scanning corpus..."):
+            corpus_pairs = discover_near_homophones_corpus(max_candidates=1000, max_pairs=15)
+            st.session_state["_corpus_pun_pairs"] = corpus_pairs
+            # Reset pair selector so it picks up the new merged list
+            st.session_state.pop("pair_select", None)
+            st.rerun()
+    if "_corpus_pun_pairs" in st.session_state:
+        corpus_pairs = st.session_state["_corpus_pun_pairs"]
+        st.success(f"Found {len(corpus_pairs)} pun pairs across all episodes.")
+        # Merge corpus pairs with episode pairs, deduplicating
+        existing = set((a, b) for a, b in episode_word_pairs)
+        for pair in corpus_pairs:
+            if pair not in existing and (pair[1], pair[0]) not in existing:
+                episode_word_pairs.append(pair)
+                existing.add(pair)
+
+pair_labels = [f"{w1} / {w2}" for w1, w2 in episode_word_pairs]
+
+# Ensure all pairs are selected by default (including after episode switch)
+if "pair_select" not in st.session_state:
+    st.session_state["pair_select"] = pair_labels
+
 selected_pair_labels = st.multiselect(
     "Word pairs", pair_labels, default=pair_labels, key="pair_select"
 )
 
 selected_pairs = [
-    DEFAULT_WORD_PAIRS[pair_labels.index(lbl)] for lbl in selected_pair_labels
+    episode_word_pairs[pair_labels.index(lbl)] for lbl in selected_pair_labels
 ]
 
 # Custom pair input
@@ -787,10 +827,6 @@ with cp3:
         if custom_w1.strip() and custom_w2.strip():
             selected_pairs.append((custom_w1.strip().lower(), custom_w2.strip().lower()))
 
-metric_choice = st.radio(
-    "Similarity metric", ["Wu-Palmer", "Path Similarity", "Both"], horizontal=True,
-    key="sim_metric",
-)
 
 if selected_pairs:
     mal_data = compute_malapropism_data(tuple(tuple(p) for p in selected_pairs))
@@ -817,44 +853,80 @@ if selected_pairs:
     mm3.metric("Avg Phonological Distance", f"{avg_phon:.1f}")
     mm4.metric("Best Pun", best_pun)
 
-    # --- Pun Gap Scatter Plot ---
+    # --- Pun Gap Chart ---
     st.subheader("The Pun Gap: Sound vs. Meaning")
 
     scatter_data = [d for d in mal_data if d["phon_dist"] is not None]
 
     if scatter_data:
-        fig_scatter, ax_scatter = plt.subplots(figsize=(10, 8))
+        # Compute pun-gap score for later use
+        max_phon_sc = max(d["phon_dist"] for d in scatter_data) or 1
+        for d in scatter_data:
+            phon_closeness = 1.0 - d["phon_dist"] / max_phon_sc
+            sem_distance = 1.0 - d["wup_sim"]
+            d["pun_gap"] = phon_closeness * sem_distance
 
-        x_vals = [d["phon_dist"] for d in scatter_data]
+        x_raw = [d["phon_dist"] for d in scatter_data]
         y_vals = [d["wup_sim"] for d in scatter_data]
-        labels_sc = [f"{d['w1']}/{d['w2']}" for d in scatter_data]
+        labels_sc = [f"{d['w1']} / {d['w2']}" for d in scatter_data]
 
-        # Color: default pairs coral, custom blue
-        n_default = len([p for p in selected_pair_labels if p in pair_labels])
-        colors = ["#E07A5F"] * min(n_default, len(scatter_data))
-        colors += ["#4A90D9"] * (len(scatter_data) - len(colors))
+        # Jitter overlapping points: shift x slightly when two points
+        # share the same integer x and have y values within 0.05
+        rng = np.random.RandomState(42)
+        x_vals = list(x_raw)
+        for i in range(len(x_vals)):
+            for j in range(i):
+                if x_raw[i] == x_raw[j] and abs(y_vals[i] - y_vals[j]) < 0.05:
+                    x_vals[i] += rng.uniform(-0.15, 0.15)
+                    break
 
-        ax_scatter.scatter(x_vals, y_vals, c=colors[:len(scatter_data)], s=120,
-                          edgecolors="#333333", linewidths=1, zorder=3)
+        # Distinct markers for each pair
+        marker_list = ["o", "s", "^", "D", "v", "P", "*", "X", "p", "h",
+                       "<", ">", "8", "H", "d"]
+        # Color palette
+        color_list = [
+            "#E07A5F", "#4A90D9", "#81B29A", "#F2CC8F", "#9B59B6",
+            "#E76F51", "#264653", "#2A9D8F", "#E9C46A", "#F4A261",
+            "#606C38", "#BC6C25", "#023047", "#FB8500", "#8338EC",
+        ]
 
-        for i, label in enumerate(labels_sc):
-            ax_scatter.annotate(
-                label, (x_vals[i], y_vals[i]),
-                textcoords="offset points", xytext=(8, 8), fontsize=9,
+        fig_gap, ax_gap = plt.subplots(figsize=(10, 5))
+
+        for i, d in enumerate(scatter_data):
+            marker = marker_list[i % len(marker_list)]
+            color = color_list[i % len(color_list)]
+            ax_gap.scatter(
+                x_vals[i], y_vals[i],
+                marker=marker, c=color, s=140,
+                edgecolors="#333333", linewidths=0.8, zorder=3,
+                label=labels_sc[i],
             )
 
-        # Reference diagonal
-        max_x = max(x_vals) + 1
-        ax_scatter.plot([0, max_x], [0, 1], "--", color="#CCCCCC", alpha=0.5,
-                       label="No pun zone")
+        # "Best pun" zone shading (bottom-left)
+        ax_gap.axhspan(0, 0.3, xmin=0, xmax=0.4, alpha=0.06, color="#2A9D8F")
+        ax_gap.text(
+            0.3, 0.02, "strong pun zone", fontsize=8, color="#2A9D8F",
+            fontstyle="italic", alpha=0.7,
+        )
 
-        ax_scatter.set_xlabel("Phonological Distance (CMU edit distance) — lower = sounds more alike")
-        ax_scatter.set_ylabel("Semantic Similarity (max WuP) — higher = means more alike")
-        ax_scatter.set_title("The Pun Gap: Best puns live in the bottom-left")
-        ax_scatter.legend(fontsize=9)
-        plt.tight_layout()
-        st.pyplot(fig_scatter)
-        plt.close(fig_scatter)
+        # Reference diagonal
+        max_x = max(x_raw) + 1
+        ax_gap.plot([0, max_x], [0, 1], "--", color="#CCCCCC", alpha=0.5)
+
+        ax_gap.set_xticks(range(0, int(max(x_raw)) + 2))
+        ax_gap.set_xlabel("Phonological Distance (CMU edit distance)\nlower = sounds more alike", fontsize=9)
+        ax_gap.set_ylabel("Semantic Similarity (max WuP)\nlower = means more different", fontsize=9)
+        ax_gap.set_title("The Pun Gap\n(best puns live in the bottom-left)", fontsize=11)
+
+        # Legend outside the plot area
+        ax_gap.legend(
+            bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=9,
+            frameon=True, framealpha=0.9, borderaxespad=0,
+        )
+        fig_gap.subplots_adjust(right=0.72)
+        plt.tight_layout(rect=[0, 0, 0.72, 1])
+        st.pyplot(fig_gap)
+        plt.close(fig_gap)
 
     # --- Paired Horizontal Bar Chart ---
     st.subheader("Phonological vs. Semantic Similarity")
@@ -934,19 +1006,63 @@ if selected_pairs:
                 ((test_w1.strip().lower(), test_w2.strip().lower()),)
             )[0]
 
-            tc1, tc2, tc3 = st.columns(3)
-            tc1.metric("WuP Similarity", f"{test_data['wup_sim']:.3f}")
-            tc2.metric("Path Similarity", f"{test_data['path_sim']:.3f}")
-            tc3.metric(
-                "Phonological Distance",
-                str(test_data["phon_dist"]) if test_data["phon_dist"] is not None else "N/A",
-            )
+            # Compute pun gap score on the same scale as the chart above
+            test_phon = test_data["phon_dist"]
+            test_sem = test_data["wup_sim"]
+            if test_phon is not None:
+                test_phon_closeness = 1.0 - test_phon / max_phon if max_phon else 0
+                test_pun_gap = max(0, test_phon_closeness) * (1.0 - test_sem)
+            else:
+                test_pun_gap = None
+
+            # Show comparison bar chart: your pair vs the existing pairs
+            fig_test, ax_test = plt.subplots(figsize=(10, max(3, (len(sorted_mal) + 1) * 0.45)))
+
+            # Existing pairs sorted by pun gap (reuse sorted_mal)
+            existing_gaps = []
+            for d in sorted_mal:
+                if d["phon_dist"] is not None:
+                    pc = 1.0 - d["phon_dist"] / max_phon if max_phon else 0
+                    existing_gaps.append((f"{d['w1']} / {d['w2']}", max(0, pc) * (1.0 - d["wup_sim"]),
+                                          d["phon_dist"], d["wup_sim"]))
+            existing_gaps.sort(key=lambda x: -x[1])
+
+            # Insert test pair
+            test_label = f"{test_w1.strip().lower()} / {test_w2.strip().lower()}"
+            all_bars = [(test_label, test_pun_gap, test_phon, test_sem)] + existing_gaps
+
+            bar_labels_test = [b[0] for b in all_bars]
+            bar_vals_test = [b[1] if b[1] is not None else 0 for b in all_bars]
+            bar_colors = ["#4A90D9"] + ["#E07A5F"] * len(existing_gaps)
+
+            y_pos_test = np.arange(len(all_bars))
+            ax_test.barh(y_pos_test, bar_vals_test, color=bar_colors, edgecolor="#333333", linewidth=0.5)
+            ax_test.set_yticks(y_pos_test)
+            ax_test.set_yticklabels(bar_labels_test, fontsize=10)
+            ax_test.invert_yaxis()
+            ax_test.set_xlabel("Pun Gap Score (higher = better pun)")
+            ax_test.set_title("Your pair (blue) vs. Joyce's malapropisms (coral)")
+
+            # Annotate each bar
+            for i, (_, gap, ph, sm) in enumerate(all_bars):
+                if gap is not None and ph is not None:
+                    ax_test.text(
+                        gap + 0.01, i,
+                        f"phon dist {ph}, sem sim {sm:.2f}",
+                        va="center", fontsize=8, color="#666666",
+                    )
+
+            max_bar = max(bar_vals_test) if bar_vals_test else 1
+            ax_test.set_xlim(0, max_bar * 1.45)
+            plt.tight_layout()
+            st.pyplot(fig_test)
+            plt.close(fig_test)
 
             # Verdict
-            if test_data["phon_dist"] is not None:
-                if test_data["phon_dist"] <= 2 and test_data["wup_sim"] < 0.3:
+            if test_phon is not None:
+                if test_phon <= 2 and test_sem < 0.3:
                     st.success("**Strong pun** — sounds very alike, means very different!")
-                elif test_data["phon_dist"] <= 3 and test_data["wup_sim"] < 0.5:
+                elif test_phon <= 3 and test_sem < 0.5:
                     st.warning("**Weak pun** — some sound similarity, moderate meaning overlap.")
                 else:
                     st.info("**Not a pun** — too different phonologically or too similar semantically.")
@@ -960,227 +1076,279 @@ if selected_pairs:
                     st.markdown(f"**Synsets for '{w}':**")
                     for s in ss[:5]:
                         st.markdown(f"- `{s.name()}`: {s.definition()}")
+                else:
+                    st.markdown(f"**Synsets for '{w}':** none found in WordNet")
 else:
     st.info("Select at least one word pair.")
 
 
 # ============================================================================
-# Section 3: Substitution Chains
+# Section 3: Semantic Bridges
 # ============================================================================
 
-st.header("3. Substitution Chains")
+st.header("3. Semantic Bridges")
 
 st.markdown(
-    "Words transform through WordNet relations — synonyms, hypernyms, hyponyms, "
-    "meronyms, holonyms — drifting from one meaning to the next. "
-    "A linguistic analogy for the narcotic drift of the Lotus Eaters episode."
+    "In Lotus Eaters, Joyce yokes together words that seem unrelated on the surface — "
+    "*body* and *bread*, *flower* and *water*, *drug* and *communion* — but which "
+    "share a hidden ancestor in the tree of meaning. WordNet organizes every noun into "
+    "a hierarchy from specific to general: *bread* is a kind of *food*, which is a kind "
+    "of *substance*, which is a kind of *matter*. Two words connect where their paths "
+    "upward meet at a **lowest common ancestor** (LCA) — the most specific concept that "
+    "encompasses both.\n\n"
+    "The deeper that meeting point sits in the tree, the more specific the shared "
+    "concept and the tighter the connection. A shallow meeting point (like *entity*) "
+    "means the words share almost nothing; a deep one (like *substance*) means Joyce "
+    "is exploiting a real conceptual bridge."
 )
 
-# --- Controls (dynamic based on selected episode) ---
+
+@st.cache_data
+def compute_bridge(word_a, word_b):
+    """Compute the hypernym bridge between two words.
+
+    Returns the path from each word up to their lowest common hypernym,
+    plus the LCA synset info.
+    """
+    ss_a_list = wn.synsets(word_a)
+    ss_b_list = wn.synsets(word_b)
+    if not ss_a_list or not ss_b_list:
+        return None
+
+    # Use the first (most common) noun synset for each word, falling back
+    # to the first synset of any POS if no noun sense exists.
+    def first_noun_synset(synsets):
+        for s in synsets:
+            if s.pos() == "n":
+                return s
+        return synsets[0]
+
+    sa = first_noun_synset(ss_a_list)
+    sb = first_noun_synset(ss_b_list)
+    best_sim = sa.wup_similarity(sb) or 0
+    lca_list = sa.lowest_common_hypernyms(sb)
+    if not lca_list:
+        return None
+    lca = lca_list[0]
+
+    # Get path from each synset up to the LCA
+    def path_to_ancestor(synset, ancestor):
+        """BFS to find path from synset up to ancestor."""
+        from collections import deque
+        queue = deque([(synset, [synset])])
+        visited = {synset}
+        while queue:
+            current, path = queue.popleft()
+            if current == ancestor:
+                return path
+            for hyp in current.hypernyms():
+                if hyp not in visited:
+                    visited.add(hyp)
+                    queue.append((hyp, path + [hyp]))
+        return [synset, ancestor]  # fallback
+
+    path_a = path_to_ancestor(sa, lca)
+    path_b = path_to_ancestor(sb, lca)
+
+    return {
+        "word_a": word_a,
+        "word_b": word_b,
+        "synset_a": sa.name(),
+        "synset_b": sb.name(),
+        "def_a": sa.definition(),
+        "def_b": sb.definition(),
+        "lca": lca.name(),
+        "lca_def": lca.definition(),
+        "lca_depth": lca.min_depth(),
+        "path_a": [(word_a, sa.definition())] + [(s.name().split(".")[0], s.definition()) for s in path_a[1:]],
+        "path_b": [(word_b, sb.definition())] + [(s.name().split(".")[0], s.definition()) for s in path_b[1:]],
+        "wup_sim": best_sim,
+    }
+
+
+# --- Default interesting pairs for Lotus Eaters ---
 if is_lotus_eaters:
-    chain_defaults = LOTUS_EATERS_CHAIN_DEFAULTS
+    BRIDGE_PAIRS = [
+        ("blood", "wine"),
+        ("altar", "bath"),
+        ("lotus", "flower"),
+        ("body", "bread"),
+        ("flower", "water"),
+    ]
 else:
-    chain_defaults = extract_chain_seeds(episode_text, n=5)
+    # Pick pairs from the thematic words with highest similarity
+    _bridge_words = selected_words[:8] if selected_words else []
+    BRIDGE_PAIRS = []
+    if len(_bridge_words) >= 2:
+        _scored_pairs = []
+        for _i in range(len(_bridge_words)):
+            for _j in range(_i + 1, len(_bridge_words)):
+                _ss1 = wn.synsets(_bridge_words[_i])
+                _ss2 = wn.synsets(_bridge_words[_j])
+                if _ss1 and _ss2:
+                    _sim = _ss1[0].wup_similarity(_ss2[0]) or 0
+                    if 0.15 < _sim < 0.85:  # interesting range
+                        _scored_pairs.append((_bridge_words[_i], _bridge_words[_j], _sim))
+        _scored_pairs.sort(key=lambda x: -x[2])
+        BRIDGE_PAIRS = [(a, b) for a, b, _ in _scored_pairs[:5]]
 
-chain_word = st.text_input(
-    "Starting word", value=chain_defaults[0] if chain_defaults else "body",
-    key="chain_start",
-)
-
-if chain_defaults:
-    st.caption("Quick-start words:")
-    qcols = st.columns(len(chain_defaults))
-    for i, default_word in enumerate(chain_defaults):
-        with qcols[i]:
-            if st.button(default_word, key=f"chain_{default_word}"):
-                chain_word = default_word
-
-chain_steps = st.slider("Maximum chain steps", 3, 20, 10, key="chain_steps")
-
-ALL_RELATIONS = [
-    "Synonyms", "Hypernyms", "Hyponyms",
-    "Part meronyms", "Substance meronyms",
-    "Part holonyms", "Substance holonyms",
-]
-chain_relations = st.multiselect(
-    "Relation types to follow", ALL_RELATIONS, default=ALL_RELATIONS,
-    key="chain_relations",
-)
-
-if chain_word.strip() and chain_relations:
-    chain = compute_chain(chain_word.strip().lower(), chain_steps, tuple(chain_relations))
-
-    # --- Metrics row ---
-    cm1, cm2, cm3, cm4 = st.columns(4)
-    cm1.metric("Chain Length", len(chain) - 1)
-
-    start_synsets = wn.synsets(chain_word.strip().lower())
-    cm2.metric("Starting Word Synsets", len(start_synsets))
-
-    # Unique POS types in the chain
-    pos_types = set()
-    for step in chain:
-        ss = wn.synsets(step["word"])
-        for s in ss:
-            pos_types.add(s.pos())
-    cm3.metric("Unique POS Types", len(pos_types))
-
-    dead_end = len(chain) - 1 < chain_steps
-    cm4.metric("Dead End?", "Yes" if dead_end else "No")
-
-    # --- Chain Step Diagram ---
-    st.subheader("Chain Step Diagram")
-
-    if len(chain) > 1:
-        fig_chain, ax_chain = plt.subplots(
-            figsize=(max(14, len(chain) * 2.5), 3)
+# --- Pair selector ---
+pair_options = [f"{a} ↔ {b}" for a, b in BRIDGE_PAIRS]
+bc1, bc2 = st.columns([3, 1])
+with bc1:
+    if pair_options:
+        bridge_choice = st.selectbox(
+            "Choose a word pair to bridge",
+            pair_options,
+            key="bridge_pair",
         )
-        ax_chain.set_xlim(-0.5, len(chain) * 2.5)
-        ax_chain.set_ylim(-1, 2)
-        ax_chain.axis("off")
+        bridge_idx = pair_options.index(bridge_choice)
+        bridge_word_a, bridge_word_b = BRIDGE_PAIRS[bridge_idx]
+    else:
+        bridge_word_a, bridge_word_b = "", ""
+with bc2:
+    custom_a = st.text_input("Or enter word A", key="bridge_a")
+    custom_b = st.text_input("And word B", key="bridge_b")
+    if custom_a.strip() and custom_b.strip():
+        bridge_word_a = custom_a.strip().lower()
+        bridge_word_b = custom_b.strip().lower()
 
-        for i, step in enumerate(chain):
-            x = i * 2.5
-            color = RELATION_COLORS.get(step["relation"], "#999999")
-            if step["relation"] == "start":
-                color = "#333333"
+if bridge_word_a and bridge_word_b:
+    bridge = compute_bridge(bridge_word_a, bridge_word_b)
 
-            # Draw box
+    if bridge:
+        # --- Metrics ---
+        bm1, bm2, bm3 = st.columns(3)
+        bm1.metric("WuP Similarity", f"{bridge['wup_sim']:.3f}")
+        bm2.metric("Meeting Point Depth", bridge["lca_depth"])
+        bm3.metric("Meeting Concept", bridge["lca"].split(".")[0])
+
+        # --- Bridge Diagram ---
+        st.subheader("Hypernym Bridge")
+
+        st.markdown(
+            f"Reading from left to right, **{bridge_word_a}** climbs up through "
+            f"increasingly general categories until it meets **{bridge_word_b}**'s "
+            f"path at **{bridge['lca'].split('.')[0]}** "
+            f"(*{bridge['lca_def']}*). "
+            f"That shared ancestor is the conceptual bridge Joyce exploits."
+        )
+
+        path_a = bridge["path_a"]
+        path_b = bridge["path_b"]
+
+        # Build the full bridge: word_a path → LCA ← word_b path (reversed)
+        # path_a goes [word_a, ..., LCA], path_b goes [word_b, ..., LCA]
+        # Display: path_a then path_b reversed (excluding LCA duplicate)
+        full_path = path_a + list(reversed(path_b[:-1]))
+        lca_index = len(path_a) - 1  # index of the LCA in full_path
+
+        n_nodes = len(full_path)
+        fig_bridge, ax_bridge = plt.subplots(
+            figsize=(max(14, n_nodes * 2.2), 3.5)
+        )
+        ax_bridge.set_xlim(-0.5, n_nodes * 2.2)
+        ax_bridge.set_ylim(-0.5, 2.5)
+        ax_bridge.axis("off")
+
+        for i, (name, defn) in enumerate(full_path):
+            x = i * 2.2
+
+            # Color: word_a's side blue, LCA gold, word_b's side coral
+            if i < lca_index:
+                color = "#4A90D9"
+            elif i == lca_index:
+                color = "#F2CC8F"
+            else:
+                color = "#E07A5F"
+
+            # Make start/end/LCA words bold and larger
+            is_key = (i == 0 or i == n_nodes - 1 or i == lca_index)
+            fontsize = 12 if is_key else 9
+            fontweight = "bold" if is_key else "normal"
+
             bbox = dict(
-                boxstyle="round,pad=0.4", facecolor=color, alpha=0.3,
+                boxstyle="round,pad=0.4", facecolor=color,
+                alpha=0.4 if is_key else 0.2,
                 edgecolor=color,
             )
-            word_display = step["word"]
-            defn = step["definition"][:40] + "..." if len(step["definition"]) > 40 else step["definition"]
-            ax_chain.text(
-                x, 1, word_display, ha="center", va="center",
-                fontsize=11, fontweight="bold", bbox=bbox,
+            ax_bridge.text(
+                x, 1.5, name, ha="center", va="center",
+                fontsize=fontsize, fontweight=fontweight, bbox=bbox,
             )
-            ax_chain.text(
-                x, 0.3, defn, ha="center", va="center", fontsize=7,
+
+            # Definition below
+            defn_short = defn[:35] + "..." if len(defn) > 35 else defn
+            ax_bridge.text(
+                x, 0.7, defn_short, ha="center", va="center", fontsize=6,
                 color="#666666", style="italic",
             )
 
-            # Draw arrow
+            # Arrow
             if i > 0:
-                ax_chain.annotate(
-                    "", xy=(x - 0.6, 1), xytext=(x - 1.9, 1),
-                    arrowprops=dict(arrowstyle="->", color=color, lw=1.5),
-                )
-                ax_chain.text(
-                    x - 1.25, 1.5, step["relation"].replace("_", " "),
-                    ha="center", va="center", fontsize=7, color=color,
-                )
-
-        ax_chain.set_title("Substitution Chain", fontsize=13)
-        plt.tight_layout()
-        st.pyplot(fig_chain)
-        plt.close(fig_chain)
-
-    # --- Multi-Chain Convergence Network ---
-    st.subheader("Multi-Chain Convergence Network")
-
-    if not NETWORKX_AVAILABLE:
-        st.warning("Install `networkx` for the convergence network.")
-    else:
-        chain_colors_list = ["#E07A5F", "#4A90D9", "#81B29A", "#F2CC8F", "#9B59B6"]
-        all_chains = {}
-        for cw in chain_defaults:
-            all_chains[cw] = compute_chain(cw, chain_steps, tuple(ALL_RELATIONS))
-
-        G_conv = nx.Graph()
-
-        for ci, cw in enumerate(chain_defaults):
-            ch = all_chains[cw]
-            color = chain_colors_list[ci % len(chain_colors_list)]
-
-            for j, step in enumerate(ch):
-                w = step["word"]
-                if not G_conv.has_node(w):
-                    G_conv.add_node(w, size=1, colors=set())
-                G_conv.nodes[w]["colors"].add(color)
-                G_conv.nodes[w]["size"] += 1
-
-                if j > 0:
-                    prev_w = ch[j - 1]["word"]
-                    G_conv.add_edge(prev_w, w, color=color)
-
-        if len(G_conv.nodes()) > 1:
-            fig_conv, ax_conv = plt.subplots(figsize=(14, 10))
-            pos = nx.spring_layout(G_conv, seed=42, k=1.5 / np.sqrt(len(G_conv.nodes())))
-
-            # Draw edges colored by chain
-            for u, v, data in G_conv.edges(data=True):
-                nx.draw_networkx_edges(
-                    G_conv, pos, edgelist=[(u, v)],
-                    width=1.5, alpha=0.4, edge_color=data["color"], ax=ax_conv,
-                )
-
-            # Node sizing: larger for start words and convergence points
-            node_sizes = []
-            node_colors = []
-            for node in G_conv.nodes():
-                n_colors = len(G_conv.nodes[node]["colors"])
-                if node in chain_defaults:
-                    node_sizes.append(800)
-                elif n_colors > 1:
-                    node_sizes.append(500)  # Convergence point
+                arrow_color = "#4A90D9" if i <= lca_index else "#E07A5F"
+                # Arrows point toward the LCA from both sides
+                if i <= lca_index:
+                    ax_bridge.annotate(
+                        "", xy=(x - 0.4, 1.5), xytext=(x - 1.8, 1.5),
+                        arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5),
+                    )
                 else:
-                    node_sizes.append(200)
-                # Mix colors or use first
-                node_colors.append(list(G_conv.nodes[node]["colors"])[0])
+                    ax_bridge.annotate(
+                        "", xy=(x - 1.8, 1.5), xytext=(x - 0.4, 1.5),
+                        arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5),
+                    )
 
-            nx.draw_networkx_nodes(
-                G_conv, pos, node_size=node_sizes, node_color=node_colors,
-                alpha=0.9, edgecolors="#333333", linewidths=1, ax=ax_conv,
-            )
-            nx.draw_networkx_labels(
-                G_conv, pos, font_size=8,
-                bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=1),
-                ax=ax_conv,
-            )
+            # Label the LCA
+            if i == lca_index:
+                ax_bridge.text(
+                    x, 2.2, "▼ lowest common ancestor",
+                    ha="center", va="center", fontsize=8, color="#996633",
+                    fontweight="bold",
+                )
 
-            ax_conv.set_title("Multi-Chain Convergence — shared nodes show where meanings meet")
-            ax_conv.axis("off")
+        ax_bridge.set_title(
+            f"Semantic Bridge: {bridge_word_a} → {bridge['lca'].split('.')[0]} ← {bridge_word_b}",
+            fontsize=13,
+        )
+        plt.tight_layout()
+        st.pyplot(fig_bridge)
+        plt.close(fig_bridge)
 
-            # Legend
-            from matplotlib.patches import Patch
+        # --- All-pairs bridge summary ---
+        st.subheader("Bridge Summary for All Pairs")
 
-            legend_handles = [
-                Patch(facecolor=chain_colors_list[i], label=chain_defaults[i])
-                for i in range(len(chain_defaults))
-            ]
-            ax_conv.legend(handles=legend_handles, loc="upper left", fontsize=9)
-            plt.tight_layout()
-            st.pyplot(fig_conv)
-            plt.close(fig_conv)
+        st.markdown(
+            "How do all the suggested word pairs connect? The table below shows "
+            "each pair's meeting point, its depth in the hierarchy, and their "
+            "Wu-Palmer similarity. Deeper meeting points = tighter conceptual links."
+        )
 
-        # --- Chain comparison table ---
-        with st.expander("Chain comparison table"):
-            max_len = max(len(all_chains[cw]) for cw in chain_defaults)
-            table_data = {}
-            for cw in chain_defaults:
-                ch = all_chains[cw]
-                table_data[cw] = [
-                    step["word"] if i < len(ch) else ""
-                    for i in range(max_len)
-                ]
-            df_chains = pd.DataFrame(table_data, index=[f"Step {i}" for i in range(max_len)])
-            st.dataframe(df_chains, use_container_width=True)
-
-            # Show shared words
-            all_words_per_chain = {
-                cw: set(step["word"].lower() for step in all_chains[cw])
-                for cw in chain_defaults
-            }
-            st.markdown("**Convergence points:**")
-            for i, w1 in enumerate(chain_defaults):
-                for w2 in chain_defaults[i + 1 :]:
-                    overlap = all_words_per_chain[w1] & all_words_per_chain[w2]
-                    if overlap:
-                        st.markdown(f"- **{w1}** and **{w2}** share: {', '.join(sorted(overlap))}")
+        bridge_rows = []
+        for wa, wb in BRIDGE_PAIRS:
+            b = compute_bridge(wa, wb)
+            if b:
+                bridge_rows.append({
+                    "Word A": wa,
+                    "Word B": wb,
+                    "Meeting Point": b["lca"].split(".")[0],
+                    "Meeting Depth": b["lca_depth"],
+                    "Path A Length": len(b["path_a"]),
+                    "Path B Length": len(b["path_b"]),
+                    "WuP Similarity": round(b["wup_sim"], 3),
+                })
+        if bridge_rows:
+            df_bridges = pd.DataFrame(bridge_rows)
+            df_bridges = df_bridges.sort_values("WuP Similarity", ascending=False)
+            st.dataframe(df_bridges, use_container_width=True, hide_index=True)
+    else:
+        st.warning(
+            f"Could not find a WordNet connection between "
+            f"**{bridge_word_a}** and **{bridge_word_b}**. "
+            f"Try words that are common English nouns."
+        )
 else:
-    st.info("Enter a starting word and select at least one relation type.")
+    st.info("Select or enter a word pair to explore their semantic bridge.")
 
 
 # ============================================================================
@@ -1248,13 +1416,15 @@ with st.expander("Compute polysemy for all 18 episodes"):
 st.markdown("""
 ---
 
-**What this week reveals:** Joyce's Lotus Eaters vocabulary is a web of narcotic
-dissolution where religious, bodily, and chemical terms converge through shared
-WordNet hypernyms. The semantic heatmap shows body/blood/bread clustering together,
-water/bath/floating forming a substance group, and altar/sacrament/communion sharing
-activity roots. Martha Clifford's malapropisms ("other world" / "other word") exploit
-the gap between sound and meaning that taxonomies cannot bridge — near-homophones
-that WordNet sees as unrelated but the ear treats as interchangeable. The substitution
-chains show how quickly any word drifts into unexpected territory, a lexical analogy
-for the narcotic dissolution that pervades the episode.
+**What this week reveals:** Joyce's Lotus Eaters vocabulary spans distant branches
+of WordNet's taxonomy — *body*, *flower*, *altar*, and *drug* sit far apart in the
+hierarchy, giving the episode low semantic coherence compared to other chapters.
+That distance is the point: the semantic bridges show exactly how far meaning must
+travel to connect these words. Blood and wine meet through *substance*; altar and
+bath through *instrumentality*; lotus and flower deep in the taxonomy at *vascular
+plant*. Some bridges are short (confirming intuitive links), others are surprisingly
+long (revealing connections Joyce builds through literary context rather than
+dictionary meaning). Martha Clifford's malapropisms ("other world" / "other word")
+exploit a different kind of gap — phonological rather than semantic — where
+near-homophones that WordNet sees as unrelated sound interchangeable to the ear.
 """)

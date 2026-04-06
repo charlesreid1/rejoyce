@@ -176,10 +176,10 @@ tfidf_results = cached_compute_tfidf(sections_tuple)
 st.header("1. TF-IDF Keyword Explorer")
 
 st.markdown(
-    "TF-IDF (Term Frequency × Inverse Document Frequency) measures how distinctive "
-    "a word is within a section relative to the entire episode. High TF-IDF = common "
-    "in this section but rare elsewhere. The formula: **TF**(t,d) = count(t in d) / |d|, "
-    "**IDF**(t) = log(N / df(t)), **TF-IDF** = TF × IDF."
+    "TF-IDF (Term Frequency × Inverse Document Frequency) scores each word by how "
+    "distinctive it is within a section compared to the episode as a whole. A word "
+    "scores high when it appears often in one section but rarely in others — making "
+    "it a good keyword candidate for that section."
 )
 
 # --- Metrics row ---
@@ -526,42 +526,34 @@ if tricolons:
     )
 
 # --- Cross-Episode Rhetoric Comparison ---
-if not is_aeolus:
-    st.subheader("Rhetoric Comparison with Aeolus")
-    aeolus_text = cached_load_episode("07aeolus.txt")
-    aeolus_anaphora = cached_detect_anaphora(aeolus_text, min_repeat, False)
-    aeolus_tricolons = cached_detect_tricolon(aeolus_text)
-
-    rc1, rc2, rc3, rc4 = st.columns(4)
-    rc1.metric(f"Anaphora ({episode_label.split(' — ')[1]})", len(anaphora))
-    rc2.metric("Anaphora (Aeolus)", len(aeolus_anaphora))
-    rc3.metric(f"Tricolons ({episode_label.split(' — ')[1]})", len(tricolons))
-    rc4.metric("Tricolons (Aeolus)", len(aeolus_tricolons))
-
-    st.markdown(
-        "*Does the newspaper episode really have more rhetorical figures than others?* "
-        "Compare the counts above. Aeolus's setting among journalists and speechmakers "
-        "should produce denser rhetoric — but heuristic detection may not capture the difference."
+with st.expander("Compare rhetoric density with other episodes"):
+    compare_rhet_labels = st.multiselect(
+        "Compare with",
+        [lbl for lbl in EPISODE_LABELS if lbl != episode_label],
+        default=[],
+        key="rhet_compare",
     )
-elif is_aeolus:
-    # Show baseline comparison option
-    with st.expander("Compare rhetoric density with another episode"):
-        compare_rhet_label = st.selectbox(
-            "Compare with",
-            [lbl for lbl in EPISODE_LABELS if lbl != episode_label],
-            key="rhet_compare",
-        )
-        compare_rhet_file = EPISODE_FILES[EPISODE_LABELS.index(compare_rhet_label)]
-        compare_rhet_text = cached_load_episode(compare_rhet_file)
 
-        cmp_anaphora = cached_detect_anaphora(compare_rhet_text, min_repeat, False)
-        cmp_tricolons = cached_detect_tricolon(compare_rhet_text)
+    rows = [{"Episode": episode_label, "Anaphora": len(anaphora), "Tricolons": len(tricolons)}]
+    for lbl in compare_rhet_labels:
+        cmp_file = EPISODE_FILES[EPISODE_LABELS.index(lbl)]
+        cmp_text = cached_load_episode(cmp_file)
+        cmp_anaphora = cached_detect_anaphora(cmp_text, min_repeat, False)
+        cmp_tricolons = cached_detect_tricolon(cmp_text)
+        rows.append({
+            "Episode": lbl,
+            "Anaphora": len(cmp_anaphora),
+            "Tricolons": len(cmp_tricolons),
+        })
 
-        rc1, rc2, rc3, rc4 = st.columns(4)
-        rc1.metric("Anaphora (Aeolus)", len(anaphora))
-        rc2.metric(f"Anaphora ({compare_rhet_label.split(' — ')[1]})", len(cmp_anaphora))
-        rc3.metric("Tricolons (Aeolus)", len(tricolons))
-        rc4.metric(f"Tricolons ({compare_rhet_label.split(' — ')[1]})", len(cmp_tricolons))
+    df_rhet = pd.DataFrame(rows).set_index("Episode")
+    st.dataframe(
+        df_rhet,
+        use_container_width=True,
+        column_config={
+            "Episode": st.column_config.TextColumn(width="large"),
+        },
+    )
 
 
 # ============================================================================
@@ -725,19 +717,25 @@ if is_aeolus:
     avg_overlap = sum(overlaps_pct) / len(overlaps_pct) if overlaps_pct else 0
     sections_with_overlap = sum(1 for p in overlaps_pct if p > 0)
 
-    s1, s2, s3, s4 = st.columns(4)
+    st.markdown(
+        "How often do TF-IDF keywords match the words Joyce actually used in his headlines?"
+    )
+
+    s1, s2 = st.columns(2)
     s1.metric(
-        "Sections with overlap",
+        "Sections where keywords overlap with Joyce's headline",
         f"{sections_with_overlap}/{len(sections)} ({sections_with_overlap/len(sections)*100:.0f}%)",
     )
-    s2.metric("Average overlap", f"{avg_overlap:.1f}%")
+    s2.metric("Average keyword–headline overlap", f"{avg_overlap:.1f}%")
+
+    s3, s4 = st.columns(2)
     s3.metric(
-        "Best match",
+        "Closest keyword–headline match",
         f"Section {best_match_idx+1} ({best_match_pct:.0f}%)",
         help=f"Headline: {sections[best_match_idx][0]}",
     )
     s4.metric(
-        "Worst match",
+        "Weakest keyword–headline match",
         f"Section {worst_match_idx+1} ({worst_match_pct:.0f}%)",
         help=f"Headline: {sections[worst_match_idx][0]}",
     )

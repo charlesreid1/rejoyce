@@ -85,9 +85,15 @@ episode_text = cached_load_episode(episode_file)
 
 @st.cache_data
 def cached_sentiment_scores(text):
-    """Score each sentence with VADER. Returns list of (sentence, compound)."""
+    """Score each sentence with VADER. Returns list of (sentence, compound).
+
+    Falls back to line-by-line splitting when sentence tokenization produces
+    very few results (e.g. Penelope, which has almost no punctuation).
+    """
     sia = SentimentIntensityAnalyzer()
     sentences = sent_tokenize(text)
+    if len(sentences) < 10:
+        sentences = [line.strip() for line in text.split("\n") if line.strip()]
     return [(sent, sia.polarity_scores(sent)["compound"]) for sent in sentences]
 
 
@@ -205,9 +211,11 @@ def cached_lexicon_density(text, word_list_tuple, window_size):
 st.header("1. Sentiment Trajectory")
 
 st.markdown(
-    "VADER compound sentiment per sentence with sliding-window smoothing. "
-    "Adjust the window size in the sidebar to control smoothing, toggle the raw scatter, "
-    "and compare trajectories across episodes."
+    "Each sentence is scored from −1 (most negative) to +1 (most positive) using "
+    "VADER, a dictionary-based sentiment tool. The smoothed line averages scores over "
+    "a sliding window of nearby sentences to reveal the episode's emotional arc. "
+    "VADER was trained on social media, so it often misfires on literary language — "
+    "funeral euphemisms may score as positive."
 )
 
 scored_sentences = cached_sentiment_scores(episode_text)
@@ -235,13 +243,113 @@ m4.metric("Pos / Neg / Neu", f"{pct_pos:.0f}% / {pct_neg:.0f}% / {pct_neu:.0f}%"
 show_raw = st.toggle("Show raw sentence scores", value=True, key="show_raw")
 
 # --- Sentiment arc plot ---
-# Hades event annotations
-HADES_EVENTS = [
-    (300, "Child's murder\nhouse"),
-    (900, "Cemetery\narrival"),
-    (1200, "Burial"),
-    (1350, "Rudy\nmemory"),
-]
+# Key narrative events per episode (fractional position, label)
+EPISODE_EVENTS = {
+    "01telemachus.txt": [
+        (0.15, "Mass parody"),
+        (0.4, "Mother's death"),
+        (0.7, "Key surrender"),
+        (0.9, "Tower departure"),
+    ],
+    "02nestor.txt": [
+        (0.25, "History lesson"),
+        (0.5, "Riddles"),
+        (0.75, "Deasy's letter"),
+        (0.9, "Anti-Semitic rant"),
+    ],
+    "03proteus.txt": [
+        (0.2, "Ineluctable modality"),
+        (0.5, "Signature of things"),
+        (0.75, "Drowned man"),
+    ],
+    "04calypso.txt": [
+        (0.2, "Breakfast prep"),
+        (0.5, "Boylan's letter"),
+        (0.8, "Outhouse reading"),
+    ],
+    "05lotuseaters.txt": [
+        (0.2, "Martha's letter"),
+        (0.5, "Chemist visit"),
+        (0.75, "Church service"),
+        (0.9, "Bath fantasy"),
+    ],
+    "06hades.txt": [
+        (0.2, "Child's murder house"),
+        (0.6, "Cemetery arrival"),
+        (0.8, "Burial"),
+        (0.9, "Rudy memory"),
+    ],
+    "07aeolus.txt": [
+        (0.25, "Printing press"),
+        (0.5, "Keyes ad"),
+        (0.75, "Parable of plums"),
+    ],
+    "08lestrygonians.txt": [
+        (0.2, "Hunger pangs"),
+        (0.4, "Mrs Breen"),
+        (0.65, "Burton restaurant"),
+        (0.85, "Davy Byrne's"),
+    ],
+    "09scyllacharybdis.txt": [
+        (0.2, "Shakespeare theory"),
+        (0.5, "Hamlet's father"),
+        (0.75, "Ann Hathaway"),
+        (0.9, "Buck enters"),
+    ],
+    "10wanderingrocks.txt": [
+        (0.2, "Conmee's journey"),
+        (0.5, "Cavalcade midpoint"),
+        (0.8, "Viceregal procession"),
+    ],
+    "11sirens.txt": [
+        (0.15, "Overture"),
+        (0.4, "Bronze by gold"),
+        (0.65, "Last Rose of Summer"),
+        (0.85, "Bloom's fart"),
+    ],
+    "12cyclops.txt": [
+        (0.25, "Citizen appears"),
+        (0.5, "Bloom defends Jews"),
+        (0.75, "Love speech"),
+        (0.9, "Biscuit tin thrown"),
+    ],
+    "13nausicaa.txt": [
+        (0.35, "Gerty's romance"),
+        (0.5, "Fireworks climax"),
+        (0.65, "Post-coital Bloom"),
+        (0.85, "Cuckoo clock"),
+    ],
+    "14oxenofthesun.txt": [
+        (0.2, "Hospital arrival"),
+        (0.5, "Styles midpoint"),
+        (0.75, "Drunken cacophony"),
+        (0.9, "Burke's pub"),
+    ],
+    "15circe.txt": [
+        (0.15, "Nighttown entry"),
+        (0.35, "Bella/Bello transform"),
+        (0.6, "Trial scene"),
+        (0.8, "Mother's ghost"),
+        (0.95, "Chandelier smash"),
+    ],
+    "16eumaeus.txt": [
+        (0.25, "Cabman's shelter"),
+        (0.5, "Sailor's tales"),
+        (0.75, "Parnell discussion"),
+    ],
+    "17ithaca.txt": [
+        (0.2, "Cocoa preparation"),
+        (0.5, "Astronomy"),
+        (0.75, "Molly's bed"),
+        (0.9, "Bloom sleeps"),
+    ],
+    "18penelope.txt": [
+        (0.25, "Boylan memory"),
+        (0.5, "Gibraltar girlhood"),
+        (0.75, "Other women"),
+        (0.95, "Howth proposal"),
+    ],
+}
 
 fig_sent, axes = plt.subplots(2, 1, figsize=(14, 8))
 
@@ -267,16 +375,17 @@ axes[1].set_title(f"Sentiment Trajectory (window={window_size}): {episode_label}
 axes[1].set_xlabel("Sentence Index")
 axes[1].set_ylabel("Mean Compound Score")
 
-# Annotations only for Hades
-if episode_file == "06hades.txt":
-    for idx, label_text in HADES_EVENTS:
-        if idx < n_sents:
-            for ax in axes:
-                ax.axvline(x=idx, color="orange", linestyle=":", alpha=0.7)
-            axes[0].text(
-                idx, 0.8, label_text, rotation=90, verticalalignment="bottom",
-                fontsize=8, bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow", alpha=0.7),
-            )
+# Annotations for narrative events
+events = EPISODE_EVENTS.get(episode_file, [])
+for frac, label_text in events:
+    idx = int(frac * n_sents)
+    if idx < n_sents:
+        for ax in axes:
+            ax.axvline(x=idx, color="orange", linestyle=":", alpha=0.7)
+        axes[0].text(
+            idx, 0.8, label_text, horizontalalignment="left", verticalalignment="top",
+            fontsize=8, bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow", alpha=0.7),
+        )
 
 plt.tight_layout()
 st.pyplot(fig_sent)
@@ -288,11 +397,13 @@ st.subheader("VADER Misfires & Extremes")
 scored_sorted_pos = sorted(scored_sentences, key=lambda x: -x[1])[:5]
 scored_sorted_neg = sorted(scored_sentences, key=lambda x: x[1])[:5]
 
+extreme_sentences = scored_sorted_pos + scored_sorted_neg
+extreme_sentences.sort(key=lambda x: -x[1])
+
 misfire_rows = []
-for sent, score in scored_sorted_pos:
-    misfire_rows.append({"Score": f"{score:+.3f}", "Sentence": sent[:120], "Type": "Most Positive"})
-for sent, score in scored_sorted_neg:
-    misfire_rows.append({"Score": f"{score:+.3f}", "Sentence": sent[:120], "Type": "Most Negative"})
+for sent, score in extreme_sentences:
+    label = "Most Positive" if score > 0.05 else ("Most Negative" if score < -0.05 else "Neutral")
+    misfire_rows.append({"Score": f"{score:+.3f}", "Sentence": sent[:120], "Type": label})
 
 st.dataframe(pd.DataFrame(misfire_rows), use_container_width=True, hide_index=True)
 st.caption(
@@ -301,12 +412,16 @@ st.caption(
 )
 
 # --- Cross-episode comparison ---
+# Reset comparison selection when the sidebar episode changes
+if st.session_state.get("_compare_base") != episode_label:
+    st.session_state["_compare_base"] = episode_label
+    second = "01 \u2014 Telemachus" if episode_label != "01 \u2014 Telemachus" else "06 \u2014 Hades"
+    st.session_state["compare_episodes"] = [episode_label, second]
+
 with st.expander("Compare sentiment trajectories across episodes"):
-    default_compare = ["06 \u2014 Hades", "01 \u2014 Telemachus"]
     compare_episodes = st.multiselect(
         "Select episodes to compare (2-5)",
         EPISODE_LABELS,
-        default=[l for l in default_compare if l in EPISODE_LABELS],
         max_selections=5,
         key="compare_episodes",
     )
@@ -367,9 +482,10 @@ with st.expander("Compare sentiment trajectories across episodes"):
 st.header("2. Narrative Voice & Register Analysis")
 
 st.markdown(
-    "Text is split into three registers (dialogue, interior monologue, external narration) "
-    "using heuristics, then VADER sentiment is compared across registers. "
-    "Interior monologue tends to cluster near neutral while dialogue has wider swings."
+    "The episode is split into three narrative registers — dialogue (lines starting "
+    "with an em-dash), interior monologue (detected by Bloom-specific markers), and "
+    "external narration (everything else). Each register's text is then sentence-tokenized "
+    "and scored with VADER to compare sentiment across voices."
 )
 
 registers = cached_register_split(episode_text)
@@ -398,50 +514,15 @@ ax_donut.set_title(f"Register Proportions: {episode_label}")
 st.pyplot(fig_donut)
 plt.close(fig_donut)
 
-# --- Register sentiment grouped bar chart ---
-st.subheader("Register Sentiment Comparison")
-
 reg_names = ["Dialogue", "Interior", "Narration"]
-reg_means = []
-reg_vars = []
-reg_stds = []
-for name in reg_names:
-    scores = register_sentiment[name]
-    if scores:
-        m = sum(scores) / len(scores)
-        v = sum((s - m) ** 2 for s in scores) / len(scores)
-        reg_means.append(m)
-        reg_vars.append(v)
-        reg_stds.append(v ** 0.5)
-    else:
-        reg_means.append(0)
-        reg_vars.append(0)
-        reg_stds.append(0)
-
-fig_bar, ax_bar = plt.subplots(figsize=(10, 5))
-y = np.arange(len(reg_names))
-bar_h = 0.6
-bars = ax_bar.barh(
-    y, reg_means, bar_h,
-    xerr=reg_stds,
-    color=[REGISTER_COLORS[r] for r in reg_names],
-    capsize=5,
-)
-ax_bar.set_yticks(y)
-ax_bar.set_yticklabels(reg_names)
-ax_bar.set_xlabel("Mean Compound Score")
-ax_bar.set_title("Mean Sentiment by Register (whiskers = 1 std dev)")
-ax_bar.axvline(x=0, color="gray", linestyle="--", alpha=0.5)
-for i, (m, v) in enumerate(zip(reg_means, reg_vars)):
-    ax_bar.text(m + reg_stds[i] + 0.01, i, f"var={v:.4f}", va="center", fontsize=8)
-plt.tight_layout()
-st.pyplot(fig_bar)
-plt.close(fig_bar)
 
 # --- Register sentiment distributions ---
 st.subheader("Sentiment Distributions by Register")
 
-use_violin = st.toggle("Violin plot", value=False, key="use_violin")
+st.markdown(
+    "Distribution of per-sentence VADER compound scores within each register. "
+    "Wider shapes indicate more spread in sentiment; the white dot marks the median."
+)
 
 fig_dist, ax_dist = plt.subplots(figsize=(10, 5))
 plot_data = [register_sentiment[r] for r in reg_names]
@@ -449,19 +530,10 @@ plot_data = [register_sentiment[r] for r in reg_names]
 non_empty = [(r, d) for r, d in zip(reg_names, plot_data) if d]
 if non_empty:
     ne_names, ne_data = zip(*non_empty)
-    if use_violin:
-        parts = ax_dist.violinplot(ne_data, positions=range(len(ne_names)), showmeans=True, showmedians=True)
-        for i, pc in enumerate(parts.get("bodies", [])):
-            pc.set_facecolor(REGISTER_COLORS[ne_names[i]])
-            pc.set_alpha(0.7)
-    else:
-        bp = ax_dist.boxplot(
-            ne_data, positions=range(len(ne_names)), patch_artist=True,
-            widths=0.5, showmeans=True,
-        )
-        for i, patch in enumerate(bp["boxes"]):
-            patch.set_facecolor(REGISTER_COLORS[ne_names[i]])
-            patch.set_alpha(0.7)
+    parts = ax_dist.violinplot(ne_data, positions=range(len(ne_names)), showmeans=True, showmedians=True)
+    for i, pc in enumerate(parts.get("bodies", [])):
+        pc.set_facecolor(REGISTER_COLORS[ne_names[i]])
+        pc.set_alpha(0.7)
 
     ax_dist.set_xticks(range(len(ne_names)))
     ax_dist.set_xticklabels(ne_names)
@@ -537,9 +609,15 @@ with st.expander("Voice fingerprint across episodes"):
 st.header("3. Death Lexicon & Affective Analysis")
 
 st.markdown(
-    "SentiWordNet scores for death-related and proximity words expose the gap between "
-    "context-free sentiment and contextual meaning. Look up any word, build custom lexicons, "
-    "and trace lexicon density through the episode."
+    "SentiWordNet is a lexical database that assigns every English word three scores: "
+    "**positive**, **negative**, and **objective** (neutral), always summing to 1.0. "
+    "These scores are context-free — they reflect the word's *typical* sentiment, not "
+    "how it's used in a particular passage.\n\n"
+    "Below, two curated word lists are scored: **death words** (coffin, grave, mourning…) "
+    "and **proximity words** (warm, gentle, rest…) — words Joyce uses to soften death "
+    "through physical closeness and comfort. The point is to show what these tools miss: "
+    "\"coffin\" scores as purely objective (neutral), and \"rest\" carries no negativity, "
+    "even though both carry heavy emotional weight in a funeral chapter."
 )
 
 # --- Lexicon sentiment scorecard ---
@@ -564,9 +642,7 @@ with col_death:
 with col_prox:
     st.subheader("Proximity Words")
     avg_pos = prox_df["Pos Score"].mean()
-    zero_count = sum(1 for _, row in prox_df.iterrows() if row["Pos Score"] == 0.0)
     st.metric("Average Positivity", f"{avg_pos:.3f}")
-    st.metric("Words scoring 0.000", f"{zero_count} / {len(prox_df)}")
     st.dataframe(
         prox_df.style.background_gradient(subset=["Pos Score"], cmap="Greens"),
         use_container_width=True,
