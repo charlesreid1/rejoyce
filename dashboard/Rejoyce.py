@@ -33,4 +33,8 @@ explore patterns that static scripts can't reveal.
 - **[Week 5 — Lotus Eaters](/Week_5):** WordNet semantic similarity, malapropisms, and substitution chains
 - **[Week 6 — Hades](/Week_6):** Sentiment analysis, narrative voice registers, and affective lexicons
 - **[Week 7 — Aeolus](/Week_7):** TF-IDF, keyword extraction, rhetoric detection, and headline generation
+- **[Week 8 — Lestrygonians](/Week_8):** N-gram language models, perplexity as style measure, and associative chains (PMI)
+- **[Week 9 — Scylla & Charybdis](/Week_9):** Context-free grammars, syntactic parsing, and quotation analysis
+- **[Week 10 — Wandering Rocks](/Week_10):** Text similarity, interpolation detection, and entity tracking
+- **[Week 11 — Sirens](/Week_11):** Phonetic analysis, sound patterning, and motif tracking
 """)
