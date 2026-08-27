@@ -2,7 +2,7 @@
 Rejoyce — Interactive NLTK Explorations of Ulysses
 ====================================================
 Streamlit dashboard entry point. Run with:
-    streamlit run dashboard/app.py
+    streamlit run dashboard/Rejoyce.py
 """
 
 import streamlit as st
