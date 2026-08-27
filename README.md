@@ -13,6 +13,24 @@ The `txt/` directory contains the full text of *Ulysses* (via Project
 Gutenberg), split by episode. Each week has its own directory (`week01/`
 through `week18/`), containing the exercise sheet and Python solution.
 
+## Streamlit dashboard
+
+An interactive Streamlit dashboard in `dashboard/` accompanies the exercises,
+turning each week's analysis into a browsable app with adjustable parameters
+and cross-episode comparisons.
+
+Install dependencies and launch from the repo root:
+
+```
+pip install -r requirements.txt
+streamlit run dashboard/Rejoyce.py
+```
+
+Streamlit auto-discovers the weekly pages in `dashboard/pages/` and lists
+them in the sidebar. `dashboard/Rejoyce.py` is the landing page;
+`dashboard/shared.py` holds the episode selector and cached loaders reused
+across pages.
+
 ## Weekly exercises
 
 - **Week 1 - Telemachus: Tokenization & corpus exploration.** Tokenize and profile text statistics, build concordances for thematic words, and analyze frequency distributions with and without stopwords.
