@@ -94,6 +94,60 @@ METRIC_LABELS = {
     "entity_density": "Entity Density",
 }
 
+METRIC_GROUPS = {
+    "Vocabulary & Complexity": {
+        "description": (
+            "How rich and demanding is each episode's language? These metrics capture "
+            "vocabulary size, diversity, and readability — from raw word counts to the "
+            "Flesch-Kincaid grade level."
+        ),
+        "icon": "📚",
+        "metrics": [
+            "total_tokens",
+            "total_types",
+            "ttr",
+            "hapax_ratio",
+            "avg_word_len",
+            "flesch_kincaid",
+        ],
+    },
+    "Sentence Structure": {
+        "description": (
+            "How are sentences built? Long, winding constructions vs. clipped fragments; "
+            "noun-heavy description vs. verb-driven action; adjective density as a proxy "
+            "for ornamental style."
+        ),
+        "icon": "🔧",
+        "metrics": [
+            "avg_sent_len",
+            "median_sent_len",
+            "sent_len_std",
+            "noun_verb_ratio",
+            "adj_density",
+        ],
+    },
+    "Tone & Punctuation": {
+        "description": (
+            "What does the episode *feel* like? Sentiment polarity and variance, "
+            "exclamation and comma rates as markers of rhetorical intensity, and entity "
+            "density as a measure of how crowded the text is with named references."
+        ),
+        "icon": "🎭",
+        "metrics": [
+            "vader_mean",
+            "vader_var",
+            "exclamation_rate",
+            "comma_rate",
+            "entity_density",
+        ],
+    },
+}
+
+# Flat list of all metrics ordered by group
+METRIC_NAMES_BY_GROUP = [
+    m for g in METRIC_GROUPS.values() for m in g["metrics"]
+]
+
 
 # ============================================================================
 # Helpers
@@ -180,28 +234,34 @@ if st.button("Compute All Episodes", key="compute_all_button"):
 if "master_table" in st.session_state:
     df = st.session_state["master_table"]
 
-    # --- Master metrics table ---
-    st.subheader("All Episodes x All Metrics")
+    # --- Grouped metric tables in tabs ---
+    tab_labels = [
+        f"{g['icon']} {name}" for name, g in METRIC_GROUPS.items()
+    ]
+    tabs = st.tabs(tab_labels)
 
-    display_cols = ["Episode"] + METRIC_NAMES
-    df_display = df[display_cols].copy()
+    for tab, (group_name, group) in zip(tabs, METRIC_GROUPS.items()):
+        with tab:
+            st.caption(group["description"])
+            group_cols = group["metrics"]
+            df_group = df[["Episode"] + group_cols].copy()
 
-    # Format numeric columns
-    for col in METRIC_NAMES:
-        if col in ("total_tokens", "total_types"):
-            df_display[col] = df_display[col].apply(lambda x: f"{int(x):,}")
-        elif col in ("ttr", "hapax_ratio", "adj_density", "exclamation_rate", "comma_rate", "entity_density"):
-            df_display[col] = df_display[col].apply(lambda x: f"{x:.4f}")
-        elif col in ("vader_mean", "vader_var"):
-            df_display[col] = df_display[col].apply(lambda x: f"{x:.4f}")
-        else:
-            df_display[col] = df_display[col].apply(lambda x: f"{x:.2f}")
+            # Format numeric columns
+            for col in group_cols:
+                if col in ("total_tokens", "total_types"):
+                    df_group[col] = df_group[col].apply(lambda x: f"{int(x):,}")
+                elif col in (
+                    "ttr", "hapax_ratio", "adj_density",
+                    "exclamation_rate", "comma_rate", "entity_density",
+                    "vader_mean", "vader_var",
+                ):
+                    df_group[col] = df_group[col].apply(lambda x: f"{x:.4f}")
+                else:
+                    df_group[col] = df_group[col].apply(lambda x: f"{x:.2f}")
 
-    # Rename columns to friendly labels
-    rename_map = {k: METRIC_LABELS[k] for k in METRIC_NAMES}
-    df_display = df_display.rename(columns=rename_map)
-
-    st.dataframe(df_display, use_container_width=True, hide_index=True)
+            rename_map = {k: METRIC_LABELS[k] for k in group_cols}
+            df_group = df_group.rename(columns=rename_map)
+            st.dataframe(df_group, use_container_width=True, hide_index=True)
 
     # --- Eumaeus ranking ---
     st.subheader("Eumaeus Rankings")
@@ -233,10 +293,21 @@ if "master_table" in st.session_state:
     # --- Metric distribution bar chart ---
     st.subheader("Metric Distribution")
 
+    # Build grouped options list with section separators
+    _grouped_options = []
+    _group_for_metric = {}
+    for group_name, group in METRIC_GROUPS.items():
+        for m in group["metrics"]:
+            _grouped_options.append(m)
+            _group_for_metric[m] = f"{group['icon']} {group_name}"
+
+    def _format_metric(m):
+        return f"{_group_for_metric[m]}  ·  {METRIC_LABELS[m]}"
+
     selected_metric = st.selectbox(
         "Select a metric to visualise across all episodes",
-        METRIC_NAMES,
-        format_func=lambda x: METRIC_LABELS[x],
+        _grouped_options,
+        format_func=_format_metric,
         key="metric_dist_select",
     )
 
@@ -319,43 +390,58 @@ else:
     st.pyplot(fig_heat)
     plt.close(fig_heat)
 
-    # --- Sparklines ---
+    # --- Sparklines by group ---
     st.subheader("Metric Sparklines")
 
     st.markdown(
-        "One small plot per metric showing values across all 18 episodes in episode order."
+        "One small plot per metric showing values across all 18 episodes in episode "
+        "order, organised by metric family. Orange dot = Eumaeus."
     )
 
-    n_metrics = len(METRIC_NAMES)
-    ncols = 4
-    nrows = math.ceil(n_metrics / ncols)
+    group_colors = {
+        "Vocabulary & Complexity": "#4A90D9",
+        "Sentence Structure": "#81B29A",
+        "Tone & Punctuation": "#DAA520",
+    }
 
-    fig_spark, axes_spark = plt.subplots(nrows, ncols, figsize=(16, nrows * 2.5))
-    axes_flat = axes_spark.flatten()
+    for group_name, group in METRIC_GROUPS.items():
+        st.markdown(f"**{group['icon']} {group_name}**")
 
-    for idx, metric in enumerate(METRIC_NAMES):
-        ax = axes_flat[idx]
-        vals = numeric_df[metric].values
-        ax.plot(range(len(vals)), vals, color="#4A90D9", linewidth=1.5)
-        ax.fill_between(range(len(vals)), vals, alpha=0.15, color="#4A90D9")
+        group_metrics = group["metrics"]
+        ncols = min(3, len(group_metrics))
+        nrows = math.ceil(len(group_metrics) / ncols)
+        base_color = group_colors.get(group_name, "#4A90D9")
 
-        # Highlight Eumaeus (index 15)
-        if len(vals) > 15:
-            ax.plot(15, vals[15], "o", color="#E07A5F", markersize=6, zorder=5)
+        fig_spark, axes_spark = plt.subplots(
+            nrows, ncols, figsize=(14, nrows * 2.5)
+        )
+        if nrows == 1 and ncols == 1:
+            axes_flat = [axes_spark]
+        else:
+            axes_flat = np.array(axes_spark).flatten()
 
-        ax.set_title(METRIC_LABELS[metric], fontsize=7, pad=3)
-        ax.set_xticks([0, 5, 10, 15, 17])
-        ax.set_xticklabels(["01", "06", "11", "16", "18"], fontsize=5)
-        ax.tick_params(axis="y", labelsize=5)
+        for idx, metric in enumerate(group_metrics):
+            ax = axes_flat[idx]
+            vals = numeric_df[metric].values
+            ax.plot(range(len(vals)), vals, color=base_color, linewidth=1.5)
+            ax.fill_between(range(len(vals)), vals, alpha=0.15, color=base_color)
 
-    # Hide unused axes
-    for idx in range(n_metrics, len(axes_flat)):
-        axes_flat[idx].set_visible(False)
+            # Highlight Eumaeus (index 15)
+            if len(vals) > 15:
+                ax.plot(15, vals[15], "o", color="#E07A5F", markersize=6, zorder=5)
 
-    fig_spark.suptitle("Metric Sparklines (orange dot = Eumaeus)", fontsize=10, y=1.01)
-    plt.tight_layout()
-    st.pyplot(fig_spark)
-    plt.close(fig_spark)
+            ax.set_title(METRIC_LABELS[metric], fontsize=8, pad=3)
+            ax.set_xticks([0, 5, 10, 15, 17])
+            ax.set_xticklabels(["01", "06", "11", "16", "18"], fontsize=6)
+            ax.tick_params(axis="y", labelsize=6)
+
+        # Hide unused axes
+        for idx in range(len(group_metrics), len(axes_flat)):
+            axes_flat[idx].set_visible(False)
+
+        plt.tight_layout()
+        st.pyplot(fig_spark)
+        plt.close(fig_spark)
 
     # --- Correlation matrix ---
     st.subheader("Metric Correlation Matrix")
@@ -389,69 +475,98 @@ else:
     st.pyplot(fig_corr)
     plt.close(fig_corr)
 
-    # --- Radar chart ---
-    st.subheader("Episode Radar Chart")
+    # --- Radar charts by metric group ---
+    st.subheader("Episode Radar Charts")
 
     st.markdown(
         "Compare the stylistic profile of selected episodes. Metrics are normalised "
-        "to [0, 1] across the corpus so all dimensions are comparable."
+        "to [0, 1] across episodes 1–17 (episode 18, Penelope, is excluded because "
+        "its unpunctuated monologue distorts sentence-level metrics). One radar per "
+        "metric group."
     )
+
+    # Exclude episode 18 (Penelope) from normalisation and selection
+    ep_mask = ~df["Episode"].str.contains("Penelope")
+    radar_episode_names = [ep for ep in episode_names if "Penelope" not in ep]
+    radar_numeric = numeric_df.loc[ep_mask].reset_index(drop=True)
 
     default_radar = []
     for name in ["Telemachus", "Sirens", "Cyclops", "Eumaeus"]:
-        for ep in episode_names:
+        for ep in radar_episode_names:
             if name in ep:
                 default_radar.append(ep)
                 break
 
     radar_episodes = st.multiselect(
-        "Select 2-5 episodes for radar comparison",
-        episode_names,
+        "Select 2-10 episodes for radar comparison",
+        radar_episode_names,
         default=default_radar,
         key="radar_select",
     )
 
     if len(radar_episodes) < 2:
         st.warning("Select at least 2 episodes for the radar chart.")
-    elif len(radar_episodes) > 5:
-        st.warning("Select at most 5 episodes for readability.")
+    elif len(radar_episodes) > 10:
+        st.warning("Select at most 10 episodes for readability.")
     else:
-        # Normalise metrics to [0, 1]
-        normed = numeric_df.copy()
-        for col in METRIC_NAMES:
-            cmin = normed[col].min()
-            cmax = normed[col].max()
-            if cmax > cmin:
-                normed[col] = (normed[col] - cmin) / (cmax - cmin)
-            else:
-                normed[col] = 0.5
+        radar_colors = [
+            "#4A90D9", "#E07A5F", "#81B29A", "#DAA520", "#9B59B6",
+            "#E84393", "#00B894", "#636E72", "#D63031", "#0984E3",
+        ]
 
-        # Build radar
-        angles = np.linspace(0, 2 * np.pi, len(METRIC_NAMES), endpoint=False).tolist()
-        angles += angles[:1]  # close the polygon
+        radar_tab_labels = [
+            f"{g['icon']} {name}" for name, g in METRIC_GROUPS.items()
+        ]
+        radar_tabs = st.tabs(radar_tab_labels)
 
-        fig_radar, ax_radar = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+        for rtab, (group_name, group) in zip(radar_tabs, METRIC_GROUPS.items()):
+            with rtab:
+                st.caption(group["description"])
+                group_metrics = group["metrics"]
 
-        radar_colors = ["#4A90D9", "#E07A5F", "#81B29A", "#DAA520", "#9B59B6"]
+                # Normalise to [0, 1] using episodes 1-17 only
+                normed = radar_numeric[group_metrics].copy()
+                for col in group_metrics:
+                    cmin = normed[col].min()
+                    cmax = normed[col].max()
+                    if cmax > cmin:
+                        normed[col] = (normed[col] - cmin) / (cmax - cmin)
+                    else:
+                        normed[col] = 0.5
 
-        for i, ep in enumerate(radar_episodes):
-            ep_idx = episode_names.index(ep)
-            vals = normed.iloc[ep_idx][METRIC_NAMES].values.tolist()
-            vals += vals[:1]
-            short = ep.split(" — ")[1]
-            color = radar_colors[i % len(radar_colors)]
-            ax_radar.plot(angles, vals, "o-", linewidth=1.5, label=short, color=color)
-            ax_radar.fill(angles, vals, alpha=0.08, color=color)
+                angles = np.linspace(
+                    0, 2 * np.pi, len(group_metrics), endpoint=False
+                ).tolist()
+                angles += angles[:1]
 
-        ax_radar.set_xticks(angles[:-1])
-        ax_radar.set_xticklabels(
-            [METRIC_LABELS[m][:15] for m in METRIC_NAMES], fontsize=6
-        )
-        ax_radar.set_title("Normalised Stylistic Profiles", pad=20)
-        ax_radar.legend(loc="upper right", bbox_to_anchor=(1.3, 1.1), fontsize=8)
-        plt.tight_layout()
-        st.pyplot(fig_radar)
-        plt.close(fig_radar)
+                fig_radar, ax_radar = plt.subplots(
+                    figsize=(8, 8), subplot_kw=dict(polar=True)
+                )
+
+                for i, ep in enumerate(radar_episodes):
+                    ep_idx = radar_episode_names.index(ep)
+                    vals = normed.iloc[ep_idx][group_metrics].values.tolist()
+                    vals += vals[:1]
+                    short = ep.split(" — ")[1]
+                    color = radar_colors[i % len(radar_colors)]
+                    ax_radar.plot(
+                        angles, vals, "o-", linewidth=1.5, label=short, color=color
+                    )
+                    ax_radar.fill(angles, vals, alpha=0.08, color=color)
+
+                ax_radar.set_xticks(angles[:-1])
+                ax_radar.set_xticklabels(
+                    [METRIC_LABELS[m] for m in group_metrics], fontsize=7
+                )
+                ax_radar.set_title(
+                    f"{group['icon']} {group_name}", pad=20, fontsize=11
+                )
+                ax_radar.legend(
+                    loc="upper right", bbox_to_anchor=(1.35, 1.1), fontsize=8
+                )
+                plt.tight_layout()
+                st.pyplot(fig_radar)
+                plt.close(fig_radar)
 
 
 # ============================================================================
@@ -515,7 +630,7 @@ else:
     if outlier_rows:
         df_outliers = pd.DataFrame(outlier_rows)
         df_outliers = df_outliers.sort_values("Z-score", key=lambda x: x.astype(float).abs(), ascending=False)
-        st.dataframe(df_outliers, use_container_width=True, hide_index=True)
+        st.dataframe(df_outliers, width="stretch", hide_index=True)
     else:
         st.info(f"No outliers detected at z-score threshold {z_threshold:.1f}.")
 

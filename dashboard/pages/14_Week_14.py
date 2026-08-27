@@ -280,7 +280,7 @@ if is_oxen:
         rows.append(row)
 
     df_sections = pd.DataFrame(rows)
-    st.dataframe(df_sections, use_container_width=True, hide_index=True)
+    st.dataframe(df_sections, width="stretch", hide_index=True)
 
     # --- Reference profiles ---
     st.subheader("Gutenberg Reference Profiles")
@@ -295,7 +295,7 @@ if is_oxen:
         ref_rows.append(row)
 
     df_refs = pd.DataFrame(ref_rows)
-    st.dataframe(df_refs, use_container_width=True, hide_index=True)
+    st.dataframe(df_refs, width="stretch", hide_index=True)
 
     # --- Metrics row ---
     segments = cached_segment_oxen(episode_file)
@@ -376,7 +376,7 @@ else:
         all_rows.append(row)
 
     df_combined = pd.DataFrame(all_rows)
-    st.dataframe(df_combined, use_container_width=True, hide_index=True)
+    st.dataframe(df_combined, width="stretch", hide_index=True)
 
     # Metrics
     m1, m2, m3 = st.columns(3)
@@ -442,7 +442,7 @@ if "classifications" in st.session_state:
             "Confidence": f"{c['Confidence']:.3f}",
         })
     df_class = pd.DataFrame(class_rows)
-    st.dataframe(df_class, use_container_width=True, hide_index=True)
+    st.dataframe(df_class, width="stretch", hide_index=True)
 
     # --- Classification bar chart ---
     if len(classifications) > 1:
@@ -621,7 +621,7 @@ if is_oxen:
             })
 
         df_trends = pd.DataFrame(trend_rows)
-        st.dataframe(df_trends, use_container_width=True, hide_index=True)
+        st.dataframe(df_trends, width="stretch", hide_index=True)
 
     else:
         st.info("Select at least one feature to plot.")

@@ -128,7 +128,7 @@ for col, name in zip(cols, ["Porter", "Lancaster", "Snowball"]):
             {"Word": w, "Stem": s, "Edit Dist": d}
             for w, s, d in results[name]
         ]
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 # --- Edit distance distribution chart ---
 st.subheader("Edit Distance Distribution")
@@ -398,7 +398,7 @@ if non_english_sents:
             "Sentence": r["sentence"][:120] + ("..." if len(r["sentence"]) > 120 else ""),
             "Confidence Scores": scores_str,
         })
-    st.dataframe(pd.DataFrame(browser_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(browser_rows), width="stretch", hide_index=True)
 else:
     st.info("No non-English sentences detected with the current filter.")
 
@@ -435,7 +435,7 @@ with st.expander("Compute for all 18 episodes (slow on first run)"):
 
         df_all = pd.DataFrame(all_lang_data)
         # Highlight current episode
-        st.dataframe(df_all, use_container_width=True, hide_index=True)
+        st.dataframe(df_all, width="stretch", hide_index=True)
 
 
 # ============================================================================
@@ -566,7 +566,7 @@ for w in word_analyses:
     })
 
 df_words = pd.DataFrame(table_rows)
-st.dataframe(df_words, use_container_width=True, hide_index=True)
+st.dataframe(df_words, width="stretch", hide_index=True)
 
 # --- Category breakdown chart ---
 fig_cat, ax_cat = plt.subplots(figsize=(8, 3))
@@ -682,7 +682,7 @@ if compound_word and len(compound_word) >= 6:
         best.sort(key=lambda s: -s["Score"])
         st.dataframe(
             pd.DataFrame(best[:10]),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
     else:

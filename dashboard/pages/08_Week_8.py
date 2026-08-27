@@ -356,7 +356,7 @@ with st.expander("Why do these sound different?"):
             row[f"{compare_label} Count"] = ""
         rows.append(row)
 
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
 # ============================================================================
@@ -642,7 +642,7 @@ if display_assoc:
 
     df_pmi = pd.DataFrame(table_rows)
 
-    st.dataframe(df_pmi, use_container_width=True, hide_index=True)
+    st.dataframe(df_pmi, width="stretch", hide_index=True)
 else:
     st.info("No associations found with current filter settings.")
 
@@ -679,7 +679,7 @@ if top_transitions:
     trans_rows = []
     for (w1, w2), count in top_transitions:
         trans_rows.append({"Last Word": w1, "First Word": w2, "Count": count})
-    st.dataframe(pd.DataFrame(trans_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(trans_rows), width="stretch", hide_index=True)
 
 # Transition context explorer
 if top_transitions:
@@ -739,7 +739,7 @@ with st.expander("Compare associations across episodes"):
         if top15_primary:
             rows = [{"Word 1": a["word1"], "Word 2": a["word2"], "PMI": f"{a['pmi']:.4f}"}
                     for a in top15_primary]
-            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
     with right_col:
         st.subheader(compare_pmi_label)
@@ -747,7 +747,7 @@ with st.expander("Compare associations across episodes"):
         if top15_compare:
             rows = [{"Word 1": a["word1"], "Word 2": a["word2"], "PMI": f"{a['pmi']:.4f}"}
                     for a in top15_compare]
-            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
     # Overlap metric
     primary_top20 = set((a["word1"], a["word2"]) for a in all_associations[:20])

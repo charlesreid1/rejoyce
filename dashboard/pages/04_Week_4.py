@@ -394,7 +394,7 @@ if browser_entities:
         {"Entity": e, "Type": t, "Count": c}
         for (e, t), c in entity_counter.most_common()
     ]
-    st.dataframe(pd.DataFrame(browser_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(browser_rows), width="stretch", hide_index=True)
 else:
     st.info("No entities of that type found.")
 
@@ -680,7 +680,7 @@ for entity, paras in sorted_entities[:20]:
         "Paragraphs": len(paras),
         "% of Episode": f"{len(paras) / para_count * 100:.1f}%" if para_count else "0%",
     })
-st.dataframe(pd.DataFrame(freq_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(freq_rows), width="stretch", hide_index=True)
 
 # --- Entity trajectory plot ---
 st.subheader("Entity Trajectory")
@@ -763,7 +763,7 @@ if top_pairs:
         {"Entity A": e1, "Entity B": e2, "Shared Paragraphs": count}
         for (e1, e2), count in top_pairs
     ]
-    st.dataframe(pd.DataFrame(pair_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(pair_rows), width="stretch", hide_index=True)
 
 # --- Entity network graph ---
 st.subheader("Entity Network Graph")

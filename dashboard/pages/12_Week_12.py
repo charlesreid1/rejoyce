@@ -142,8 +142,8 @@ def cached_numeric_features_by_label(barfly_tuple, interpolation_tuple):
 
 
 @st.cache_data
-def cached_barfly_fingerprint(episode_file, _classifier_train, _classifier_test):
-    """Compute barfly probability fingerprint for an episode."""
+def cached_classify_episode_passages(episode_file, _classifier_train):
+    """Classify all paragraphs of an episode and return scored passages."""
     text = cached_load_episode(episode_file)
     paragraphs = [p.strip() for p in text.split("\n\n") if p.strip() and len(p.strip()) > 50]
 
@@ -151,18 +151,14 @@ def cached_barfly_fingerprint(episode_file, _classifier_train, _classifier_test)
     train_set = list(_classifier_train)
     classifier = NaiveBayesClassifier.train(train_set)
 
-    barfly_probs = []
-    barfly_passages = []
+    scored_passages = []
     for para in paragraphs:
         feats = suppress_stdout(extract_features, para)
         prob_dist = classifier.prob_classify(feats)
         p_barfly = prob_dist.prob("barfly")
-        barfly_probs.append(p_barfly)
-        barfly_passages.append((p_barfly, para))
+        scored_passages.append((p_barfly, para))
 
-    avg_p = sum(barfly_probs) / len(barfly_probs) if barfly_probs else 0
-    top_passages = sorted(barfly_passages, key=lambda x: -x[0])[:5]
-    return avg_p, top_passages
+    return scored_passages
 
 
 # ============================================================================
@@ -195,6 +191,17 @@ episode_text = cached_load_episode(episode_file)
 
 st.header("1. Barfly vs. Interpolation Classifier")
 
+st.markdown(
+    "The Cyclops episode alternates between two distinct narrative voices. The **barfly** "
+    "is an unnamed first-person narrator — a Dublin pub regular telling the story in "
+    "colloquial slang (\"says he\", \"begob\", \"bloody\"). The **interpolations** are "
+    "Joyce's gigantism technique: enormous passages that interrupt the barfly's account to "
+    "parody formal literary genres — legal briefs, epic poetry, biblical genealogies, and "
+    "journalistic reports. This classifier learns to distinguish the two voices using "
+    "textual features like sentence length, vocabulary richness, word length, and the "
+    "presence of slang vs. formal markers."
+)
+
 if is_cyclops:
     barfly_segments, interpolation_segments = cached_segment_cyclops(episode_text)
 
@@ -226,7 +233,7 @@ if is_cyclops:
             "Difference": f"{avg_interp[key] - avg_barfly[key]:+.3f}",
         })
 
-    st.dataframe(pd.DataFrame(comparison_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(comparison_rows), width="stretch", hide_index=True)
 
     # --- Feature comparison bar chart ---
     fig_feat, axes = plt.subplots(1, 3, figsize=(14, 4))
@@ -246,9 +253,16 @@ if is_cyclops:
     # --- Segment browser ---
     st.subheader("Segment Browser")
 
-    all_segments = [(seg, "barfly") for seg in barfly_segments] + [
-        (seg, "interpolation") for seg in interpolation_segments
-    ]
+    cb1, cb2 = st.columns(2)
+    show_barfly = cb1.checkbox("Show barfly segments", value=True, key="show_barfly")
+    show_interp = cb2.checkbox("Show interpolation segments", value=True, key="show_interp")
+
+    all_segments = []
+    if show_barfly:
+        all_segments += [(seg, "barfly") for seg in barfly_segments]
+    if show_interp:
+        all_segments += [(seg, "interpolation") for seg in interpolation_segments]
+
     segment_labels = [
         f"[{label}] {seg[:70]}..." for seg, label in all_segments
     ]
@@ -286,82 +300,92 @@ else:
 # Section 2: Barfly Fingerprint Across Episodes
 # ============================================================================
 
-st.header("2. Barfly Fingerprint Across Episodes")
+st.header("2. Classifier Across Episodes")
 
 st.markdown(
-    "How *barfly-like* is each episode? We apply the Cyclops-trained classifier to "
-    "paragraphs from any episode and compute the average P(barfly) — the probability "
-    "the classifier assigns to the barfly class. Higher values mean the episode's prose "
-    "resembles the colloquial, first-person barfly narrator."
+    "The barfly/interpolation classifier was trained on the two voices of Cyclops. "
+    "What happens when we apply it to other episodes? Select an episode below to see "
+    "which passages the classifier considers most barfly-like (colloquial, short sentences, "
+    "first-person) and most interpolation-like (formal, long sentences, elaborate syntax). "
+    "This reveals what the classifier actually latches onto — which may not always match "
+    "literary intuition, since the classifier only knows about sentence length, vocabulary "
+    "richness, and pronoun usage, not content or meaning."
 )
 
 if is_cyclops:
-    # Need a trained classifier for this section
     train_tuple = tuple(train_set)
-    test_tuple = tuple(test_set)
 
-    default_episodes = []
-    for lbl in ["12 — Cyclops", "06 — Hades", "16 — Eumaeus", "04 — Calypso"]:
-        if lbl in EPISODE_LABELS:
-            default_episodes.append(lbl)
-
-    selected_episodes = st.multiselect(
-        "Select episodes to scan",
+    selected_episode_label = st.selectbox(
+        "Select an episode to scan",
         EPISODE_LABELS,
-        default=default_episodes,
-        key="barfly_episodes",
+        index=EPISODE_LABELS.index("12 — Cyclops") if "12 — Cyclops" in EPISODE_LABELS else 0,
+        key="classifier_episode",
     )
 
-    if selected_episodes:
-        episode_avg_probs = []
-        episode_top_passages = {}
+    ep_file = EPISODE_FILES[EPISODE_LABELS.index(selected_episode_label)]
+    scored_passages = cached_classify_episode_passages(ep_file, train_tuple)
 
-        for lbl in selected_episodes:
-            ep_file = EPISODE_FILES[EPISODE_LABELS.index(lbl)]
-            avg_p, top_passages = cached_barfly_fingerprint(ep_file, train_tuple, test_tuple)
-            short_name = lbl.split(" — ")[1]
-            episode_avg_probs.append((short_name, avg_p))
-            episode_top_passages[short_name] = top_passages
+    if scored_passages:
+        probs = [p for p, _ in scored_passages]
 
-        # --- Bar chart ---
-        episode_avg_probs.sort(key=lambda x: -x[1])
-        names = [n for n, _ in episode_avg_probs]
-        probs = [p for _, p in episode_avg_probs]
-
-        fig_bar, ax_bar = plt.subplots(figsize=(max(8, len(names) * 1.2), 5))
-        bars = ax_bar.bar(names, probs, color="#4A90D9")
-        ax_bar.set_ylabel("Avg P(barfly)")
-        ax_bar.set_title("Barfly Fingerprint Across Episodes")
-        ax_bar.set_ylim(0, 1)
-        for bar, val in zip(bars, probs):
-            ax_bar.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
-                        f"{val:.2f}", ha="center", va="bottom", fontsize=9)
-        plt.xticks(rotation=45, ha="right")
-        plt.tight_layout()
-        st.pyplot(fig_bar)
-        plt.close(fig_bar)
-
-        # --- Top barfly-like passages ---
-        st.subheader("Top Barfly-Like Passages")
-
-        passage_episode = st.selectbox(
-            "Select an episode",
-            [n for n, _ in episode_avg_probs],
-            key="barfly_passage_ep",
+        # --- Distribution histogram ---
+        st.subheader("P(barfly) Distribution")
+        st.markdown(
+            "Distribution of P(barfly) scores across all paragraphs in the episode. "
+            "Passages near 1.0 look barfly-like to the classifier; passages near 0.0 "
+            "look interpolation-like. The shape of this histogram reveals how stylistically "
+            "uniform or varied an episode is. For example, **Lestrygonians** piles almost "
+            "every paragraph near 1.0 — Bloom's short, punchy interior monologue looks "
+            "uniformly \"barfly\" to the classifier. **Oxen of the Sun**, by contrast, "
+            "shows a dramatic bimodal split: its early paragraphs parody archaic prose "
+            "styles (long sentences, elaborate syntax) that the classifier flags as "
+            "interpolation-like, while its later slang-filled passages score as barfly-like."
         )
 
-        if passage_episode in episode_top_passages:
-            for rank, (prob, passage) in enumerate(episode_top_passages[passage_episode]):
+        fig_hist, ax_hist = plt.subplots(figsize=(10, 4))
+        ax_hist.hist(probs, bins=20, color="#4A90D9", edgecolor="white", alpha=0.8)
+        ax_hist.set_xlabel("P(barfly)")
+        ax_hist.set_ylabel("Number of Paragraphs")
+        ax_hist.set_title(f"P(barfly) Distribution — {selected_episode_label.split(' — ')[1]}")
+        ax_hist.set_xlim(0, 1)
+        plt.tight_layout()
+        st.pyplot(fig_hist)
+        plt.close(fig_hist)
+
+        # --- Summary metrics ---
+        sm1, sm2, sm3 = st.columns(3)
+        sm1.metric("Total Paragraphs", len(scored_passages))
+        sm2.metric("Median P(barfly)", f"{sorted(probs)[len(probs) // 2]:.3f}")
+        sm3.metric("Std Dev", f"{np.std(probs):.3f}")
+
+        # --- Top barfly-like and interpolation-like passages ---
+        sorted_by_barfly = sorted(scored_passages, key=lambda x: -x[0])
+        sorted_by_interp = sorted(scored_passages, key=lambda x: x[0])
+
+        top_barfly = sorted_by_barfly[:5]
+        top_interp = sorted_by_interp[:5]
+
+        col_b, col_i = st.columns(2)
+
+        with col_b:
+            st.subheader("Top 5 Barfly-Like Passages")
+            for rank, (prob, passage) in enumerate(top_barfly):
                 with st.expander(f"#{rank + 1} — P(barfly) = {prob:.3f}"):
                     st.write(passage[:500])
+
+        with col_i:
+            st.subheader("Top 5 Interpolation-Like Passages")
+            for rank, (prob, passage) in enumerate(top_interp):
+                with st.expander(f"#{rank + 1} — P(barfly) = {1 - prob:.3f}"):
+                    st.write(passage[:500])
     else:
-        st.info("Select at least one episode to scan.")
+        st.info("No paragraphs found in this episode.")
 
 else:
     st.info(
-        "The barfly fingerprint analysis requires a trained classifier from Cyclops. "
-        "Select **12 — Cyclops** first to train the classifier, then explore cross-episode "
-        "patterns."
+        "This section requires a trained classifier from Cyclops. "
+        "Select **12 — Cyclops** first to train the classifier, then explore "
+        "other episodes."
     )
 
 
@@ -442,7 +466,7 @@ if is_cyclops:
             })
 
     if amp_rows:
-        st.dataframe(pd.DataFrame(amp_rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(amp_rows), width="stretch", hide_index=True)
 
     # --- Amplification radar/bar chart ---
     if genre_numeric:
@@ -473,6 +497,18 @@ if is_cyclops:
         plt.tight_layout()
         st.pyplot(fig_amp)
         plt.close(fig_amp)
+
+        st.markdown(
+            "Each bar shows a genre's average feature value **divided by the barfly baseline** "
+            "for that same feature. The dashed line at **1.0** represents the barfly norm — "
+            "the colloquial narrator's typical sentence length, vocabulary richness, and word "
+            "length. Bars above 1.0 indicate **amplification**: the interpolation genre "
+            "exceeds the barfly's norm for that feature (e.g., longer sentences, bigger words). "
+            "Bars below 1.0 indicate **compression**: the genre is more constrained than the "
+            "barfly on that dimension. The further a bar is from the dashed line, the more "
+            "dramatically that genre departs from the barfly's voice — which is the quantitative "
+            "signature of Joyce's gigantism technique."
+        )
 
     # --- Interpolation reader ---
     st.subheader("Interpolation Reader")

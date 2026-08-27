@@ -300,7 +300,7 @@ if is_sirens:
         })
 
     df_frags = pd.DataFrame(table_rows)
-    st.dataframe(df_frags, use_container_width=True, hide_index=True)
+    st.dataframe(df_frags, width="stretch", hide_index=True)
 
     # --- Fragment explorer ---
     st.subheader("Fragment Explorer")
@@ -380,7 +380,7 @@ with c2:
     with st.expander("Top missing words"):
         if top_missing:
             missing_df = pd.DataFrame(top_missing, columns=["Word", "Occurrences"])
-            st.dataframe(missing_df, use_container_width=True, hide_index=True)
+            st.dataframe(missing_df, width="stretch", hide_index=True)
             st.caption(
                 "Missing words are often Joyce's onomatopoeia and invented language "
                 "— the most phonetically interesting material the dictionary can't capture."
@@ -637,7 +637,7 @@ if all_motifs:
             })
 
     if convergence_rows:
-        st.dataframe(pd.DataFrame(convergence_rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(convergence_rows), width="stretch", hide_index=True)
         st.markdown(
             "If motifs cluster tighter in the second half (smaller avg gap), that's evidence "
             "of *stretto* — the fugal technique where voices overlap more closely as the piece "

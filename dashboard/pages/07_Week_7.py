@@ -307,7 +307,7 @@ if section_scores:
             "IDF": f"{idf_val:.3f}",
             "TF-IDF": f"{tf_val * idf_val:.4f}",
         })
-    st.dataframe(pd.DataFrame(breakdown_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(breakdown_rows), width="stretch", hide_index=True)
 
 with st.expander("View section text"):
     st.write(section_text)
@@ -341,7 +341,7 @@ if is_aeolus:
         "Sections with any keyword-headline overlap",
         f"{overlap_count}/{len(sections)} ({overall_pct:.0f}%)",
     )
-    st.dataframe(pd.DataFrame(overlap_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(overlap_rows), width="stretch", hide_index=True)
 
     st.markdown(
         "**Why overlap is low:** TF-IDF captures *statistical distinctiveness* — words "
@@ -407,7 +407,7 @@ if compare_episodes:
         {"Episode": lbl, "Top-10 Distinctive Keywords": kws}
         for lbl, kws in comparison_rows.items()
     ])
-    st.dataframe(cmp_df, use_container_width=True, hide_index=True)
+    st.dataframe(cmp_df, width="stretch", hide_index=True)
 
 
 # ============================================================================
@@ -549,7 +549,7 @@ with st.expander("Compare rhetoric density with other episodes"):
     df_rhet = pd.DataFrame(rows).set_index("Episode")
     st.dataframe(
         df_rhet,
-        use_container_width=True,
+        width="stretch",
         column_config={
             "Episode": st.column_config.TextColumn(width="large"),
         },
@@ -600,7 +600,7 @@ if is_aeolus:
             "Overlap": ", ".join(overlap) if overlap else "—",
         })
 
-    st.dataframe(pd.DataFrame(gen_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(gen_rows), width="stretch", hide_index=True)
 
     # --- "Build Your Own Headline" Interactive ---
     st.subheader("Build Your Own Headline")
@@ -757,7 +757,7 @@ else:
             "Section": label,
             "Generated Headline": generated,
         })
-    st.dataframe(pd.DataFrame(chunk_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(chunk_rows), width="stretch", hide_index=True)
 
     # Still show Build Your Own Headline
     st.subheader("Build Your Own Headline")

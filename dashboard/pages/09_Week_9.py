@@ -219,7 +219,7 @@ if argument_sents:
             "Sentence": s[:120] + ("..." if len(s) > 120 else ""),
             "Tokens": len(tokens),
         })
-    st.dataframe(pd.DataFrame(sent_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(sent_data), width="stretch", hide_index=True)
 
 # --- Grammar inspector ---
 with st.expander("View/Edit CFG Grammar"):
@@ -493,7 +493,7 @@ with st.expander("Compare all 18 episodes"):
             })
 
         df_all = pd.DataFrame(all_rows)
-        st.dataframe(df_all, use_container_width=True, hide_index=True)
+        st.dataframe(df_all, width="stretch", hide_index=True)
     else:
         st.info("Click the button to compute complexity metrics for all 18 episodes.")
 
@@ -526,7 +526,7 @@ if quotations:
             "Words": len(q.split()),
             "Type": q_type,
         })
-    st.dataframe(pd.DataFrame(q_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(q_data), width="stretch", hide_index=True)
 
     # --- Quotation type breakdown ---
     st.subheader("Quotation Type Breakdown")
@@ -654,7 +654,7 @@ if quotations:
         {"POS": tag, "Count": count}
         for tag, count in q_pos_counts.most_common()
     ])
-    st.dataframe(q_pos_df, use_container_width=True, hide_index=True)
+    st.dataframe(q_pos_df, width="stretch", hide_index=True)
 
     # --- Word clouds / frequency bars ---
     st.subheader("Vocabulary: Quoted vs. Framing")

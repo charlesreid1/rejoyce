@@ -81,8 +81,11 @@ def cached_burrows_delta(test_profile_tuple, corpus_profiles_tuple):
     Profiles are passed as tuples-of-items for hashability, then
     reconstructed into dicts before calling the library function.
     """
-    test_profile = dict(test_profile_tuple)
-    corpus_profiles = [(label, dict(items)) for label, items in corpus_profiles_tuple]
+    test_profile = {k: dict(v) if isinstance(v, tuple) else v for k, v in test_profile_tuple}
+    corpus_profiles = [
+        {k: dict(v) if isinstance(v, tuple) else v for k, v in items}
+        for label, items in corpus_profiles_tuple
+    ]
     return suppress_stdout(burrows_delta, test_profile, corpus_profiles)
 
 
@@ -141,7 +144,7 @@ if not is_nausicaa:
         if key == "fw_freqs":
             continue
         profile_rows.append({"Metric": key, episode_label: f"{val:.4f}" if isinstance(val, float) else str(val)})
-    st.dataframe(pd.DataFrame(profile_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(profile_rows), width="stretch", hide_index=True)
 
 else:
     gerty_text, bloom_text, split_idx = cached_split_nausicaa(episode_text)
@@ -160,27 +163,17 @@ else:
     bloom_excl_rate = sum(1 for s in bloom_sents if "!" in s) / max(len(bloom_sents), 1)
     excl_delta = gerty_excl_rate - bloom_excl_rate
 
-    mc1, mc2, mc3, mc4 = st.columns(4)
-    mc1.metric(
-        "TTR (Gerty vs Bloom)",
-        f"{gerty_profile.get('ttr', 0):.4f}",
-        delta=f"{ttr_delta:+.4f}",
-    )
-    mc2.metric(
-        "Yule's K (Gerty vs Bloom)",
-        f"{gerty_profile.get('yule_k', 0):.2f}",
-        delta=f"{yule_delta:+.2f}",
-    )
-    mc3.metric(
-        "Avg Sentence Len (Gerty vs Bloom)",
-        f"{gerty_profile.get('mean_sent_len', 0):.1f}",
-        delta=f"{sent_len_delta:+.1f}",
-    )
-    mc4.metric(
-        "Exclamation Rate (Gerty vs Bloom)",
-        f"{gerty_excl_rate:.2%}",
-        delta=f"{excl_delta:+.2%}",
-    )
+    metrics = [
+        ("TTR", f"{gerty_profile.get('ttr', 0):.4f}", f"{bloom_profile.get('ttr', 0):.4f}", f"{ttr_delta:+.4f}"),
+        ("Yule's K", f"{gerty_profile.get('yule_k', 0):.2f}", f"{bloom_profile.get('yule_k', 0):.2f}", f"{yule_delta:+.2f}"),
+        ("Avg Sent Len", f"{gerty_profile.get('mean_sent_len', 0):.1f}", f"{bloom_profile.get('mean_sent_len', 0):.1f}", f"{sent_len_delta:+.1f}"),
+        ("Excl Rate", f"{gerty_excl_rate:.2%}", f"{bloom_excl_rate:.2%}", f"{excl_delta:+.2%}"),
+    ]
+    for label, gerty_val, bloom_val, delta_val in metrics:
+        c1, c2, c3 = st.columns(3)
+        c1.metric(f"{label} (Gerty)", gerty_val)
+        c2.metric(f"{label} (Bloom)", bloom_val)
+        c3.metric(f"{label} (Delta)", delta_val, delta=delta_val)
 
     # --- Profile comparison dataframe ---
     st.subheader("Profile Comparison")
@@ -199,7 +192,7 @@ else:
             d_str = "—"
         profile_rows.append({"Metric": key, "Gerty": g_str, "Bloom": b_str, "Delta": d_str})
 
-    st.dataframe(pd.DataFrame(profile_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(profile_rows), width="stretch", hide_index=True)
 
     # --- 4-panel matplotlib figure ---
     st.subheader("Stylometric Visualization")
@@ -326,10 +319,10 @@ else:
             prof = cached_stylometric_profile(text, ep_label)
             profiles.append((ep_label, prof))
 
-        # Gutenberg: Austen's Emma
-        austen_text = gutenberg.raw("austen-emma.txt")
-        austen_prof = cached_stylometric_profile(austen_text, "Austen — Emma")
-        profiles.append(("Austen — Emma", austen_prof))
+        # Gutenberg: Melville's Moby-Dick
+        melville_text = gutenberg.raw("melville-moby_dick.txt")
+        melville_prof = cached_stylometric_profile(melville_text, "Melville — Moby-Dick")
+        profiles.append(("Melville — Moby-Dick", melville_prof))
 
         return profiles
 
@@ -462,7 +455,7 @@ else:
     contrib_rows.sort(key=lambda r: abs(float(r["Difference"])), reverse=True)
     st.dataframe(
         pd.DataFrame(contrib_rows[:20]),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -474,10 +467,11 @@ else:
 st.header("3. Cliche Detection via N-gram Overlap")
 
 st.markdown(
-    "Gerty's narration is saturated with the cliches of sentimental fiction. "
-    "We extract character n-grams from the Gerty half and from Gutenberg "
-    "romantic/sentimental texts, then find shared n-grams — the formulaic "
-    "phrases Joyce is parodying. Higher overlap density = more cliche-ridden prose."
+    "We extract word n-grams from the Gerty half and from Gutenberg "
+    "romantic/sentimental texts (Austen), then find shared n-grams. "
+    "Note: most shared n-grams at lower *n* are common English phrases, not "
+    "genre-specific cliches. Higher *n* values (5-grams) are more likely to "
+    "surface genuinely formulaic phrases, but matches become very sparse."
 )
 
 # --- N-gram range selector ---
@@ -558,7 +552,7 @@ if shared_ngrams:
             "Gerty Count": count,
             "Gutenberg Count": gut_count,
         })
-    st.dataframe(pd.DataFrame(cliche_rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(cliche_rows), width="stretch", hide_index=True)
 else:
     st.info("No shared n-grams found at this n-gram size.")
 
@@ -599,9 +593,10 @@ if is_nausicaa:
         plt.close(fig_cmp)
 
         st.markdown(
-            "A higher cliche density in the Gerty half confirms that Joyce deliberately "
-            "saturated her narration with formulaic phrases borrowed from sentimental "
-            "fiction — a computational signature of pastiche."
+            "A higher overlap density in the Gerty half is suggestive, but most shared "
+            "n-grams are common English phrases rather than genre-specific cliches. "
+            "This method is better at detecting broad stylistic similarity than "
+            "identifying specific borrowed phrases."
         )
 
 
@@ -616,10 +611,9 @@ st.markdown("""
 ventriloquism. Stylometric profiling quantifies what any reader senses — Gerty's half
 has longer, more ornate sentences, different function word patterns, and measurably lower
 vocabulary richness than Bloom's clipped interior monologue. Burrows' Delta confirms the
-split: Gerty's prose clusters closer to Austen's sentimental fiction, while Bloom's half
-aligns with his other episodes. The cliche detection analysis reveals the mechanism of
-pastiche itself — Joyce's Gerty narration shares a significantly higher proportion of
-character n-grams with romantic fiction than Bloom's half does. The pastiche isn't just
-an impression; it's a measurable, systematic adoption of another tradition's linguistic
-fingerprint.
+split: Gerty's prose clusters closer to sentimental fiction, while Bloom's half
+aligns with his other episodes. The n-gram overlap analysis is more limited — most
+shared n-grams are common English phrases rather than genre-specific cliches, so the
+"cliche density" metric should be taken as a rough proxy rather than definitive evidence
+of pastiche.
 """)

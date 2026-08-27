@@ -184,7 +184,7 @@ for label in all_selected:
         row[mlabel] = f"{v:.4f}" if isinstance(v, float) else f"{v:,}"
     table_rows.append(row)
 
-st.dataframe(pd.DataFrame(table_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(table_rows), width="stretch", hide_index=True)
 
 # ============================================================================
 # Section 2: Concordance Explorer
@@ -251,7 +251,7 @@ if lines:
             {"Left Context": left, "Keyword": " ".join(line.query), "Right Context": right}
         )
     kwic_df = pd.DataFrame(kwic_rows)
-    st.dataframe(kwic_df, use_container_width=True, hide_index=True)
+    st.dataframe(kwic_df, width="stretch", hide_index=True)
 else:
     st.info(f"No occurrences of '{keyword}' found in this episode.")
 

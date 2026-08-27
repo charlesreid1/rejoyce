@@ -351,7 +351,7 @@ for i, j, sim, keywords in pairs[:10]:
         "Cosine Similarity": f"{sim:.4f}",
         "Top Shared Keywords": keywords,
     })
-st.dataframe(pd.DataFrame(pair_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(pair_rows), width="stretch", hide_index=True)
 
 # --- Section deep-dive ---
 st.subheader("Section Deep-Dive")
@@ -417,7 +417,7 @@ if compare_episodes:
             "Avg Pairwise Similarity": f"{cmp_avg:.4f}",
         })
 
-    st.dataframe(pd.DataFrame(comparison_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(comparison_data), width="stretch", hide_index=True)
     st.markdown(
         "*Lower average similarity suggests more fragmented, diverse content across sections. "
         "Wandering Rocks' labyrinthine structure typically produces lower intra-episode "
@@ -481,7 +481,7 @@ if anomalies:
             "Sentence": sent[:150] + ("..." if len(sent) > 150 else ""),
         })
     st.dataframe(
-        pd.DataFrame(anomaly_rows), use_container_width=True, hide_index=True
+        pd.DataFrame(anomaly_rows), width="stretch", hide_index=True
     )
 
 # --- Strip chart: sentence similarity by section ---

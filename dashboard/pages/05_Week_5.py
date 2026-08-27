@@ -991,7 +991,7 @@ if selected_pairs:
                     ),
                 }
             )
-        st.dataframe(pd.DataFrame(phoneme_rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(phoneme_rows), width="stretch", hide_index=True)
 
     # --- Test your own pun ---
     with st.expander("Test your own pun"):
@@ -1340,7 +1340,7 @@ if bridge_word_a and bridge_word_b:
         if bridge_rows:
             df_bridges = pd.DataFrame(bridge_rows)
             df_bridges = df_bridges.sort_values("WuP Similarity", ascending=False)
-            st.dataframe(df_bridges, use_container_width=True, hide_index=True)
+            st.dataframe(df_bridges, width="stretch", hide_index=True)
     else:
         st.warning(
             f"Could not find a WordNet connection between "
@@ -1411,7 +1411,7 @@ with st.expander("Compute polysemy for all 18 episodes"):
         display_df = pd.DataFrame(poly_results).drop(columns=["file"])
         display_df["Avg Synsets/Word"] = display_df["Avg Synsets/Word"].round(2)
         display_df["Coverage %"] = display_df["Coverage %"].round(1)
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
+        st.dataframe(display_df, width="stretch", hide_index=True)
 
 st.markdown("""
 ---

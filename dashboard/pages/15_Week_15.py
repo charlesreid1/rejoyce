@@ -279,7 +279,7 @@ for name in speakers:
 if cast_rows:
     df_cast = pd.DataFrame(cast_rows)
     df_cast = df_cast.sort_values("Line Count", ascending=False).reset_index(drop=True)
-    st.dataframe(df_cast, use_container_width=True, hide_index=True)
+    st.dataframe(df_cast, width="stretch", hide_index=True)
 else:
     st.info("No entities match the selected categories.")
 
@@ -436,7 +436,7 @@ if display_nodes:
             })
     if centrality_rows:
         df_cent = pd.DataFrame(centrality_rows)
-        st.dataframe(df_cent, use_container_width=True, hide_index=True)
+        st.dataframe(df_cent, width="stretch", hide_index=True)
 
 
 # ============================================================================
@@ -540,7 +540,7 @@ if "cumulative_entities" in st.session_state:
             })
         df_react = pd.DataFrame(react_rows)
         df_react = df_react.sort_values("Episode Count", ascending=False).reset_index(drop=True)
-        st.dataframe(df_react, use_container_width=True, hide_index=True)
+        st.dataframe(df_react, width="stretch", hide_index=True)
     else:
         st.info("No reactivated entities found.")
 

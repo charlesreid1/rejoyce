@@ -237,7 +237,7 @@ with st.expander("POS Tag Reference (Penn Treebank)"):
     ref_df = pd.DataFrame(
         [{"Tag": k, "Description": v} for k, v in tag_ref.items()]
     )
-    st.dataframe(ref_df, use_container_width=True, hide_index=True)
+    st.dataframe(ref_df, width="stretch", hide_index=True)
 
 # Top POS tags bar chart
 st.subheader("POS Tag Frequencies")
@@ -547,7 +547,7 @@ with st.expander("Dialogue vs. Narration Across All 18 Chapters"):
         st.pyplot(fig_all)
         plt.close(fig_all)
 
-        st.dataframe(pd.DataFrame(ratio_rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(ratio_rows), width="stretch", hide_index=True)
 
 st.markdown("""
 **What voice splits reveal:**
@@ -676,7 +676,7 @@ for lemma, forms in sorted_collapses:
 if collapse_rows:
     st.dataframe(
         pd.DataFrame(collapse_rows[:100]),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
     if len(collapse_rows) > 100:

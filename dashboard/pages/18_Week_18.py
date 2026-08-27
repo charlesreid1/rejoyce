@@ -628,7 +628,7 @@ for key, label in metrics_labels.items():
             "Delta": f"{sel_val - cmp_val:+,}",
         })
 
-st.dataframe(pd.DataFrame(comparison_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(comparison_rows), width="stretch", hide_index=True)
 
 # --- Structural particles scatter plot ---
 st.subheader("Structural Particles: Position Scatter")

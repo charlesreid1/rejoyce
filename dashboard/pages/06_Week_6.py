@@ -405,7 +405,7 @@ for sent, score in extreme_sentences:
     label = "Most Positive" if score > 0.05 else ("Most Negative" if score < -0.05 else "Neutral")
     misfire_rows.append({"Score": f"{score:+.3f}", "Sentence": sent[:120], "Type": label})
 
-st.dataframe(pd.DataFrame(misfire_rows), use_container_width=True, hide_index=True)
+st.dataframe(pd.DataFrame(misfire_rows), width="stretch", hide_index=True)
 st.caption(
     "Positive scores in a funeral chapter often indicate VADER misfires -- "
     "literary language, irony, and euphemism confound a tool trained on social media."
@@ -468,7 +468,7 @@ with st.expander("Compare sentiment trajectories across episodes"):
 
         st.dataframe(
             pd.DataFrame(summary_rows),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
     else:
@@ -635,7 +635,7 @@ with col_death:
     st.metric("Average Negativity", f"{avg_neg:.3f}")
     st.dataframe(
         death_df.style.background_gradient(subset=["Neg Score"], cmap="Reds"),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -645,7 +645,7 @@ with col_prox:
     st.metric("Average Positivity", f"{avg_pos:.3f}")
     st.dataframe(
         prox_df.style.background_gradient(subset=["Pos Score"], cmap="Greens"),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -793,7 +793,7 @@ if st.button("Recalculate", key="recalculate_lexicon"):
                 st.metric("Custom Death Avg Negativity", f"{cd_df['Neg Score'].mean():.3f}")
                 st.dataframe(
                     cd_df.style.background_gradient(subset=["Neg Score"], cmap="Reds"),
-                    use_container_width=True, hide_index=True,
+                    width="stretch", hide_index=True,
                 )
         with cc2:
             if cp_table:
@@ -801,7 +801,7 @@ if st.button("Recalculate", key="recalculate_lexicon"):
                 st.metric("Custom Proximity Avg Positivity", f"{cp_df['Pos Score'].mean():.3f}")
                 st.dataframe(
                     cp_df.style.background_gradient(subset=["Pos Score"], cmap="Greens"),
-                    use_container_width=True, hide_index=True,
+                    width="stretch", hide_index=True,
                 )
 
         # Custom bar charts

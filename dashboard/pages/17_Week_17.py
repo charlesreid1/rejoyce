@@ -407,7 +407,7 @@ else:
     if triple_rows:
         st.dataframe(
             pd.DataFrame(triple_rows),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
